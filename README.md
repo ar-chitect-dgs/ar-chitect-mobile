@@ -1,7 +1,3 @@
-# Viro Starter Kit
-
-This is a new [**React Native**](https://reactnative.dev) project, set up with `@reactvision/react-viro`.
-
 ## Getting Started
 
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions. Stop before you get to the `Creating a new application` section; we have done that for you!

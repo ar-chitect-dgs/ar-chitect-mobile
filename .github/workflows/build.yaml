@@ -33,3 +33,46 @@ jobs:
 
     - name: Run on Android 
       run: cd android && ./gradlew assembleDebug
+
+  build-ios:
+    runs-on: macos-latest
+
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+  
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+          # bundler-cache: true cache to do 
+
+      - name: Install Cocoapods 
+        run: sudo gem install cocoapods
+
+      # cache to do
+      # - name: Cache pods
+      #   uses: actions/cache@v4
+      #   id: pods-cache
+      #   with:
+      #     path: ./ios/Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+
+      # - name: Install pods
+      #   if: steps.pods-cache.outputs.cache-hit != 'true' 
+      #   shell: bash
+      #   run: |
+      #     cd ios
+      #     bundle exec pod install
+
+      - name: Build iOS app
+        run: cd ios && xcodebuild build

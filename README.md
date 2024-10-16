@@ -5,7 +5,7 @@
 ## Step 1: Install Dependencies
 
 ```bash
-npm install
+yarn install
 ```
 
 ### iOS only:
@@ -23,7 +23,7 @@ First, you will need to start **Metro**, the JavaScript _bundler_ that ships _wi
 To start Metro, run the following command from the _root_ of your React Native project:
 
 ```bash
-npm start
+yarn start
 ```
 
 ## Step 3: Start your Application

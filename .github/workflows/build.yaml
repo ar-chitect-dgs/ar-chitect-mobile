@@ -20,9 +20,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '22'
+        cache: 'yarn'
 
     - name: Install dependencies
-      run: npm ci
+      run: yarn install --frozen-lockfile
     
     - name:
       uses: actions/setup-java@v4
@@ -45,10 +46,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'yarn'
   
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -67,12 +68,12 @@ jobs:
       #     path: ./ios/Pods
       #     key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
 
-      # - name: Install pods
-      #   if: steps.pods-cache.outputs.cache-hit != 'true' 
-      #   shell: bash
-      #   run: |
-      #     cd ios
-      #     bundle exec pod install
+      - name: Install pods
+        # if: steps.pods-cache.outputs.cache-hit != 'true' 
+        shell: bash
+        run: |
+          cd ios
+          bundle exec pod install
 
       - name: Build iOS app
-        run: cd ios && xcodebuild build
+        run: cd ios && xcodebuild build -allowProvisioningUpdates

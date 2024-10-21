@@ -55,29 +55,34 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
-          # bundler-cache: true cache to do 
+          bundler-cache: true 
 
-      - name: Install Cocoapods 
-        run: |
-          sudo gem install cocoapods
-          gem list
+      - name: Install Ruby dependencies
+        run: bundle install
 
-      # cache to do
-      # - name: Cache pods
-      #   uses: actions/cache@v4
-      #   id: pods-cache
-      #   with:
-      #     path: ./ios/Pods
-      #     key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+      - name: Cache pods
+        uses: actions/cache@v4
+        id: pods-cache
+        with:
+          path: ./ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
 
       - name: Install pods
         # if: steps.pods-cache.outputs.cache-hit != 'true' 
         shell: bash
         run: |
-          gem list
           cd ios
-          gem list
           bundle exec pod install
 
       - name: Build iOS app
-        run: cd ios && xcodebuild build -allowProvisioningUpdates
+        # run: |
+        #   cd ios
+        #   xcodebuild build-for-testing \
+        #     -scheme 'ViroStarterKit' \
+        #     -allowProvisioningUpdates
+        uses: sersoft-gmbh/xcodebuild-action@v3
+        with:
+          project: ios/ViroStarterKit.xcodeproj
+          scheme: ViroStarterKit
+          destination: platform=macOS
+          action: test

@@ -30,7 +30,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        cache: 'gradle'
+        # cache: 'gradle'
 
     - name: Run on Android 
       run: cd android && ./gradlew assembleDebug

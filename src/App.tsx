@@ -1,15 +1,15 @@
-import "react-native-gesture-handler";
-import * as React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-import ARScreen from "./screens/ARScreen";
-import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import ARScreen from './screens/ARScreen';
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 const Drawer = createDrawerNavigator();
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home">

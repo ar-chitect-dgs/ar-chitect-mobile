@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import auth from "@react-native-firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const HomeScreen: React.FC = ({ navigation }: any) => {
   const [userName, setUserName] = useState<string | null>(null);
@@ -8,24 +8,24 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
   useEffect(() => {
     const currentUser = auth().currentUser;
     if (currentUser) {
-      const name = currentUser.displayName || currentUser.email; // Use displayName if available, otherwise use email
+      const name = currentUser.displayName ?? currentUser.email; // Use displayName if available, otherwise use email
       setUserName(name);
     }
   }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await auth().signOut();
-      navigation.navigate("Login");
+      navigation.navigate('Login');
     } catch (error: any) {
-      console.error("Logout Error:", error.message);
+      console.error('Logout Error:', error.message);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>Hello, {userName}!</Text>
-      <Button title="Logout" onPress={handleLogout} />
+      <Button title="Logout" onPress={() => handleLogout} />
     </View>
   );
 };
@@ -33,12 +33,12 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   greeting: {
-    color: "#000",
+    color: '#000',
     fontSize: 24,
     marginBottom: 20,
   },

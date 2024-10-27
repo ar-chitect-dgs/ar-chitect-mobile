@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
-import auth from "@react-native-firebase/auth";
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleLogin = async () => {
-    if (email === "" || password === "") {
-      Alert.alert("Error", "Please fill in all fields");
+  const handleLogin = async (): Promise<void> => {
+    if (email === '' || password === '') {
+      Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
@@ -17,10 +17,11 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
 
     try {
       await auth().signInWithEmailAndPassword(email, password);
-      Alert.alert("Success", "Logged in successfully!");
-      navigation.navigate("Home");
+      Alert.alert('Success', 'Logged in successfully!');
+      navigation.navigate('Home');
     } catch (error: any) {
-      Alert.alert("Login Error", error.message);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      Alert.alert('Login Error', error.message);
     } finally {
       setLoading(false);
     }
@@ -48,14 +49,15 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
       />
 
       <Button
-        title={loading ? "Logging in..." : "Login"}
+        title={loading ? 'Logging in...' : 'Login'}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onPress={handleLogin}
         disabled={loading}
       />
 
       <Button
         title="Create an account"
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate('Register')}
       />
     </View>
   );
@@ -64,19 +66,19 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 16,
   },
   title: {
-    color: "#000",
+    color: '#000',
     fontSize: 24,
     marginBottom: 16,
-    textAlign: "center",
+    textAlign: 'center',
   },
   input: {
     height: 40,
-    borderColor: "#ccc",
-    color: "#000",
+    borderColor: '#ccc',
+    color: '#000',
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,

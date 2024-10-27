@@ -1,12 +1,30 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity } from "react-native";
 import auth from "@react-native-firebase/auth";
+import storage from "@react-native-firebase/storage";
+import { launchImageLibrary } from "react-native-image-picker";
 
 const RegisterScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleImagePicker = () => {
+    launchImageLibrary({ mediaType: "photo" }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        setProfileImage(response.assets[0]);
+      }
+    });
+  };
+
+  const uploadImage = async (userId: string) => {
+    if (!profileImage) return null;
+    const reference = storage().ref(`/profilePictures/${userId}`);
+    await reference.putFile(profileImage.uri);
+    return await reference.getDownloadURL();
+  };
 
   const handleRegister = async () => {
     if (email === "" || password === "" || displayName === "") {
@@ -17,17 +35,19 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
     setLoading(true);
 
     try {
-      // Create the user
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password
       );
 
-      // Update the display name
       if (userCredential.user) {
+        const photoURL = await uploadImage(userCredential.user.uid);
+
         await userCredential.user.updateProfile({
           displayName: displayName,
+          photoURL,
         });
+
         Alert.alert("Success", "Account created successfully!");
         navigation.navigate("Home");
       }
@@ -41,6 +61,14 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
+
+      <TouchableOpacity onPress={handleImagePicker} style={styles.imagePicker}>
+        {profileImage ? (
+          <Image source={{ uri: profileImage.uri }} style={styles.profileImage} />
+        ) : (
+          <Text style={styles.imageText}>Add Profile Picture</Text>
+        )}
+      </TouchableOpacity>
 
       <TextInput
         style={styles.input}
@@ -89,6 +117,19 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: "center",
     color: "#000",
+  },
+  imagePicker: {
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  imageText: {
+    color: "#888",
+    fontSize: 16,
   },
   input: {
     height: 40,

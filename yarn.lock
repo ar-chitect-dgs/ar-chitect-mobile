@@ -2486,6 +2486,11 @@
   dependencies:
     plist "^3.1.0"
 
+"@react-native-firebase/storage@^21.2.0":
+  version "21.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-21.2.0.tgz#844387ddb2b8edf0bab9cc0c4378f0a0a1af5e94"
+  integrity sha512-kvGctkEeZMUHV3LSlr95gVqvxiRdevDBL0duvnUGFfZXnEH4bpHw7Om4xZubhPF8rAm+cWAfWWnT30mQPLXpKw==
+
 "@react-native/assets-registry@0.73.1":
   version "0.73.1"
   resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.73.1.tgz#e2a6b73b16c183a270f338dc69c36039b3946e85"
@@ -6669,6 +6674,11 @@ react-native-gesture-handler@^2.17.1:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-image-picker@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz#383849d1953caf4578874a1f5e5dd11c737bd5cd"
+  integrity sha512-b5y5nP60RIPxlAXlptn2QwlIuZWCUDWa/YPUVjgHc0Ih60mRiOg1PSzf0IjHSLeOZShCpirpvSPGnDExIpTRUg==
 
 react-native-reanimated@^3.8.0:
   version "3.16.1"

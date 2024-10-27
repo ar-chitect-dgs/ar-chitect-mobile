@@ -1,17 +1,12 @@
 import storage from "@react-native-firebase/storage";
+import firestore from "@react-native-firebase/firestore";
 import { Project, ProjectsData, Object3D } from "./Interfaces";
 
-const SAMPLE_PROJECT_PATH = "/projects/SampleProject.json";
-const MODELS_DIRECTORY = "/models/;";
+const MODELS_DIRECTORY = "/models/";
 
 export const fetchProjectData = async (): Promise<ProjectsData> => {
-  const reference = storage().ref(SAMPLE_PROJECT_PATH);
-  const url = await reference.getDownloadURL();
-
-  const response = await fetch(url);
-  const json: ProjectsData = await response.json();
-
-  return json;
+  const project = await firestore().collection("projects").doc("1").get();
+  return project._data;
 };
 
 export const fetchGLBUrl = async (path: string): Promise<string> => {

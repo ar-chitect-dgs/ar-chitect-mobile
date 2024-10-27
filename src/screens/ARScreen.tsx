@@ -2,23 +2,23 @@ import {
   ViroARScene,
   ViroARSceneNavigator,
   ViroText,
-  ViroTrackingReason,
+  type ViroTrackingReason,
   ViroTrackingStateConstants,
-} from "@reactvision/react-viro";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+} from '@reactvision/react-viro';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-const HelloWorldSceneAR = () => {
-  const [text, setText] = useState("Initializing AR...");
+const HelloWorldSceneAR = (): JSX.Element => {
+  const [text, setText] = useState('Initializing AR...');
 
-  function onInitialized(state: any, reason: ViroTrackingReason) {
-    console.log("onInitialized", state, reason);
+  const onInitialized = (state: any, reason: ViroTrackingReason): void => {
+    console.log('onInitialized', state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("Hello World!");
+      setText('Hello World!');
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
       // Handle loss of tracking
     }
-  }
+  };
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
@@ -32,7 +32,7 @@ const HelloWorldSceneAR = () => {
   );
 };
 
-export default () => {
+export default (): JSX.Element => {
   return (
     <ViroARSceneNavigator
       autofocus={true}
@@ -44,13 +44,13 @@ export default () => {
   );
 };
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   f1: { flex: 1 },
   helloWorldTextStyle: {
-    fontFamily: "Arial",
+    fontFamily: 'Arial',
     fontSize: 30,
-    color: "#ffffff",
-    textAlignVertical: "center",
-    textAlign: "center",
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
   },
 });

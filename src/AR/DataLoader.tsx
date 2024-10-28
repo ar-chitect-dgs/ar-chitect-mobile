@@ -6,7 +6,7 @@ const MODELS_DIRECTORY = "/models/";
 
 export const fetchProjectData = async (): Promise<ProjectsData> => {
   const project = await firestore().collection("projects").doc("1").get();
-  return project._data;
+  return project.data();
 };
 
 export const fetchGLBUrl = async (path: string): Promise<string> => {

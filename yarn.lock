@@ -2486,11 +2486,6 @@
   dependencies:
     plist "^3.1.0"
 
-"@react-native-firebase/storage@^21.2.0":
-  version "21.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-21.2.0.tgz#844387ddb2b8edf0bab9cc0c4378f0a0a1af5e94"
-  integrity sha512-kvGctkEeZMUHV3LSlr95gVqvxiRdevDBL0duvnUGFfZXnEH4bpHw7Om4xZubhPF8rAm+cWAfWWnT30mQPLXpKw==
-
 "@react-native/assets-registry@0.73.1":
   version "0.73.1"
   resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.73.1.tgz#e2a6b73b16c183a270f338dc69c36039b3946e85"

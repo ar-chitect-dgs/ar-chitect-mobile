@@ -1,5 +1,4 @@
 import {
-  ViroAmbientLight,
   ViroARScene,
   ViroARSceneNavigator,
   ViroTrackingStateConstants,
@@ -8,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { ProjectsData, Object3D } from "../AR/Interfaces";
 import { fetchProjectData, fetchAndLoadModels } from "../AR/DataLoader";
-import ARModel from "../AR/ARModel";
+import ARScene from "../AR/ARScene";
 
 const SampleARScene = () => {
   const [trackingInitialized, setTrackingInitialized] = useState(false);
@@ -40,26 +39,14 @@ const SampleARScene = () => {
     }
   };
 
-  const render3DModels = () =>
-    models.map((model, index) => (
-      <ARModel
-        key={index}
-        url={model.url}
-        position={model.position}
-        scale={model.scale}
-        rotation={model.rotation}
-      />
-    ));
-
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ViroAmbientLight color="#FFFFFF" />
-      {trackingInitialized && render3DModels()}
+      <ARScene models={models} />
     </ViroARScene>
   );
 };
 
-export default () => {
+const ARScreen: React.FC = ({ navigation }: any) => {
   return (
     <ViroARSceneNavigator
       autofocus={true}
@@ -81,3 +68,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+export default ARScreen;

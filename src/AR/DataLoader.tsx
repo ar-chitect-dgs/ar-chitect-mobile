@@ -1,11 +1,11 @@
-import storage from "@react-native-firebase/storage";
-import firestore from "@react-native-firebase/firestore";
-import { Project, ProjectsData, Object3D } from "./Interfaces";
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import { type Project, type ProjectsData, type Object3D } from './Interfaces';
 
-const MODELS_DIRECTORY = "/models/";
+const MODELS_DIRECTORY = '/models/';
 
 export const fetchProjectData = async (): Promise<ProjectsData> => {
-  const project = await firestore().collection("projects").doc("1").get();
+  const project = await firestore().collection('projects').doc('1').get();
   return project.data();
 };
 
@@ -16,7 +16,7 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
 };
 
 export const fetchAndLoadModels = async (
-  project: Project
+  project: Project,
 ): Promise<Object3D[]> => {
   const updatedObjects = await Promise.all(
     project.objects.map(async (object: Object3D) => {
@@ -25,7 +25,7 @@ export const fetchAndLoadModels = async (
         ...object,
         url: glbUrl,
       };
-    })
+    }),
   );
 
   return updatedObjects;

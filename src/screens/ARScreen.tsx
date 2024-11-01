@@ -9,12 +9,12 @@ import { ProjectsData, Object3D } from "../AR/Interfaces";
 import { fetchProjectData, fetchAndLoadModels } from "../AR/DataLoader";
 import ARScene from "../AR/ARScene";
 
-const SampleARScene = () => {
+const SampleARScene = (): JSX.Element => {
   const [trackingInitialized, setTrackingInitialized] = useState(false);
   const [models, setModels] = useState<Object3D[]>([]);
 
   useEffect(() => {
-    const loadProjectData = async () => {
+    const loadProjectData = async (): Promise<void> => {
       try {
         const projectJson: ProjectsData = await fetchProjectData();
         const sampleProject = projectJson.projects[0];
@@ -22,16 +22,16 @@ const SampleARScene = () => {
         setModels(modelsArray);
       } catch (error) {
         console.error(
-          "Błąd podczas pobierania i ładowania danych projektu:",
-          error
+          'Error while downloading and loading project data',
+          error,
         );
       }
     };
 
-    loadProjectData();
+    void loadProjectData();
   }, []);
 
-  const onTrackingUpdated = (state: any) => {
+  const onTrackingUpdated = (state: any): void => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setTrackingInitialized(true);
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
@@ -61,11 +61,11 @@ const ARScreen: React.FC = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   f1: { flex: 1 },
   helloWorldTextStyle: {
-    fontFamily: "Arial",
+    fontFamily: 'Arial',
     fontSize: 30,
-    color: "#ffffff",
-    textAlignVertical: "center",
-    textAlign: "center",
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
   },
 });
 

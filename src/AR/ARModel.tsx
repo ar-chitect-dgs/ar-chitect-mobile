@@ -1,5 +1,5 @@
-import React from "react";
-import { Viro3DObject } from "@reactvision/react-viro";
+import React from 'react';
+import { Viro3DObject } from '@reactvision/react-viro';
 
 interface ARModelProps {
   key: number;

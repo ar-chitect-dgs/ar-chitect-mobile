@@ -1,14 +1,13 @@
 import {
-  ViroAmbientLight,
   ViroARScene,
   ViroARSceneNavigator,
   ViroTrackingStateConstants,
-} from '@reactvision/react-viro';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { type ProjectsData, type Object3D } from '../AR/Interfaces';
-import { fetchProjectData, fetchAndLoadModels } from '../AR/DataLoader';
-import ARModel from '../AR/ARModel';
+} from "@reactvision/react-viro";
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { ProjectsData, Object3D } from "../AR/Interfaces";
+import { fetchProjectData, fetchAndLoadModels } from "../AR/DataLoader";
+import ARScene from "../AR/ARScene";
 
 const SampleARScene = (): JSX.Element => {
   const [trackingInitialized, setTrackingInitialized] = useState(false);
@@ -40,26 +39,14 @@ const SampleARScene = (): JSX.Element => {
     }
   };
 
-  const render3DModels = (): JSX.Element[] =>
-    models.map((model, index) => (
-      <ARModel
-        key={index}
-        url={model.url}
-        position={model.position}
-        scale={model.scale}
-        rotation={model.rotation}
-      />
-    ));
-
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ViroAmbientLight color="#FFFFFF" />
-      {trackingInitialized && render3DModels()}
+      <ARScene models={models} />
     </ViroARScene>
   );
 };
 
-export default (): JSX.Element => {
+const ARScreen: React.FC = ({ navigation }: any) => {
   return (
     <ViroARSceneNavigator
       autofocus={true}
@@ -81,3 +68,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default ARScreen;

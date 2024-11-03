@@ -167,6 +167,30 @@ const LightsPanel = () => {
   return (
     <View style={styles.container}>
       <LightList
+        lights={ambientLights}
+        title="Ambient Lights"
+        onAdd={handleAddAmbientLight}
+        onEdit={(light) => {
+          setSelectedAmbientLight(light);
+          setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
+          setIsEditing(true);
+        }}
+        onDelete={(id) => dispatch(removeAmbientLight(id))}
+      />
+      <AmbientLightModal
+        visible={isModalVisible.ambientLightModal}
+        isEditing={isEditing}
+        onClose={() =>
+          setIsModalVisible({
+            ambientLightModal: false,
+            directionalLightModal: false,
+            spotlightModal: false,
+          })
+        }
+        selectedLight={selectedAmbientLight}
+      />
+
+      <LightList
         lights={directionalLights}
         title="Directional Lights"
         onAdd={handleAddDirectionalLight}
@@ -213,101 +237,6 @@ const LightsPanel = () => {
         }
         selectedLight={selectedSpotLight}
       />
-
-      <LightList
-        lights={ambientLights}
-        title="Ambient Lights"
-        onAdd={handleAddAmbientLight}
-        onEdit={(light) => {
-          setSelectedAmbientLight(light);
-          setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
-          setIsEditing(true);
-        }}
-        onDelete={(id) => dispatch(removeAmbientLight(id))}
-      />
-      <AmbientLightModal
-        visible={isModalVisible.ambientLightModal}
-        isEditing={isEditing}
-        onClose={() =>
-          setIsModalVisible({
-            ambientLightModal: false,
-            directionalLightModal: false,
-            spotlightModal: false,
-          })
-        }
-        selectedLight={selectedAmbientLight}
-      />
-      {/* <View>
-        <Button
-          title="Add ambient light"
-          onPress={() => {
-            setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
-          }}
-        />
-        <Text>Ambient Lights</Text>
-        {ambientLights.map((light) => renderAmbientLightItem(light))}
-        <AmbientLightModal
-          visible={isModalVisible.ambientLightModal}
-          isEditing={isEditing}
-          onClose={() => {
-            setIsEditing(false);
-            setIsModalVisible({
-              ambientLightModal: false,
-              directionalLightModal: false,
-              spotlightModal: false,
-            });
-          }}
-          selectedLight={selectedAmbientLight}
-        />
-      </View>
-      <View>
-        <Button
-          title="Add directional light"
-          onPress={() => {
-            setIsModalVisible({
-              ...isModalVisible,
-              directionalLightModal: true,
-            });
-          }}
-        />
-        <Text>Directional Lights</Text>
-        {directionalLights.map((light) => renderDirectionalLightItem(light))}
-        <DirectionalLightModal
-          visible={isModalVisible.directionalLightModal}
-          isEditing={isEditing}
-          onClose={() => {
-            setIsModalVisible({
-              ambientLightModal: false,
-              directionalLightModal: false,
-              spotlightModal: false,
-            });
-          }}
-          selectedLight={selectedDirectionalLight}
-        />
-      </View>
-      <View>
-        <Button
-          title="Add spot light"
-          onPress={() => {
-            setIsModalVisible({ ...isModalVisible, spotlightModal: true });
-          }}
-        />
-        <Text>Spot Lights</Text>
-        {spotLights.map((light) => renderSpotLightItem(light))}
-        <SpotLightModal
-          visible={isModalVisible.spotlightModal}
-          isEditing={isEditing}
-          onClose={() => {
-            setIsEditing(false);
-            setIsModalVisible({
-              ambientLightModal: false,
-              directionalLightModal: false,
-              spotlightModal: false,
-            });
-          }}
-          selectedLight={selectedSpotLight}
-        />
-      </View> */}
     </View>
   );
 };

@@ -6,11 +6,11 @@ import {
   removeDirectionalLight,
   removeSpotLight,
 } from '../store/actions';
-import { Reducer } from '../store/reducers';
+import { type Reducer } from '../store/reducers';
 import {
-  AmbientLightProps,
-  DirectionalLightProps,
-  SpotLightProps,
+  type AmbientLightProps,
+  type DirectionalLightProps,
+  type SpotLightProps,
 } from './LightInterfaces';
 import AmbientLightModal from './AmbientLightModal';
 import SpotLightModal from './SpotLightModal';
@@ -55,7 +55,6 @@ const LightsPanel = () => {
     spotlightModal: false,
   });
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentLightId, setCurrentLightId] = useState<number>(0);
 
   const dispatch = useDispatch();
   const { ambientLights, directionalLights, spotLights } = useSelector(
@@ -79,90 +78,6 @@ const LightsPanel = () => {
     setIsModalVisible({ ...isModalVisible, spotlightModal: true });
     setIsEditing(false);
   };
-
-  const handleDeleteAmbientLight = (id: number) => {
-    dispatch(removeAmbientLight(id));
-  };
-
-  const handleDeleteSpotLight = (id: number) => {
-    dispatch(removeSpotLight(id));
-  };
-
-  const handleDeleteDirectionalLight = (id: number) => {
-    dispatch(removeDirectionalLight(id));
-  };
-
-  const handleEditAmbientLight = (light: AmbientLightProps) => {
-    setSelectedAmbientLight(light);
-    setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
-    setIsEditing(true);
-  };
-
-  const handleEditDirectionalLight = (light: DirectionalLightProps) => {
-    setSelectedDirectionalLight(light);
-    setIsModalVisible({ ...isModalVisible, directionalLightModal: true });
-    setIsEditing(true);
-  };
-
-  const handleEditSpotLight = (light: SpotLightProps) => {
-    setSelectedSpotLight(light);
-    setIsModalVisible({ ...isModalVisible, spotlightModal: true });
-    setIsEditing(true);
-  };
-
-  const renderAmbientLightItem = (item: AmbientLightProps) => (
-    <View style={styles.lightItem} key={item.id.toString()}>
-      <Text style={{ color: item.color }}>Ambient light</Text>
-      <Button
-        title="Edit"
-        onPress={() => {
-          setCurrentLightId(item.id);
-          setSelectedAmbientLight(item);
-          setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
-          setIsEditing(true);
-        }}
-      />
-      <Button
-        title="Delete"
-        onPress={() => handleDeleteAmbientLight(item.id)}
-      />
-    </View>
-  );
-
-  const renderDirectionalLightItem = (item: DirectionalLightProps) => (
-    <View style={styles.lightItem} key={item.id.toString()}>
-      <Text style={{ color: item.color }}>Directional light</Text>
-      <Button
-        title="Edit"
-        onPress={() => {
-          setCurrentLightId(item.id);
-          setSelectedDirectionalLight(item);
-          setIsModalVisible({ ...isModalVisible, directionalLightModal: true });
-          setIsEditing(true);
-        }}
-      />
-      <Button
-        title="Delete"
-        onPress={() => handleDeleteDirectionalLight(item.id)}
-      />
-    </View>
-  );
-
-  const renderSpotLightItem = (item: SpotLightProps) => (
-    <View style={styles.lightItem} key={item.id.toString()}>
-      <Text style={{ color: item.color }}>Spot light</Text>
-      <Button
-        title="Edit"
-        onPress={() => {
-          setCurrentLightId(item.id);
-          setSelectedSpotLight(item);
-          setIsModalVisible({ ...isModalVisible, spotlightModal: true });
-          setIsEditing(true);
-        }}
-      />
-      <Button title="Delete" onPress={() => handleDeleteSpotLight(item.id)} />
-    </View>
-  );
 
   return (
     <View style={styles.container}>

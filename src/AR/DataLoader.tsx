@@ -69,19 +69,3 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
   const url = await reference.getDownloadURL();
   return url;
 };
-
-// export const fetchAndLoadModels = async (
-//   models: Object3D[],
-// ): Promise<Object3D[]> => {
-//   const updatedObjects = await Promise.all(
-//     models.map(async (object: Object3D) => {
-//       const glbUrl = await fetchGLBUrl(object.url);
-//       return {
-//         ...object,
-//         url: glbUrl,
-//       };
-//     }),
-//   );
-
-//   return updatedObjects;
-// };

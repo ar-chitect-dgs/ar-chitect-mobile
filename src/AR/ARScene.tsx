@@ -19,7 +19,6 @@ const ARScene: React.FC<ARSceneProps> = ({ models }) => {
     (state: Reducer) => state.lightConfig,
   );
   const { ambientLights, directionalLights, spotLights } = lightConfig;
-  console.log(models)
 
   return (
     <>

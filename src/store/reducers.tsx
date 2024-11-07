@@ -1,5 +1,5 @@
 // redux/reducer.js
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import {
   ADD_AMBIENT_LIGHT,
   UPDATE_AMBIENT_LIGHT,
@@ -10,12 +10,12 @@ import {
   ADD_SPOT_LIGHT,
   UPDATE_SPOT_LIGHT,
   REMOVE_SPOT_LIGHT,
-} from "./actions";
+} from './actions';
 import {
   AmbientLightProps,
   DirectionalLightProps,
   SpotLightProps,
-} from "../AR/LightInterfaces";
+} from '../AR/LightInterfaces';
 
 export interface Reducer {
   lightConfig: LightState;
@@ -30,8 +30,8 @@ export interface LightState {
 const initialState = {
   ambientLights: [
     {
-      id: "1",
-      color: "#FFFF00",
+      id: 1,
+      color: '#FFFF00',
       intensity: 1000,
     },
   ],
@@ -41,13 +41,13 @@ const initialState = {
 
 const lightReducer = (
   state = initialState,
-  action: { type: any; payload: { id: any; properties: any } }
+  action: { type: any; payload: { id: any; properties: any } },
 ) => {
   switch (action.type) {
     case ADD_AMBIENT_LIGHT:
       return {
         ...state,
-        ambientLights: [...state.ambientLights, action.payload],
+        ambientLights: [...state.ambientLights, action.payload.properties],
       };
     case UPDATE_AMBIENT_LIGHT:
       return {
@@ -55,21 +55,25 @@ const lightReducer = (
         ambientLights: state.ambientLights.map((light: AmbientLightProps) =>
           light.id === action.payload.id
             ? { ...light, ...action.payload.properties }
-            : light
+            : light,
         ),
       };
     case REMOVE_AMBIENT_LIGHT:
+      console.log(action.payload);
       return {
         ...state,
         ambientLights: state.ambientLights.filter(
-          (light: AmbientLightProps) => light.id !== action.payload.id
+          (light: AmbientLightProps) => light.id !== action.payload.id,
         ),
       };
 
     case ADD_DIRECTIONAL_LIGHT:
       return {
         ...state,
-        directionalLights: [...state.directionalLights, action.payload],
+        directionalLights: [
+          ...state.directionalLights,
+          action.payload.properties,
+        ],
       };
     case UPDATE_DIRECTIONAL_LIGHT:
       return {
@@ -78,33 +82,36 @@ const lightReducer = (
           (light: DirectionalLightProps) =>
             light.id === action.payload.id
               ? { ...light, ...action.payload.properties }
-              : light
+              : light,
         ),
       };
     case REMOVE_DIRECTIONAL_LIGHT:
       return {
         ...state,
         directionalLights: state.directionalLights.filter(
-          (light: DirectionalLightProps) => light.id !== action.payload.id
+          (light: DirectionalLightProps) => light.id !== action.payload.id,
         ),
       };
 
     case ADD_SPOT_LIGHT:
-      return { ...state, spotLights: [...state.spotLights, action.payload] };
+      return {
+        ...state,
+        spotLights: [...state.spotLights, action.payload.properties],
+      };
     case UPDATE_SPOT_LIGHT:
       return {
         ...state,
         spotLights: state.spotLights.map((light: SpotLightProps) =>
           light.id === action.payload.id
             ? { ...light, ...action.payload.properties }
-            : light
+            : light,
         ),
       };
     case REMOVE_SPOT_LIGHT:
       return {
         ...state,
         spotLights: state.spotLights.filter(
-          (light: SpotLightProps) => light.id !== action.payload.id
+          (light: SpotLightProps) => light.id !== action.payload.id,
         ),
       };
 

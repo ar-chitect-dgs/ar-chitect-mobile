@@ -1,18 +1,35 @@
 export interface Object3D {
-  objectId: string;
+  objectId: number;
   name: string;
   url: string;
   position: [number, number, number];
   rotation: [number, number, number];
-  scale: [number, number, number];
-}
-
-export interface Project {
-  projectId: string;
-  projectName: string;
-  objects: Object3D[];
 }
 
 export interface ProjectsData {
-  projects: Project[];
+  projects: ProjectData[];
+}
+
+export interface ProjectData {
+  projectId: string;
+  projectName: string;
+  objects: ObjectData[];
+}
+
+export interface ObjectData {
+  objectId: number;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  color: string;
+}
+
+export interface ModelData {
+  name: string;
+  color_variants: Record<
+    string,
+    {
+      thumb: string;
+      url: string;
+    }
+  >;
 }

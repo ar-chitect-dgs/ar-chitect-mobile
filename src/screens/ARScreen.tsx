@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { ProjectsData, Object3D } from '../AR/Interfaces';
-import { fetchProjectData, fetchAndLoadModels } from '../AR/DataLoader';
+import { fetchProjectData, fetchObjectsWithModelUrls } from '../AR/DataLoader';
 import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
@@ -27,7 +27,7 @@ const SampleARScene = (): JSX.Element => {
       try {
         const projectJson: ProjectsData = await fetchProjectData();
         const sampleProject = projectJson.projects[0];
-        const modelsArray = await fetchAndLoadModels(sampleProject);
+        const modelsArray = await fetchObjectsWithModelUrls(sampleProject);
         setModels(modelsArray);
       } catch (error) {
         console.error(

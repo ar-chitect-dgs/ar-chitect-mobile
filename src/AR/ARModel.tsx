@@ -5,21 +5,14 @@ interface ARModelProps {
   url: string;
   position: [number, number, number];
   rotation: [number, number, number];
-  scale: [number, number, number];
 }
 
-const ARModel: React.FC<ARModelProps> = ({
-  url,
-  position,
-  rotation,
-  scale,
-}) => {
+const ARModel: React.FC<ARModelProps> = ({ url, position, rotation }) => {
   return (
     <Viro3DObject
       source={{ uri: url }}
       position={position}
       rotation={rotation}
-      scale={scale}
       type="GLB"
     />
   );

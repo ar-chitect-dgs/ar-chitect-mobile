@@ -12,9 +12,9 @@ import {
   REMOVE_SPOT_LIGHT,
 } from './actions';
 import {
-  AmbientLightProps,
-  DirectionalLightProps,
-  SpotLightProps,
+  type AmbientLightProps,
+  type DirectionalLightProps,
+  type SpotLightProps,
 } from '../AR/LightInterfaces';
 
 export interface Reducer {
@@ -42,7 +42,7 @@ const initialState = {
 const lightReducer = (
   state = initialState,
   action: { type: any; payload: { id: any; properties: any } },
-) => {
+): typeof initialState => {
   switch (action.type) {
     case ADD_AMBIENT_LIGHT:
       return {

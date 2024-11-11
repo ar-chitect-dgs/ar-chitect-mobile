@@ -11,7 +11,7 @@ import React, {
   useCallback,
 } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { ProjectsData, Object3D } from '../AR/Interfaces';
+import { type ProjectsData, type Object3D } from '../AR/Interfaces';
 import { fetchProjectData, fetchObjectsWithModelUrls } from '../AR/DataLoader';
 import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

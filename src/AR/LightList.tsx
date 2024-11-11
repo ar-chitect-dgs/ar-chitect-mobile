@@ -15,7 +15,7 @@ const LightList = <T extends { id: number; color: string }>({
   onAdd,
   onEdit,
   onDelete,
-}: LightListProps<T>) => {
+}: LightListProps<T>): JSX.Element => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -25,8 +25,18 @@ const LightList = <T extends { id: number; color: string }>({
       {lights.map((light) => (
         <View style={styles.lightItem} key={light.id.toString()}>
           <Text style={{ color: light.color }}>{title.slice(0, -1)}</Text>
-          <Button title="Edit" onPress={() => onEdit(light)} />
-          <Button title="Delete" onPress={() => onDelete(light.id)} />
+          <Button
+            title="Edit"
+            onPress={() => {
+              onEdit(light);
+            }}
+          />
+          <Button
+            title="Delete"
+            onPress={() => {
+              onDelete(light.id);
+            }}
+          />
         </View>
       ))}
     </View>

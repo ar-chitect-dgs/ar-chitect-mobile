@@ -1,58 +1,17 @@
-import "react-native-gesture-handler";
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-import auth from '@react-native-firebase/auth';
-import ARScreen from "./screens/ARScreen";
-import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
-import rootReducer from "./store/reducers";
+// App.tsx
+import 'react-native-gesture-handler';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './store/reducers';
+import AppRouter from './navigation/AppRouter';
 
 const store = createStore(rootReducer);
-const Drawer = createDrawerNavigator();
 
 export default function App(): JSX.Element {
-  const [user, setUser] = useState<any>(null);
-  const [initializing, setInitializing] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    });
-    return unsubscribe;
-  }, [initializing]);
-
-  if (initializing) {
-    // Optional loading indicator while checking auth status
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Drawer.Navigator initialRouteName={user ? 'Home' : 'Login'}>
-          {user ? (
-            <>
-              <Drawer.Screen name="Home" component={HomeScreen} />
-              <Drawer.Screen name="AR" component={ARScreen} />
-            </>
-          ) : (
-            <>
-              <Drawer.Screen name="Login" component={LoginScreen} />
-              <Drawer.Screen name="Register" component={RegisterScreen} />
-            </>
-          )}
-        </Drawer.Navigator>
-    </NavigationContainer>
+      <AppRouter />
     </Provider>
   );
 }

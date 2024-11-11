@@ -13,8 +13,8 @@ import ColorPicker from 'react-native-wheel-color-picker';
 import Slider from '@react-native-community/slider';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
-import { DirectionalLightProps } from './LightInterfaces';
-import { Reducer } from '../store/reducers';
+import { type DirectionalLightProps } from './LightInterfaces';
+import { type Reducer } from '../store/reducers';
 
 interface DirectionalLightModalProps {
   visible: boolean;
@@ -69,7 +69,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
     }) as [number, number, number];
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     const parsedDirection = parseVector(directionInputs);
 
     const newDirectionErrors = directionInputs.map((input) =>
@@ -102,9 +102,9 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
           <Text style={styles.label}>Pick a color for Directional Light</Text>
           <ColorPicker
             color={directionalLight.color}
-            onColorChange={(color) =>
-              setDirectionalLight({ ...directionalLight, color })
-            }
+            onColorChange={(color) => {
+              setDirectionalLight({ ...directionalLight, color });
+            }}
           />
 
           <View style={styles.inputContainer}>
@@ -139,9 +139,12 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
                 maximumValue={10000}
                 step={1}
                 value={directionalLight.intensity}
-                onValueChange={(value) =>
-                  setDirectionalLight({ ...directionalLight, intensity: value })
-                }
+                onValueChange={(value) => {
+                  setDirectionalLight({
+                    ...directionalLight,
+                    intensity: value,
+                  });
+                }}
               />
               <Text style={styles.label}>
                 {directionalLight.intensity.toFixed(0)}
@@ -153,9 +156,12 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
             <Text style={styles.label}>Casts Shadow:</Text>
             <Switch
               value={directionalLight.castsShadow}
-              onValueChange={(value) =>
-                setDirectionalLight({ ...directionalLight, castsShadow: value })
-              }
+              onValueChange={(value) => {
+                setDirectionalLight({
+                  ...directionalLight,
+                  castsShadow: value,
+                });
+              }}
             />
           </View>
 

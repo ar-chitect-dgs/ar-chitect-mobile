@@ -1,95 +1,111 @@
-import {
-  ViroARScene,
-  ViroARSceneNavigator,
-  ViroTrackingStateConstants,
-} from '@reactvision/react-viro';
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { ProjectsData, Object3D } from '../AR/Interfaces';
-import { fetchProjectData, fetchAndLoadModels } from '../AR/DataLoader';
-import ARScene from '../AR/ARScene';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import LightsPanel from '../AR/LightsPanel';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { ViroARScene, Viro3DObject } from '@reactvision/react-viro';
 
-const SampleARScene = (): JSX.Element => {
-  const [trackingInitialized, setTrackingInitialized] = useState(false);
-  const [models, setModels] = useState<Object3D[]>([]);
+const savedCorners = [
+  [0.0, 0.0],
+  [0.0, 10.0],
+  [10.0, 10.0],
+  [10.0, 0.0],
+];
+
+// Funkcja pomocnicza do przeliczania współrzędnych
+const metersToLatitudeLongitude = (dx, dy, referenceLocation) => {
+  const earthRadius = 6378137; // Promień Ziemi w metrach
+
+  const dLat = (dy / earthRadius) * (180 / Math.PI);
+  const dLon =
+    (dx /
+      (earthRadius * Math.cos((Math.PI * referenceLocation.latitude) / 180))) *
+    (180 / Math.PI);
+
+  return {
+    latitude: referenceLocation.latitude + dLat,
+    longitude: referenceLocation.longitude + dLon,
+  };
+};
+
+// Funkcja do rotacji współrzędnych o dany kąt
+const rotatePoint = (x, y, angle) => {
+  const radians = (angle * Math.PI) / 180;
+  const rotatedX = x * Math.cos(radians) - y * Math.sin(radians);
+  const rotatedY = x * Math.sin(radians) + y * Math.cos(radians);
+  return [rotatedX, rotatedY];
+};
+
+const SampleARScene = ({ referenceLocation, referenceAngle, models }) => {
+  const [arModels, setARModels] = useState([]);
 
   useEffect(() => {
-    const loadProjectData = async (): Promise<void> => {
-      try {
-        const projectJson: ProjectsData = await fetchProjectData();
-        const sampleProject = projectJson.projects[0];
-        const modelsArray = await fetchAndLoadModels(sampleProject);
-        setModels(modelsArray);
-      } catch (error) {
-        console.error(
-          'Error while downloading and loading project data',
-          error,
-        );
-      }
-    };
+    // Przetwarzanie lokalnych współrzędnych modeli na globalne dla AR
+    const processedModels = models.map((model) => {
+      // Translacja lokalnej pozycji modelu względem punktu odniesienia
+      const [xLocal, yLocal] = model.position;
 
-    void loadProjectData();
-  }, []);
+      // Rotacja względem kąta ściany
+      const [xRotated, yRotated] = rotatePoint(xLocal, yLocal, referenceAngle);
 
-  const onTrackingUpdated = (state: any): void => {
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setTrackingInitialized(true);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      setTrackingInitialized(false);
-    }
-  };
+      // Przeliczenie na globalne współrzędne
+      const globalPosition = metersToLatitudeLongitude(
+        xRotated,
+        yRotated,
+        referenceLocation,
+      );
+
+      // Zwracamy model z nową pozycją i orientacją
+      return {
+        ...model,
+        globalPosition: globalPosition,
+        rotation: model.rotation + referenceAngle, // Dodajemy kąt odniesienia do oryginalnej rotacji
+      };
+    });
+
+    setARModels(processedModels);
+  }, [referenceLocation, referenceAngle, models]);
 
   return (
-    <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ARScene models={models} />
+    <ViroARScene>
+      {arModels.map((model, index) => (
+        <Viro3DObject
+          key={index}
+          source={model.source} // Ścieżka do modelu 3D
+          position={[
+            model.globalPosition.latitude,
+            0,
+            model.globalPosition.longitude,
+          ]} // Ustaw pozycję w scenie AR
+          rotation={[0, model.rotation, 0]} // Obrót o kąt
+          scale={[0.1, 0.1, 0.1]} // Skalowanie modelu (dopasuj według potrzeb)
+          type="OBJ" // Typ modelu, np. OBJ
+        />
+      ))}
     </ViroARScene>
   );
 };
 
-const ARScreen: React.FC = ({ navigation }: any) => {
-  const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+const ARScreen = () => {
+  const referenceLocation = { latitude: 52.2297, longitude: 21.0122 }; // Przykładowy punkt odniesienia
+  const referenceAngle = 30; // Przykładowy kąt pierwszej ściany względem północy
+  const models = [
+    { position: [2, 3], rotation: 0, source: require('./model1.obj') },
+    { position: [5, 5], rotation: 90, source: require('./model2.obj') },
+    // Dodaj inne modele w lokalnych współrzędnych pokoju
+  ];
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <ViroARSceneNavigator
-        autofocus={true}
-        initialScene={{
-          scene: SampleARScene,
-        }}
-        style={styles.f1}
+    <View style={styles.container}>
+      <SampleARScene
+        referenceLocation={referenceLocation}
+        referenceAngle={referenceAngle}
+        models={models}
       />
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-      >
-        <LightsPanel />
-      </BottomSheet>
-    </GestureHandlerRootView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  f1: { flex: 1 },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
   },
 });
 

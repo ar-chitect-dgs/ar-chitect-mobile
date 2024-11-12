@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 // interfaces/LightInterfaces.ts
 
 export interface AmbientLightProps {
   id: number;
-  color: string;
+  color: string; 
   intensity: number;
 }
 
@@ -26,3 +27,5 @@ export interface SpotLightProps {
   attenuationEndDistance: number;
   castsShadow: boolean;
 }
+
+

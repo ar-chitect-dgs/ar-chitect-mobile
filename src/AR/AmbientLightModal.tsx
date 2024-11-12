@@ -6,15 +6,14 @@ import {
   Text,
   Button,
   StyleSheet,
-  TextInput,
   ScrollView,
 } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../store/actions';
-import { AmbientLightProps } from './LightInterfaces';
+import { type AmbientLightProps } from './LightInterfaces';
 import Slider from '@react-native-community/slider';
-import { Reducer } from '../store/reducers';
+import { type Reducer } from '../store/reducers';
 
 interface AmbientLightModalProps {
   visible: boolean;
@@ -39,7 +38,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
       ? Math.max(...ambientLights.map((ambientLight) => ambientLight.id))
       : 0;
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     if (isEditing) {
       dispatch(updateAmbientLight(selectedLight.id, ambientLight));
     } else {
@@ -55,9 +54,9 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
           <Text style={styles.label}>Pick a color for Directional Light</Text>
           <ColorPicker
             color={ambientLight.color}
-            onColorChange={(color) =>
-              setAmbientLight({ ...ambientLight, color })
-            }
+            onColorChange={(color) => {
+              setAmbientLight({ ...ambientLight, color });
+            }}
           />
 
           <View style={styles.inputContainer}>
@@ -69,9 +68,9 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
                 maximumValue={10000}
                 step={1}
                 value={ambientLight.intensity}
-                onValueChange={(value) =>
-                  setAmbientLight({ ...ambientLight, intensity: value })
-                }
+                onValueChange={(value) => {
+                  setAmbientLight({ ...ambientLight, intensity: value });
+                }}
               />
               <Text style={styles.label}>
                 {ambientLight.intensity.toFixed(0)}

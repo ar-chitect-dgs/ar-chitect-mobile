@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Modal, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   removeAmbientLight,
@@ -42,7 +42,7 @@ const sampleSpotLight: SpotLightProps = {
   castsShadow: false,
 };
 
-const LightsPanel = () => {
+const LightsPanel = (): JSX.Element => {
   const [selectedAmbientLight, setSelectedAmbientLight] =
     useState<AmbientLightProps>(sampleAmbientLight);
   const [selectedSpotLight, setSelectedSpotLight] =
@@ -61,19 +61,19 @@ const LightsPanel = () => {
     (state: Reducer) => state.lightConfig,
   );
 
-  const handleAddAmbientLight = () => {
+  const handleAddAmbientLight = (): void => {
     setSelectedAmbientLight(sampleAmbientLight);
     setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
     setIsEditing(false);
   };
 
-  const handleAddDirectionalLight = () => {
+  const handleAddDirectionalLight = (): void => {
     setSelectedDirectionalLight(sampleDirectionalLight);
     setIsModalVisible({ ...isModalVisible, directionalLightModal: true });
     setIsEditing(false);
   };
 
-  const handleAddSpotLight = () => {
+  const handleAddSpotLight = (): void => {
     setSelectedSpotLight(sampleSpotLight);
     setIsModalVisible({ ...isModalVisible, spotlightModal: true });
     setIsEditing(false);
@@ -95,13 +95,13 @@ const LightsPanel = () => {
       <AmbientLightModal
         visible={isModalVisible.ambientLightModal}
         isEditing={isEditing}
-        onClose={() =>
+        onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
-          })
-        }
+          });
+        }}
         selectedLight={selectedAmbientLight}
       />
 
@@ -119,13 +119,13 @@ const LightsPanel = () => {
       <DirectionalLightModal
         visible={isModalVisible.directionalLightModal}
         isEditing={isEditing}
-        onClose={() =>
+        onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
-          })
-        }
+          });
+        }}
         selectedLight={selectedDirectionalLight}
       />
 
@@ -143,13 +143,13 @@ const LightsPanel = () => {
       <SpotLightModal
         visible={isModalVisible.spotlightModal}
         isEditing={isEditing}
-        onClose={() =>
+        onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
-          })
-        }
+          });
+        }}
         selectedLight={selectedSpotLight}
       />
     </View>

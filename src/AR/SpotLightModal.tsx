@@ -13,8 +13,8 @@ import ColorPicker from 'react-native-wheel-color-picker';
 import Slider from '@react-native-community/slider';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotLight, updateSpotLight } from '../store/actions';
-import { SpotLightProps } from './LightInterfaces';
-import { Reducer } from '../store/reducers';
+import { type SpotLightProps } from './LightInterfaces';
+import { type Reducer } from '../store/reducers';
 
 interface SpotLightModalProps {
   visible: boolean;
@@ -80,7 +80,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
     }) as [number, number, number];
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     const parsedPosition = parseVector(positionInputs);
     const parsedDirection = parseVector(directionInputs);
 
@@ -124,7 +124,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
           <Text style={styles.label}>Pick a color for Spot Light</Text>
           <ColorPicker
             color={spotLight.color}
-            onColorChange={(color) => setSpotLight({ ...spotLight, color })}
+            onColorChange={(color) => {
+              setSpotLight({ ...spotLight, color });
+            }}
           />
 
           <View style={styles.inputContainer}>
@@ -182,9 +184,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
                 maximumValue={10000}
                 step={1}
                 value={spotLight.intensity}
-                onValueChange={(value) =>
-                  setSpotLight({ ...spotLight, intensity: value })
-                }
+                onValueChange={(value) => {
+                  setSpotLight({ ...spotLight, intensity: value });
+                }}
               />
               <Text style={styles.label}>{spotLight.intensity.toFixed(0)}</Text>
             </View>
@@ -199,9 +201,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
                 maximumValue={90}
                 step={1}
                 value={spotLight.innerAngle}
-                onValueChange={(value) =>
-                  setSpotLight({ ...spotLight, innerAngle: value })
-                }
+                onValueChange={(value) => {
+                  setSpotLight({ ...spotLight, innerAngle: value });
+                }}
               />
               <Text style={styles.label}>
                 {spotLight.innerAngle.toFixed(0)}°
@@ -218,9 +220,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
                 maximumValue={90}
                 step={1}
                 value={spotLight.outerAngle}
-                onValueChange={(value) =>
-                  setSpotLight({ ...spotLight, outerAngle: value })
-                }
+                onValueChange={(value) => {
+                  setSpotLight({ ...spotLight, outerAngle: value });
+                }}
               />
               <Text style={styles.label}>
                 {spotLight.outerAngle.toFixed(0)}°
@@ -237,12 +239,12 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
                 maximumValue={100}
                 step={1}
                 value={spotLight.attenuationStartDistance}
-                onValueChange={(value) =>
+                onValueChange={(value) => {
                   setSpotLight({
                     ...spotLight,
                     attenuationStartDistance: value,
-                  })
-                }
+                  });
+                }}
               />
               <Text style={styles.label}>
                 {spotLight.attenuationStartDistance.toFixed(0)}
@@ -259,9 +261,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
                 maximumValue={100}
                 step={1}
                 value={spotLight.attenuationEndDistance}
-                onValueChange={(value) =>
-                  setSpotLight({ ...spotLight, attenuationEndDistance: value })
-                }
+                onValueChange={(value) => {
+                  setSpotLight({ ...spotLight, attenuationEndDistance: value });
+                }}
               />
               <Text style={styles.label}>
                 {spotLight.attenuationEndDistance.toFixed(0)}
@@ -273,9 +275,9 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
             <Text style={styles.label}>Casts Shadow:</Text>
             <Switch
               value={spotLight.castsShadow}
-              onValueChange={(value) =>
-                setSpotLight({ ...spotLight, castsShadow: value })
-              }
+              onValueChange={(value) => {
+                setSpotLight({ ...spotLight, castsShadow: value });
+              }}
             />
           </View>
 

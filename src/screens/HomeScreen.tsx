@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import { type DrawerNavigationProp } from '@react-navigation/drawer';
+import { ROUTES } from '../navigation/routes';
+
+type HomeScreenNavigationProp = DrawerNavigationProp<any>;
 
 const HomeScreen: React.FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
   useEffect(() => {
     const currentUser = auth().currentUser;
     if (currentUser) {
-      const name = currentUser.displayName ?? currentUser.email; // Use displayName if available, otherwise use email
+      const name = currentUser.displayName ?? currentUser.email;
       setUserName(name);
-      setProfileImage(currentUser.photoURL); // Get profile picture URL
+      setProfileImage(currentUser.photoURL);
     }
   }, []);
 
   const handleLogout = async (): Promise<void> => {
     try {
       await auth().signOut();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ROUTES.LOGIN }],
+      });
     } catch (error: any) {
       console.error('Logout Error:', error.message);
     }

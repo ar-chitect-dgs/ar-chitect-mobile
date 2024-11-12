@@ -1,23 +1,17 @@
-import "react-native-gesture-handler";
-import * as React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-import ARScreen from "./screens/ARScreen";
-import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+// App.tsx
+import 'react-native-gesture-handler';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './store/reducers';
+import AppRouter from './navigation/AppRouter';
 
-const Drawer = createDrawerNavigator();
+const store = createStore(rootReducer);
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Login" component={LoginScreen} />
-        <Drawer.Screen name="Register" component={RegisterScreen} />
-        <Drawer.Screen name="AR" component={ARScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
   );
 }

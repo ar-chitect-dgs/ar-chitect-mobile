@@ -10,6 +10,8 @@ import {
   ADD_SPOT_LIGHT,
   UPDATE_SPOT_LIGHT,
   REMOVE_SPOT_LIGHT,
+  SET_LOCATION,
+  SET_ORIENTATION,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -19,6 +21,7 @@ import {
 
 export interface Reducer {
   lightConfig: LightState;
+  locationConfig: LocationState;
 }
 
 export interface LightState {
@@ -27,7 +30,14 @@ export interface LightState {
   spotLights: SpotLightProps[];
 }
 
-const initialState = {
+export interface LocationState {
+  latitude: number | null;
+  longitude: number | null;
+  orientationX: number | null;
+  orientationY: number | null;
+}
+
+const initialLightState = {
   ambientLights: [
     {
       id: 1,
@@ -39,10 +49,17 @@ const initialState = {
   spotLights: [],
 };
 
+const initialLocationState = {
+  latitude: null,
+  longitude: null,
+  orientationX: null,
+  orientationY: null,
+};
+
 const lightReducer = (
-  state = initialState,
+  state = initialLightState,
   action: { type: any; payload: { id: any; properties: any } },
-): typeof initialState => {
+): typeof initialLightState => {
   switch (action.type) {
     case ADD_AMBIENT_LIGHT:
       return {
@@ -59,7 +76,6 @@ const lightReducer = (
         ),
       };
     case REMOVE_AMBIENT_LIGHT:
-      console.log(action.payload);
       return {
         ...state,
         ambientLights: state.ambientLights.filter(
@@ -120,6 +136,29 @@ const lightReducer = (
   }
 };
 
+const locationReducer = (
+  state = initialLocationState,
+  action: { type: any; payload: any },
+): typeof initialLocationState => {
+  switch (action.type) {
+    case SET_LOCATION:
+      return {
+        ...state,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+      };
+    case SET_ORIENTATION:
+      return {
+        ...state,
+        orientationX: action.payload.x,
+        orientationY: action.payload.y,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   lightConfig: lightReducer,
+  locationConfig: locationReducer,
 });

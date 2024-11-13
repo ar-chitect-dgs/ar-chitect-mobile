@@ -7,7 +7,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Object3D } from './Interfaces';
-import { type LightState, type Reducer } from '../store/reducers';
+import {
+  LocationState,
+  type LightState,
+  type Reducer,
+} from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 
 interface ARSceneProps {
@@ -19,6 +23,12 @@ const ARScene: React.FC<ARSceneProps> = ({ models }) => {
     (state: Reducer) => state.lightConfig,
   );
   const { ambientLights, directionalLights, spotLights } = lightConfig;
+
+  const locationConfig: LocationState = useSelector(
+    (state: Reducer) => state.locationConfig,
+  );
+  const { latitude, longitude } = locationConfig;
+  console.log(latitude, longitude);
 
   return (
     <>

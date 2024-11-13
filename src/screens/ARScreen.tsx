@@ -17,66 +17,14 @@ import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import LightsPanel from '../AR/LightsPanel';
-
-const SampleARScene = (): JSX.Element => {
-  const [trackingInitialized, setTrackingInitialized] = useState(false);
-  const [models, setModels] = useState<Object3D[]>([]);
-
-  useEffect(() => {
-    const loadProjectData = async (): Promise<void> => {
-      try {
-        const projectJson: ProjectsData = await fetchProjectData();
-        const sampleProject = projectJson.projects[0];
-        const modelsArray = await fetchObjectsWithModelUrls(sampleProject);
-        setModels(modelsArray);
-      } catch (error) {
-        console.error(
-          'Error while downloading and loading project data',
-          error,
-        );
-      }
-    };
-
-    void loadProjectData();
-  }, []);
-
-  const onTrackingUpdated = (state: any): void => {
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setTrackingInitialized(true);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      setTrackingInitialized(false);
-    }
-  };
-
-  return (
-    <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ARScene models={models} />
-    </ViroARScene>
-  );
-};
+import ProjectARScene from '../AR/ProjectARScene';
+import FirstARScene from '../AR/FirstARScene';
 
 const ARScreen: React.FC = ({ navigation }: any) => {
   const sheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
-  return (
-    <GestureHandlerRootView style={styles.container}>
-      <ViroARSceneNavigator
-        autofocus={true}
-        initialScene={{
-          scene: SampleARScene,
-        }}
-        style={styles.f1}
-      />
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-      >
-        <LightsPanel />
-      </BottomSheet>
-    </GestureHandlerRootView>
-  );
+  return <ProjectARScene />;
 };
 
 const styles = StyleSheet.create({

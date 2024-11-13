@@ -18,7 +18,6 @@ export const fetchProjectData = async (): Promise<ProjectsData> => {
 export async function fetchObjectsWithModelUrls(
   projectData: ProjectData,
 ): Promise<Object3D[]> {
-  console.log(projectData);
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()

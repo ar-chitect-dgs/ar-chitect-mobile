@@ -68,3 +68,45 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
   const url = await reference.getDownloadURL();
   return url;
 };
+
+export const updateProjectLocationInArray = async (
+  userId: string,
+  projectId: number,
+  latitude: number,
+  longitude: number,
+  orientation: number,
+): Promise<void> => {
+  try {
+    const projectRef = firestore().collection('projects').doc(userId);
+
+    const projectDoc = await projectRef.get();
+    const projectData = projectDoc.data();
+
+    if (!projectData || !Array.isArray(projectData.projects)) {
+      throw new Error(`Projects array not found for user ${userId}`);
+    }
+
+    const updatedProjects = projectData.projects.map((project: ProjectData) => {
+      if (project.projectId === projectId) {
+        return {
+          ...project,
+          latitude,
+          longitude,
+          orientation,
+        };
+      }
+      return project;
+    });
+
+    await projectRef.update({
+      projects: updatedProjects,
+    });
+
+    console.log(
+      `Location updated for project ${projectId} to: ${latitude}, ${longitude}`,
+    );
+  } catch (error) {
+    console.error('Error updating project location:', error);
+    throw error;
+  }
+};

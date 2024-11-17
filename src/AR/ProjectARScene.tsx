@@ -8,7 +8,11 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { ViroARScene, ViroARSceneNavigator, ViroTrackingStateConstants } from '@reactvision/react-viro';
+import {
+  ViroARScene,
+  ViroARSceneNavigator,
+  ViroTrackingStateConstants,
+} from '@reactvision/react-viro';
 import Geolocation, {
   type GeoPosition,
 } from 'react-native-geolocation-service';
@@ -27,7 +31,7 @@ import { setLocation, setOrientation } from '../store/actions';
 import { useDispatch } from 'react-redux';
 import LightsPanel from './LightsPanel';
 
-type Location = {
+export type Location = {
   latitude: number;
   longitude: number;
 } | null;
@@ -37,6 +41,7 @@ const referenceLocation = { latitude: 52.2051982, longitude: 20.9665666 }; // Re
 const SampleARScene = (): JSX.Element => {
   const [trackingInitialized, setTrackingInitialized] = useState(false);
   const [models, setModels] = useState<Object3D[]>([]);
+  const [referenceLocation, setReferenceLocation] = useState<Location>(null);
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
@@ -45,6 +50,10 @@ const SampleARScene = (): JSX.Element => {
         const sampleProject = projectJson.projects[0];
         const modelsArray = await fetchObjectsWithModelUrls(sampleProject);
         setModels(modelsArray);
+        setReferenceLocation({
+          latitude: sampleProject.latitude,
+          longitude: sampleProject.longitude,
+        });
       } catch (error) {
         console.error(
           'Error while downloading and loading project data',
@@ -66,7 +75,7 @@ const SampleARScene = (): JSX.Element => {
 
   return (
     <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ARScene models={models} />
+      <ARScene models={models} referenceLocation={referenceLocation} />
     </ViroARScene>
   );
 };

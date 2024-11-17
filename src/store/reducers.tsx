@@ -33,8 +33,7 @@ export interface LightState {
 export interface LocationState {
   latitude: number | null;
   longitude: number | null;
-  orientationX: number | null;
-  orientationY: number | null;
+  orientation: number;
 }
 
 const initialLightState = {

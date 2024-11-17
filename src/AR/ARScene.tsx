@@ -6,19 +6,21 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
-import { type Object3D } from './Interfaces';
+import { type Vector3D, type Object3D } from './Interfaces';
 import {
-  LocationState,
+  type LocationState,
   type LightState,
   type Reducer,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
+import { type Location } from './ProjectARScene';
 
 interface ARSceneProps {
   models: Object3D[];
+  referenceLocation: Location;
 }
 
-const ARScene: React.FC<ARSceneProps> = ({ models }) => {
+const ARScene: React.FC<ARSceneProps> = ({ models, referenceLocation }) => {
   const lightConfig: LightState = useSelector(
     (state: Reducer) => state.lightConfig,
   );
@@ -27,8 +29,51 @@ const ARScene: React.FC<ARSceneProps> = ({ models }) => {
   const locationConfig: LocationState = useSelector(
     (state: Reducer) => state.locationConfig,
   );
-  const { latitude, longitude } = locationConfig;
-  console.log(latitude, longitude);
+  const { latitude, longitude, orientation } = locationConfig;
+
+  const rotatePosition = (
+    x: number,
+    z: number,
+    angle: number,
+  ): { x: number; z: number } => {
+    const radians = (angle * Math.PI) / 180;
+    const rotatedX = x * Math.cos(radians) - z * Math.sin(radians);
+    const rotatedZ = x * Math.sin(radians) + z * Math.cos(radians);
+    return { x: rotatedX, z: rotatedZ };
+  };
+
+  const calculatePosition = (modelPosition: Vector3D): Vector3D => {
+    if (!latitude || !longitude || !referenceLocation) {
+      console.log('null');
+      return modelPosition;
+    }
+    const deltaLatitude = latitude - referenceLocation.latitude;
+    const deltaLongitude = longitude - referenceLocation.longitude;
+
+    const metersPerDegreeLat = 111000;
+    const metersPerDegreeLong =
+      111000 *
+      Math.cos((((latitude + referenceLocation.latitude) / 2) * Math.PI) / 180);
+
+    const offsetX = deltaLongitude * metersPerDegreeLong;
+    const offsetZ = deltaLatitude * metersPerDegreeLat;
+
+    const rotatedOffset = rotatePosition(offsetX, offsetZ, orientation ?? 0);
+
+    return {
+      x: modelPosition.x + rotatedOffset.x,
+      y: modelPosition.y,
+      z: modelPosition.z + rotatedOffset.z,
+    };
+  };
+
+  const calculateRotation = (modelRotation: Vector3D): Vector3D => {
+    return {
+      x: modelRotation.x,
+      y: modelRotation.y + orientation,
+      z: modelRotation.z,
+    };
+  };
 
   return (
     <>
@@ -62,8 +107,8 @@ const ARScene: React.FC<ARSceneProps> = ({ models }) => {
         <ARModel
           key={index}
           url={model.url}
-          position={model.position}
-          rotation={model.rotation}
+          position={calculatePosition(model.position)}
+          rotation={calculateRotation(model.rotation)}
         />
       ))}
     </>

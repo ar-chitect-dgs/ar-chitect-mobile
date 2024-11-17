@@ -1,104 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
+import { View, Text, Alert, StyleSheet, Button } from 'react-native';
+import { SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
+import BottomSheet from '@gorhom/bottom-sheet';
 import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  PermissionsAndroid,
-  Platform,
-  Alert,
-} from 'react-native';
+  getCurrentLocation,
+  getCurrentOrientation,
+  type Location,
+  requestLocationPermission,
+} from './LocationUtils';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
-import Geolocation, {
-  type GeoPosition,
-} from 'react-native-geolocation-service';
-import {
-  magnetometer,
-  SensorTypes,
-  setUpdateIntervalForType,
-  type SensorData,
-} from 'react-native-sensors';
 import { updateProjectLocationInArray } from './DataLoader';
 
-type Location = {
-  latitude: number;
-  longitude: number;
-} | null;
+interface FirstARSceneProps {
+  onComplete: () => void;
+}
 
-const FirstARScene: React.FC = () => {
+const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
   const [location, setLocation] = useState<Location>(null);
   const [orientation, setOrientation] = useState<number | null>(null);
-  const [step, setStep] = useState<number>(1); // Kontroluje widoczność przycisków
+  const [step, setStep] = useState<number>(1);
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['10%', '30%', '50%'], []);
 
   setUpdateIntervalForType(SensorTypes.magnetometer, 100);
-
-  const requestLocationPermission = async (): Promise<boolean> => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Permission for location access',
-            message: 'App needs access to your location.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        return false;
-      }
-    }
-    return true;
-  };
 
   const saveLocation = async (): Promise<void> => {
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
-      Alert.alert(
-        'Permission Denied',
-        'Location access is required to save your position.',
-      );
+      Alert.alert('Permission Denied', 'Location access is required.');
       return;
     }
-
-    Geolocation.getCurrentPosition(
-      (position: GeoPosition) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-        setStep(2); // Przechodzimy do następnego kroku (przycisk orientacji)
-      },
-      (error) => {
-        console.error(error);
-        Alert.alert('Location Error', 'Could not fetch location.');
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    await getCurrentLocation({ setLocation, setStep });
   };
 
   const saveOrientation = async (): Promise<void> => {
-    const subscription = magnetometer.subscribe(({ x, y }: SensorData) => {
-      const angle = Math.atan2(y, x) * (180 / Math.PI); // kąt w stopniach
-      const adjustedAngle = (angle + 360) % 360; // zakres 0-360
-      setOrientation(adjustedAngle);
-      setStep(3); // Przechodzimy do kolejnego kroku (przycisk zapisu wszystkiego)
-      subscription.unsubscribe(); // Odłączamy się po uzyskaniu wartości
-    });
+    await getCurrentOrientation({ setOrientation, setStep });
   };
 
   const saveAll = async (): Promise<void> => {
-    if (location && orientation) {
+    if (location && orientation !== null) {
       try {
-        await updateProjectLocationInArray(
+        Alert.alert('Success', 'Location and orientation saved.');
+        void updateProjectLocationInArray(
           '1',
-          1, // Przykładowy ID projektu
+          1,
           location.latitude,
           location.longitude,
           orientation,
         );
-        Alert.alert('Success', 'Location and orientation saved.');
+        onComplete();
       } catch (error) {
         Alert.alert('Error', 'Failed to save location and orientation.');
         console.error(error);
@@ -106,76 +57,116 @@ const FirstARScene: React.FC = () => {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <ViroARSceneNavigator
-        initialScene={{ scene: ARScene }}
-        style={styles.arView}
-      />
-      <View style={styles.buttons}>
-        {step === 1 && (
-          <Button
-            title="Save location"
-            onPress={() => {
-              void saveLocation();
-            }}
-          />
-        )}
-        {step === 2 && (
-          <Button
-            title="Save orientation"
-            onPress={() => {
-              void saveOrientation();
-            }}
-          />
-        )}
-        {step === 3 && (
-          <Button
-            title="Save all"
-            onPress={() => {
-              void saveAll();
-            }}
-          />
-        )}
-      </View>
-      <View style={styles.info}>
-        {location && (
-          <Text>
-            Location: {location.latitude}, {location.longitude}
-          </Text>
-        )}
-        {orientation !== null && (
-          <Text>Orientation: {orientation.toFixed(2)}°</Text>
-        )}
-      </View>
-    </View>
-  );
-};
+  const FirstScene = (): JSX.Element => {
+    return <ViroARScene />;
+  };
 
-// Prosta scena AR
-const ARScene: React.FC = () => {
-  return <ViroARScene />;
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <ViroARSceneNavigator
+        autofocus={true}
+        initialScene={{
+          scene: FirstScene,
+        }}
+        style={styles.f1}
+      />
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={snapPoints}
+        enableDynamicSizing={false}
+      >
+        <View style={styles.panelContainer}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Location:</Text>
+            {location ? (
+              <Text style={styles.infoValue}>
+                {`${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`}
+              </Text>
+            ) : (
+              <Text style={styles.infoPlaceholder}>Not saved yet</Text>
+            )}
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Orientation:</Text>
+            {orientation !== null ? (
+              <Text style={styles.infoValue}>
+                {`${orientation.toFixed(2)}°`}
+              </Text>
+            ) : (
+              <Text style={styles.infoPlaceholder}>Not saved yet</Text>
+            )}
+          </View>
+          <View style={styles.bottomSheetContent}>
+            {step === 1 && (
+              <Button title="Save location" onPress={() => saveLocation()} />
+            )}
+            {step === 2 && (
+              <Button
+                title="Save orientation"
+                onPress={() => saveOrientation()}
+              />
+            )}
+            {step === 3 && (
+              <Button title="Save all" onPress={() => saveAll()} />
+            )}
+          </View>
+        </View>
+      </BottomSheet>
+    </GestureHandlerRootView>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
-  arView: {
+  f1: { flex: 1 },
+  bottomSheetContent: {
     flex: 1,
-  },
-  buttons: {
-    position: 'absolute',
-    bottom: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   info: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
+    fontSize: 16,
+    color: '#333',
+    marginVertical: 10,
+    flex: 1,
+  },
+  panelContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+
+  infoLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555',
+    marginRight: 10,
+    width: 100,
+  },
+
+  infoValue: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#333',
+    flex: 1,
+    textAlign: 'right',
+  },
+
+  infoPlaceholder: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#aaa',
+    flex: 1,
+    textAlign: 'right',
   },
 });
 

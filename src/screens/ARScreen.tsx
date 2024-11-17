@@ -1,43 +1,53 @@
-import {
-  ViroARScene,
-  ViroARSceneNavigator,
-  ViroTrackingStateConstants,
-} from '@reactvision/react-viro';
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { type ProjectsData, type Object3D } from '../AR/Interfaces';
-import { fetchProjectData, fetchObjectsWithModelUrls } from '../AR/DataLoader';
-import ARScene from '../AR/ARScene';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import LightsPanel from '../AR/LightsPanel';
-import ProjectARScene from '../AR/ProjectARScene';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import FirstARScene from '../AR/FirstARScene';
+import ProjectARScene from '../AR/ProjectARScene';
+import { fetchProjectData } from '../AR/DataLoader';
+import { type ProjectData } from '../AR/Interfaces';
 
-const ARScreen: React.FC = ({ navigation }: any) => {
-  const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+const ARScreen: React.FC = () => {
+  const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
+  const [projectData, setProjectData] = useState<ProjectData | null>(null);
 
-  return <ProjectARScene />;
+  useEffect(() => {
+    const loadProjectData = async (): Promise<void> => {
+      try {
+        const projectData = await fetchProjectData();
+        const firstProject = projectData.projects[0];
+        setIsFirstTime(firstProject.isFirstTime);
+        setProjectData(firstProject);
+      } catch (error) {
+        console.error('Error fetching project data:', error);
+      }
+    };
+
+    void loadProjectData();
+  }, []);
+
+  const handleCompleteFirstARScene = (): void => {
+    setIsFirstTime(false);
+  };
+
+  if (isFirstTime === null || projectData === null) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  return isFirstTime ? (
+    <FirstARScene onComplete={handleCompleteFirstARScene} />
+  ) : (
+    <ProjectARScene projectData={projectData} />
+  );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  loaderContainer: {
     flex: 1,
-  },
-  f1: { flex: 1 },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

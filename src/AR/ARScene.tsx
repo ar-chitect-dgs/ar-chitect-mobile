@@ -18,9 +18,14 @@ import { type Location } from './ProjectARScene';
 interface ARSceneProps {
   models: Object3D[];
   referenceLocation: Location;
+  referenceOrientation: number;
 }
 
-const ARScene: React.FC<ARSceneProps> = ({ models, referenceLocation }) => {
+const ARScene: React.FC<ARSceneProps> = ({
+  models,
+  referenceLocation,
+  referenceOrientation,
+}) => {
   const lightConfig: LightState = useSelector(
     (state: Reducer) => state.lightConfig,
   );
@@ -30,7 +35,6 @@ const ARScene: React.FC<ARSceneProps> = ({ models, referenceLocation }) => {
     (state: Reducer) => state.locationConfig,
   );
   const { latitude, longitude, orientation } = locationConfig;
-
   const rotatePosition = (
     x: number,
     z: number,
@@ -70,7 +74,7 @@ const ARScene: React.FC<ARSceneProps> = ({ models, referenceLocation }) => {
   const calculateRotation = (modelRotation: Vector3D): Vector3D => {
     return {
       x: modelRotation.x,
-      y: modelRotation.y + orientation,
+      y: modelRotation.y + (orientation ?? 0) + referenceOrientation,
       z: modelRotation.z,
     };
   };

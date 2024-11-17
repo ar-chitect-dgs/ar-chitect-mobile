@@ -93,6 +93,7 @@ export const updateProjectLocationInArray = async (
           latitude,
           longitude,
           orientation,
+          isFirstTime: false,
         };
       }
       return project;

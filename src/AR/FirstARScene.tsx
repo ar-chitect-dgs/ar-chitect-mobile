@@ -98,16 +98,28 @@ const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
           </View>
           <View style={styles.bottomSheetContent}>
             {step === 1 && (
-              <Button title="Save location" onPress={() => saveLocation()} />
+              <Button
+                title="Save location"
+                onPress={() => {
+                  void saveLocation();
+                }}
+              />
             )}
             {step === 2 && (
               <Button
                 title="Save orientation"
-                onPress={() => saveOrientation()}
+                onPress={() => {
+                  void saveOrientation();
+                }}
               />
             )}
             {step === 3 && (
-              <Button title="Save all" onPress={() => saveAll()} />
+              <Button
+                title="Save all"
+                onPress={() => {
+                  void saveAll();
+                }}
+              />
             )}
           </View>
         </View>

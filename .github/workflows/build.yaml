@@ -32,8 +32,8 @@ jobs:
         java-version: '17'
         cache: 'gradle'
 
-    # - name: Run on Android 
-    #   run: cd android && ./gradlew assembleDebug
+    - name: Run on Android 
+      run: cd android && ./gradlew assembleDebug
 
   # build-ios:
   #   runs-on: macos-latest

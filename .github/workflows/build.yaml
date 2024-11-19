@@ -16,24 +16,28 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'yarn'
+    - name: Check secret
+      env:
+        TEST: ${{ secrets.TEST }}
+      run: echo $TEST
+    # - name: Setup Node.js
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: '22'
+    #     cache: 'yarn'
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+    # - name: Install dependencies
+    #   run: yarn install --frozen-lockfile
     
-    - name:
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-        cache: 'gradle'
+    # - name:
+    #   uses: actions/setup-java@v4
+    #   with:
+    #     distribution: 'temurin'
+    #     java-version: '17'
+    #     cache: 'gradle'
 
-    - name: Run on Android 
-      run: cd android && ./gradlew assembleDebug
+    # - name: Run on Android 
+    #   run: cd android && ./gradlew assembleDebug
 
   # build-ios:
   #   runs-on: macos-latest

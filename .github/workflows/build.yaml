@@ -78,5 +78,5 @@ jobs:
   #       run: |
   #         cd ios
   #         xcodebuild build-for-testing \
-  #           -scheme 'ViroStarterKit' \
+  #           -scheme 'ARchitect' \
   #           -allowProvisioningUpdates

@@ -141,7 +141,6 @@ const locationReducer = (
 ): typeof initialLocationState => {
   switch (action.type) {
     case SET_LOCATION:
-      console.log('setting location');
       return {
         ...state,
         latitude: action.payload.latitude,

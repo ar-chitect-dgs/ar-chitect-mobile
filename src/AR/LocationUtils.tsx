@@ -4,10 +4,10 @@ import Geolocation, {
 } from 'react-native-geolocation-service';
 import { magnetometer, type SensorData } from 'react-native-sensors';
 
-export type Location = {
+export interface Location {
   latitude: number;
   longitude: number;
-} | null;
+}
 
 interface LocationProps {
   setLocation: (location: Location) => void;

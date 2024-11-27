@@ -48,7 +48,6 @@ const ARScene: React.FC<ARSceneProps> = ({
 
   const calculatePosition = (modelPosition: Vector3D): Vector3D => {
     if (!latitude || !longitude || !referenceLocation) {
-      console.log('null');
       return modelPosition;
     }
     const deltaLatitude = latitude - referenceLocation.latitude;

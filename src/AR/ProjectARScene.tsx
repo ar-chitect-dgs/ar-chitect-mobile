@@ -111,7 +111,7 @@ const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
     );
   }, [models, onTrackingUpdated, referenceLocation, referenceOrientation]);
 
-  const sheetRef = useRef(null);
+  const sheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['10%', '25%', '50%', '90%'], []);
 
   return (
@@ -127,7 +127,11 @@ const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
           style={styles.f1}
         />
       )}
-      <BottomSheet ref={sheetRef} snapPoints={snapPoints}>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={snapPoints}
+        enableDynamicSizing={false}
+      >
         <LightsPanel />
       </BottomSheet>
     </GestureHandlerRootView>
@@ -137,7 +141,6 @@ const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
   f1: { flex: 1 },
   loaderContainer: {

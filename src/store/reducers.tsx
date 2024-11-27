@@ -59,8 +59,7 @@ const initialLightState = {
 const initialLocationState = {
   latitude: null,
   longitude: null,
-  orientationX: null,
-  orientationY: null,
+  orientation: null,
 };
 
 const lightReducer = (
@@ -158,8 +157,7 @@ const locationReducer = (
       console.log('setting orientation');
       return {
         ...state,
-        orientationX: action.payload.x,
-        orientationY: action.payload.y,
+        orientation: action.payload,
       };
     default:
       return state;

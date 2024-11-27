@@ -65,7 +65,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
               <Slider
                 style={styles.slider}
                 minimumValue={0}
-                maximumValue={10000}
+                maximumValue={2000}
                 step={1}
                 value={ambientLight.intensity}
                 onValueChange={(value) => {

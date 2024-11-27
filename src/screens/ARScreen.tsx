@@ -17,9 +17,7 @@ const ARScreen: React.FC = () => {
         return;
       }
       try {
-        const projectData = await fetchProjectData(
-          '7a2XI8pvrvhvHku4nQkFFsA2XoJ3',
-        );
+        const projectData = await fetchProjectData(user.uid);
         const firstProject = projectData[0];
         setIsFirstTime(firstProject.isFirstTime);
         setProjectData(firstProject);

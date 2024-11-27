@@ -11,6 +11,7 @@ import {
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
 import { updateProjectLocationInArray } from './DataLoader';
+import auth from '@react-native-firebase/auth';
 
 interface FirstARSceneProps {
   onComplete: () => void;
@@ -40,11 +41,15 @@ const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
 
   const saveAll = async (): Promise<void> => {
     if (location && orientation !== null) {
+      const user = auth().currentUser;
+      if (!user) {
+        return;
+      }
       try {
         Alert.alert('Success', 'Location and orientation saved.');
         void updateProjectLocationInArray(
-          '7a2XI8pvrvhvHku4nQkFFsA2XoJ3',
-          'SUxzZ92oKbBkwCJJXkHv',
+          user.uid,
+          'D1ydLWyz48EnR0IEylkU',
           location.latitude,
           location.longitude,
           orientation,
@@ -138,6 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   info: {
     fontSize: 16,

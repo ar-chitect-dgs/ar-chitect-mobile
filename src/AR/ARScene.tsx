@@ -35,33 +35,45 @@ const ARScene: React.FC<ARSceneProps> = ({
     (state: Reducer) => state.locationConfig,
   );
   const { latitude, longitude, orientation } = locationConfig;
-  const rotatePosition = (
-    x: number,
-    z: number,
-    angle: number,
-  ): { x: number; z: number } => {
-    const radians = (angle * Math.PI) / 180;
-    const rotatedX = x * Math.cos(radians) - z * Math.sin(radians);
-    const rotatedZ = x * Math.sin(radians) + z * Math.cos(radians);
-    return { x: rotatedX, z: rotatedZ };
-  };
+  console.log('Rotation: ', orientation);
+  console.log('Reference: ', referenceOrientation);
+  console.log('Local: ', latitude);
 
   const calculatePosition = (modelPosition: Vector3D): Vector3D => {
     if (!latitude || !longitude || !referenceLocation) {
       return modelPosition;
     }
-    const deltaLatitude = latitude - referenceLocation.latitude;
-    const deltaLongitude = longitude - referenceLocation.longitude;
 
-    const metersPerDegreeLat = 111000;
-    const metersPerDegreeLong =
-      111000 *
-      Math.cos((((latitude + referenceLocation.latitude) / 2) * Math.PI) / 180);
+    const earthRadius = 6371e3; // Promień Ziemi w metrach
 
-    const offsetX = deltaLongitude * metersPerDegreeLong;
-    const offsetZ = deltaLatitude * metersPerDegreeLat;
+    // Zamiana stopni na radiany z walidacją
+    const toRadians = (degrees: number) =>
+      degrees ? (degrees * Math.PI) / 180 : 0;
 
-    const rotatedOffset = rotatePosition(offsetX, offsetZ, orientation ?? 0);
+    const deltaLat = toRadians(latitude - referenceLocation.latitude);
+    const deltaLon = toRadians(longitude - referenceLocation.longitude);
+    const lat1 = toRadians(referenceLocation.latitude);
+
+    // Obliczenie przesunięcia w metrach
+    const xOffset = earthRadius * deltaLon * Math.cos(lat1);
+    const zOffset = earthRadius * deltaLat;
+
+    if (isNaN(xOffset) || isNaN(zOffset)) {
+      console.error('Calculation error: xOffset or zOffset is NaN');
+      return modelPosition;
+    }
+
+    // Obrót przesunięcia na podstawie orientacji (sprawdź orientację)
+    const angle = toRadians(orientation);
+    const rotatedOffset = {
+      x: xOffset * Math.cos(angle) - zOffset * Math.sin(angle),
+      z: xOffset * Math.sin(angle) + zOffset * Math.cos(angle),
+    };
+
+    if (isNaN(rotatedOffset.x) || isNaN(rotatedOffset.z)) {
+      console.error('Calculation error: rotatedOffset contains NaN values');
+      return modelPosition;
+    }
 
     return {
       x: modelPosition.x + rotatedOffset.x,
@@ -73,7 +85,7 @@ const ARScene: React.FC<ARSceneProps> = ({
   const calculateRotation = (modelRotation: Vector3D): Vector3D => {
     return {
       x: modelRotation.x,
-      y: modelRotation.y + (orientation ?? 0) + referenceOrientation,
+      y: modelRotation.y + (orientation ?? 0) - referenceOrientation,
       z: modelRotation.z,
     };
   };

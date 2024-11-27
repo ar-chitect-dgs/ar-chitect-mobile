@@ -12,10 +12,6 @@ export interface Vector3D {
   z: number;
 }
 
-export interface ProjectsData {
-  projects: ProjectData[];
-}
-
 export interface ProjectData {
   projectId: number;
   projectName: string;

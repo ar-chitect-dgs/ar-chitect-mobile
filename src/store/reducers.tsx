@@ -40,11 +40,19 @@ const initialLightState = {
   ambientLights: [
     {
       id: 1,
-      color: '#FFFF00',
+      color: '#FFFFFF',
       intensity: 1000,
     },
   ],
-  directionalLights: [],
+  directionalLights: [
+    {
+      id: 1,
+      color: '#FFFFFF',
+      intensity: 1000,
+      direction: [0.0, 0.0, -1.0],
+      castsShadows: true,
+    },
+  ],
   spotLights: [],
 };
 

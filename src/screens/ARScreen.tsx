@@ -4,6 +4,7 @@ import FirstARScene from '../AR/FirstARScene';
 import ProjectARScene from '../AR/ProjectARScene';
 import { fetchProjectData } from '../AR/DataLoader';
 import { type ProjectData } from '../AR/Interfaces';
+import auth from '@react-native-firebase/auth';
 
 const ARScreen: React.FC = () => {
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
@@ -11,9 +12,15 @@ const ARScreen: React.FC = () => {
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
+      const user = auth().currentUser;
+      if (!user) {
+        return;
+      }
       try {
-        const projectData = await fetchProjectData();
-        const firstProject = projectData.projects[0];
+        const projectData = await fetchProjectData(
+          '7a2XI8pvrvhvHku4nQkFFsA2XoJ3',
+        );
+        const firstProject = projectData[0];
         setIsFirstTime(firstProject.isFirstTime);
         setProjectData(firstProject);
       } catch (error) {

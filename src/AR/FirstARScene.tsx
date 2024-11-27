@@ -43,8 +43,8 @@ const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
       try {
         Alert.alert('Success', 'Location and orientation saved.');
         void updateProjectLocationInArray(
-          '1',
-          1,
+          '7a2XI8pvrvhvHku4nQkFFsA2XoJ3',
+          'SUxzZ92oKbBkwCJJXkHv',
           location.latitude,
           location.longitude,
           orientation,

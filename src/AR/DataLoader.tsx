@@ -1,27 +1,42 @@
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import {
-  type ProjectsData,
-  type Object3D,
-  type ProjectData,
-  type ModelData,
-} from './Interfaces';
+import { type Object3D, type ProjectData, type ModelData } from './Interfaces';
 
 const MODELS_DIRECTORY = '/models/';
+const MODELS_FIRESTORE_DIRECTORY = 'models2';
 
-export const fetchProjectData = async (): Promise<ProjectsData> => {
-  const project = await firestore().collection('projects').doc('1').get();
-  const projectData = project.data() as ProjectsData;
-  return projectData;
+export const fetchProjectData = async (
+  userId: string,
+): Promise<ProjectData[]> => {
+  try {
+    const snapshot = await firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('projects')
+      .get();
+
+    const projects: ProjectData[] = [];
+
+    snapshot.forEach((doc) => {
+      const projectData = doc.data() as ProjectData;
+      projects.push(projectData);
+    });
+
+    return projects;
+  } catch (error) {
+    console.error('Error fetching project data:', error);
+    throw error;
+  }
 };
 
 export async function fetchObjectsWithModelUrls(
   projectData: ProjectData,
 ): Promise<Object3D[]> {
+  console.log(projectData);
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
-        .collection('models')
+        .collection(MODELS_FIRESTORE_DIRECTORY)
         .doc(object.objectId.toString())
         .get();
 
@@ -71,43 +86,28 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
 
 export const updateProjectLocationInArray = async (
   userId: string,
-  projectId: number,
+  projectId: string,
   latitude: number,
   longitude: number,
   orientation: number,
 ): Promise<void> => {
   try {
-    const projectRef = firestore().collection('projects').doc(userId);
-
-    const projectDoc = await projectRef.get();
-    const projectData = projectDoc.data();
-
-    if (!projectData || !Array.isArray(projectData.projects)) {
-      throw new Error(`Projects array not found for user ${userId}`);
-    }
-
-    const updatedProjects = projectData.projects.map((project: ProjectData) => {
-      if (project.projectId === projectId) {
-        return {
-          ...project,
-          latitude,
-          longitude,
-          orientation,
-          isFirstTime: false,
-        };
-      }
-      return project;
-    });
+    const projectRef = firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('projects')
+      .doc(projectId);
 
     await projectRef.update({
-      projects: updatedProjects,
+      latitude,
+      longitude,
+      orientation,
+      isFirstTime: false,
     });
 
-    console.log(
-      `Location updated for project ${projectId} to: ${latitude}, ${longitude}`,
-    );
+    console.log(`Project ${projectId} updated successfully.`);
   } catch (error) {
-    console.error('Error updating project location:', error);
+    console.error(`Error updating project ${projectId}:`, error);
     throw error;
   }
 };

@@ -11,9 +11,9 @@ import {
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../store/actions';
-import { type AmbientLightProps } from './LightInterfaces';
-import Slider from '@react-native-community/slider';
+import { type AmbientLightProps } from '../AR/LightInterfaces';
 import { type Reducer } from '../store/reducers';
+import LightSlider from './LightSlider';
 
 interface AmbientLightModalProps {
   visible: boolean;
@@ -59,24 +59,16 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
             }}
           />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Intensity:</Text>
-            <View style={styles.sliderContainer}>
-              <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={2000}
-                step={1}
-                value={ambientLight.intensity}
-                onValueChange={(value) => {
-                  setAmbientLight({ ...ambientLight, intensity: value });
-                }}
-              />
-              <Text style={styles.label}>
-                {ambientLight.intensity.toFixed(0)}
-              </Text>
-            </View>
-          </View>
+          <LightSlider
+            title="Intensity"
+            value={ambientLight.intensity}
+            setValue={(intensity: number) => {
+              setAmbientLight({ ...ambientLight, intensity });
+            }}
+            minimumValue={0}
+            maximumValue={2000}
+            step={1}
+          />
 
           <Button title="Save" onPress={handleSave} />
           <Button title="Close" onPress={onClose} />
@@ -92,24 +84,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-    width: '100%',
-    justifyContent: 'space-between',
-    color: '#000',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    width: '30%',
-    color: '#000',
-    marginHorizontal: 5,
-    flexShrink: 1,
-  },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'flex-start',
@@ -119,24 +93,6 @@ const styles = StyleSheet.create({
   label: {
     color: '#000',
     marginRight: 10,
-  },
-  sliderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '50%',
-    justifyContent: 'space-between',
-    borderColor: '#ddd',
-    borderWidth: 1,
-    padding: 5,
-    color: '#000',
-  },
-  slider: {
-    width: '70%',
-    height: 40,
-  },
-  sliderValue: {
-    width: '30%',
-    textAlign: 'right',
   },
 });
 

@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import FirstARScene from '../AR/FirstARScene';
 import ProjectARScene from '../AR/ProjectARScene';
-import { fetchProjectData } from '../AR/DataLoader';
+import { fetchProjectData } from '../utils/DataLoader';
 import { type ProjectData } from '../AR/Interfaces';
 import auth from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
+import { setProject } from '../store/actions';
 
 const ARScreen: React.FC = () => {
+  console.log('xd');
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
-  const [projectData, setProjectData] = useState<ProjectData | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
@@ -17,10 +20,13 @@ const ARScreen: React.FC = () => {
         return;
       }
       try {
-        const projectData = await fetchProjectData(user.uid);
-        const firstProject = projectData[0];
+        const projects: Record<string, ProjectData> = await fetchProjectData(
+          user.uid,
+        );
+        const projectId = Object.keys(projects)[0];
+        const firstProject = projects[projectId];
+        dispatch(setProject({ id: projectId, project: firstProject }));
         setIsFirstTime(firstProject.isFirstTime);
-        setProjectData(firstProject);
       } catch (error) {
         console.error('Error fetching project data:', error);
       }
@@ -33,18 +39,14 @@ const ARScreen: React.FC = () => {
     setIsFirstTime(false);
   };
 
-  if (isFirstTime === null || projectData === null) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
-  return isFirstTime ? (
+  return isFirstTime === null ? (
+    <View style={styles.loaderContainer}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+  ) : isFirstTime ? (
     <FirstARScene onComplete={handleCompleteFirstARScene} />
   ) : (
-    <ProjectARScene projectData={projectData} />
+    <ProjectARScene />
   );
 };
 

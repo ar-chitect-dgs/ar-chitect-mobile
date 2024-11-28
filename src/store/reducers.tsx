@@ -12,16 +12,20 @@ import {
   REMOVE_SPOT_LIGHT,
   SET_LOCATION,
   SET_ORIENTATION,
+  SET_PROJECT,
+  SET_MODELS,
 } from './actions';
 import {
   type AmbientLightProps,
   type DirectionalLightProps,
   type SpotLightProps,
 } from '../AR/LightInterfaces';
+import { type Object3D, type ProjectData } from '../AR/Interfaces';
 
 export interface Reducer {
   lightConfig: LightState;
   locationConfig: LocationState;
+  projectConfig: ProjectState;
 }
 
 export interface LightState {
@@ -34,6 +38,12 @@ export interface LocationState {
   latitude: number | null;
   longitude: number | null;
   orientation: number;
+}
+
+export interface ProjectState {
+  id: string;
+  project: ProjectData | null;
+  models: Object3D[];
 }
 
 const initialLightState = {
@@ -60,6 +70,12 @@ const initialLocationState = {
   latitude: null,
   longitude: null,
   orientation: null,
+};
+
+const initialProjectState = {
+  project: null,
+  id: '',
+  models: [],
 };
 
 const lightReducer = (
@@ -154,7 +170,6 @@ const locationReducer = (
         longitude: action.payload.longitude,
       };
     case SET_ORIENTATION:
-      console.log('setting orientation');
       return {
         ...state,
         orientation: action.payload,
@@ -164,7 +179,29 @@ const locationReducer = (
   }
 };
 
+const projectReducer = (
+  state = initialProjectState,
+  action: { type: any; payload: any },
+): typeof initialProjectState => {
+  switch (action.type) {
+    case SET_PROJECT:
+      return {
+        ...state,
+        id: action.payload.id,
+        project: action.payload.project,
+      };
+    case SET_MODELS:
+      return {
+        ...state,
+        models: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   lightConfig: lightReducer,
   locationConfig: locationReducer,
+  projectConfig: projectReducer,
 });

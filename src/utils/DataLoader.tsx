@@ -1,13 +1,17 @@
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { type Object3D, type ProjectData, type ModelData } from './Interfaces';
+import {
+  type Object3D,
+  type ProjectData,
+  type ModelData,
+} from '../AR/Interfaces';
 
 const MODELS_DIRECTORY = '/models/';
 const MODELS_FIRESTORE_DIRECTORY = 'models2';
 
 export const fetchProjectData = async (
   userId: string,
-): Promise<ProjectData[]> => {
+): Promise<Record<string, ProjectData>> => {
   try {
     const snapshot = await firestore()
       .collection('users')
@@ -15,11 +19,12 @@ export const fetchProjectData = async (
       .collection('projects')
       .get();
 
-    const projects: ProjectData[] = [];
+    const projects: Record<string, ProjectData> = {};
 
     snapshot.forEach((doc) => {
       const projectData = doc.data() as ProjectData;
-      projects.push(projectData);
+      const id = doc.id;
+      projects[id] = projectData;
     });
 
     return projects;

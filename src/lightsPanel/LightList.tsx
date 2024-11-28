@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import LightItem from './LightItem';
 
 interface LightListProps<T> {
   lights: T[];
@@ -23,21 +24,16 @@ const LightList = <T extends { id: number; color: string }>({
         <Button title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
       </View>
       {lights.map((light) => (
-        <View style={styles.lightItem} key={light.id.toString()}>
-          <Text style={{ color: light.color }}>{title.slice(0, -1)}</Text>
-          <Button
-            title="Edit"
-            onPress={() => {
-              onEdit(light);
-            }}
-          />
-          <Button
-            title="Delete"
-            onPress={() => {
-              onDelete(light.id);
-            }}
-          />
-        </View>
+        <LightItem
+          id={light.id}
+          title={title}
+          onEdit={() => {
+            onEdit(light);
+          }}
+          onDelete={() => {
+            onDelete(light.id);
+          }}
+        />
       ))}
     </View>
   );
@@ -57,13 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
-  },
-  lightItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#f0f0f0',
   },
 });
 

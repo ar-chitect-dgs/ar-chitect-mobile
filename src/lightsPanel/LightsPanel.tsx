@@ -11,7 +11,7 @@ import {
   type AmbientLightProps,
   type DirectionalLightProps,
   type SpotLightProps,
-} from './LightInterfaces';
+} from '../AR/LightInterfaces';
 import AmbientLightModal from './AmbientLightModal';
 import SpotLightModal from './SpotLightModal';
 import DirectionalLightModal from './DirectionalLightModal';

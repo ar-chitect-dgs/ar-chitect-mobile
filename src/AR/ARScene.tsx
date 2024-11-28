@@ -4,7 +4,7 @@ import {
   ViroSpotLight,
 } from '@reactvision/react-viro';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Vector3D, type Object3D } from './Interfaces';
 import {
@@ -35,10 +35,6 @@ const ARScene: React.FC<ARSceneProps> = ({
     (state: Reducer) => state.locationConfig,
   );
   const { latitude, longitude, orientation } = locationConfig;
-  console.log('Rotation: ', orientation);
-  console.log('Reference: ', referenceOrientation);
-  console.log('Local: ', latitude);
-
   const calculatePosition = (modelPosition: Vector3D): Vector3D => {
     if (!latitude || !longitude || !referenceLocation) {
       return modelPosition;

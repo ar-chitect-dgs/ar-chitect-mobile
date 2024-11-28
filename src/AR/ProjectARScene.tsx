@@ -12,41 +12,43 @@ import {
   ViroTrackingStateConstants,
 } from '@reactvision/react-viro';
 import { SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
-import { fetchObjectsWithModelUrls } from './DataLoader';
+import { fetchObjectsWithModelUrls } from '../utils/DataLoader';
 import ARScene from './ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { setLocation, setOrientation } from '../store/actions';
-import { useDispatch } from 'react-redux';
-import LightsPanel from './LightsPanel';
+import { setLocation, setModels, setOrientation } from '../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import LightsPanel from '../lightsPanel/LightsPanel';
 import {
   getCurrentLocation,
   getCurrentOrientation,
   requestLocationPermission,
-} from './LocationUtils';
-import { type ProjectData, type Object3D } from './Interfaces';
+} from '../utils//LocationUtils';
+import { type Reducer } from '../store/reducers';
 
 export type Location = {
   latitude: number;
   longitude: number;
 } | null;
 
-interface ProjectARSceneProps {
-  projectData: ProjectData;
-}
-
-const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
+const ProjectARScene: React.FC = () => {
   const dispatch = useDispatch();
+  const { project, models } = useSelector(
+    (state: Reducer) => state.projectConfig,
+  );
+
+  if (project == null) {
+    return <ViroARScene></ViroARScene>;
+  }
 
   const [trackingInitialized, setTrackingInitialized] = useState(false);
-  const [models, setModels] = useState<Object3D[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const referenceLocation = {
-    latitude: projectData.latitude,
-    longitude: projectData.longitude,
+    latitude: project.latitude,
+    longitude: project.longitude,
   };
-  const referenceOrientation = projectData.orientation;
+  const referenceOrientation = project.orientation;
 
   useEffect(() => {
     const initializeData = async (): Promise<void> => {
@@ -76,8 +78,8 @@ const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
   useEffect(() => {
     const loadModels = async (): Promise<void> => {
       try {
-        const modelsArray = await fetchObjectsWithModelUrls(projectData);
-        setModels(modelsArray);
+        const modelsArray = await fetchObjectsWithModelUrls(project);
+        dispatch(setModels(modelsArray));
       } catch (error) {
         console.error(
           'Error while downloading and loading project data',
@@ -89,7 +91,7 @@ const ProjectARScene: React.FC<ProjectARSceneProps> = ({ projectData }) => {
     };
 
     void loadModels();
-  }, [projectData]);
+  }, [project]);
 
   const onTrackingUpdated = useCallback((state: ViroTrackingStateConstants) => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {

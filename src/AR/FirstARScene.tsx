@@ -7,10 +7,10 @@ import {
   getCurrentOrientation,
   type Location,
   requestLocationPermission,
-} from './LocationUtils';
+} from '../utils/LocationUtils';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
-import { updateProjectLocationInArray } from './DataLoader';
+import { updateProjectLocationInArray } from '../utils/DataLoader';
 import auth from '@react-native-firebase/auth';
 
 interface FirstARSceneProps {
@@ -18,7 +18,7 @@ interface FirstARSceneProps {
 }
 
 const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
-  const [location, setLocation] = useState<Location>(null);
+  const [location, setLocation] = useState<Location | null>(null);
   const [orientation, setOrientation] = useState<number | null>(null);
   const [step, setStep] = useState<number>(1);
   const sheetRef = useRef<BottomSheet>(null);

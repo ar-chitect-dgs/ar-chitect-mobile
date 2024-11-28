@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { type DrawerNavigationProp } from '@react-navigation/drawer';
-import { ROUTES } from '../navigation/routes';
-
-type ProfileScreenNavigationProp = DrawerNavigationProp<any>;
 
 const ProfileScreen: React.FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
-
-  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   useEffect(() => {
     const currentUser = auth().currentUser;

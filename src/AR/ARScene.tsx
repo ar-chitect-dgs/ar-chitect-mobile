@@ -44,17 +44,15 @@ const ARScene: React.FC<ARSceneProps> = ({
       return modelPosition;
     }
 
-    const earthRadius = 6371e3; // Promień Ziemi w metrach
+    const earthRadius = 6371e3;
 
-    // Zamiana stopni na radiany z walidacją
-    const toRadians = (degrees: number) =>
+    const toRadians = (degrees: number): number =>
       degrees ? (degrees * Math.PI) / 180 : 0;
 
     const deltaLat = toRadians(latitude - referenceLocation.latitude);
     const deltaLon = toRadians(longitude - referenceLocation.longitude);
     const lat1 = toRadians(referenceLocation.latitude);
 
-    // Obliczenie przesunięcia w metrach
     const xOffset = earthRadius * deltaLon * Math.cos(lat1);
     const zOffset = earthRadius * deltaLat;
 
@@ -63,7 +61,6 @@ const ARScene: React.FC<ARSceneProps> = ({
       return modelPosition;
     }
 
-    // Obrót przesunięcia na podstawie orientacji (sprawdź orientację)
     const angle = toRadians(orientation);
     const rotatedOffset = {
       x: xOffset * Math.cos(angle) - zOffset * Math.sin(angle),

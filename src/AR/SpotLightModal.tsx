@@ -135,7 +135,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
               <TextInput
                 key={index}
                 style={styles.input}
-                keyboardType="numeric" // Accepting only numeric input
+                keyboardType="numeric"
                 value={positionInputs[index]}
                 onChangeText={(text) => {
                   const newInputs = [...positionInputs] as [
@@ -181,7 +181,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
               <Slider
                 style={styles.slider}
                 minimumValue={0}
-                maximumValue={10000}
+                maximumValue={2000}
                 step={1}
                 value={spotLight.intensity}
                 onValueChange={(value) => {

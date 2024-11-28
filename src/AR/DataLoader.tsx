@@ -1,18 +1,32 @@
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import {
-  type ProjectsData,
-  type Object3D,
-  type ProjectData,
-  type ModelData,
-} from './Interfaces';
+import { type Object3D, type ProjectData, type ModelData } from './Interfaces';
 
 const MODELS_DIRECTORY = '/models/';
+const MODELS_FIRESTORE_DIRECTORY = 'models2';
 
-export const fetchProjectData = async (): Promise<ProjectsData> => {
-  const project = await firestore().collection('projects').doc('1').get();
-  const projectData = project.data() as ProjectsData;
-  return projectData;
+export const fetchProjectData = async (
+  userId: string,
+): Promise<ProjectData[]> => {
+  try {
+    const snapshot = await firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('projects')
+      .get();
+
+    const projects: ProjectData[] = [];
+
+    snapshot.forEach((doc) => {
+      const projectData = doc.data() as ProjectData;
+      projects.push(projectData);
+    });
+
+    return projects;
+  } catch (error) {
+    console.error('Error fetching project data:', error);
+    throw error;
+  }
 };
 
 export async function fetchObjectsWithModelUrls(
@@ -22,7 +36,7 @@ export async function fetchObjectsWithModelUrls(
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
-        .collection('models')
+        .collection(MODELS_FIRESTORE_DIRECTORY)
         .doc(object.objectId.toString())
         .get();
 
@@ -68,4 +82,32 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
   const reference = storage().ref(MODELS_DIRECTORY + path);
   const url = await reference.getDownloadURL();
   return url;
+};
+
+export const updateProjectLocationInArray = async (
+  userId: string,
+  projectId: string,
+  latitude: number,
+  longitude: number,
+  orientation: number,
+): Promise<void> => {
+  try {
+    const projectRef = firestore()
+      .collection('users')
+      .doc(userId)
+      .collection('projects')
+      .doc(projectId);
+
+    await projectRef.update({
+      latitude,
+      longitude,
+      orientation,
+      isFirstTime: false,
+    });
+
+    console.log(`Project ${projectId} updated successfully.`);
+  } catch (error) {
+    console.error(`Error updating project ${projectId}:`, error);
+    throw error;
+  }
 };

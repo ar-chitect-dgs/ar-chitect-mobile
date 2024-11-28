@@ -1,95 +1,58 @@
-import {
-  ViroARScene,
-  ViroARSceneNavigator,
-  ViroTrackingStateConstants,
-} from '@reactvision/react-viro';
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { type ProjectsData, type Object3D } from '../AR/Interfaces';
-import { fetchProjectData, fetchObjectsWithModelUrls } from '../AR/DataLoader';
-import ARScene from '../AR/ARScene';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import LightsPanel from '../AR/LightsPanel';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import FirstARScene from '../AR/FirstARScene';
+import ProjectARScene from '../AR/ProjectARScene';
+import { fetchProjectData } from '../AR/DataLoader';
+import { type ProjectData } from '../AR/Interfaces';
+import auth from '@react-native-firebase/auth';
 
-const SampleARScene = (): JSX.Element => {
-  const [trackingInitialized, setTrackingInitialized] = useState(false);
-  const [models, setModels] = useState<Object3D[]>([]);
+const ARScreen: React.FC = () => {
+  const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
+  const [projectData, setProjectData] = useState<ProjectData | null>(null);
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
+      const user = auth().currentUser;
+      if (!user) {
+        return;
+      }
       try {
-        const projectJson: ProjectsData = await fetchProjectData();
-        const sampleProject = projectJson.projects[0];
-        const modelsArray = await fetchObjectsWithModelUrls(sampleProject);
-        setModels(modelsArray);
+        const projectData = await fetchProjectData(user.uid);
+        const firstProject = projectData[0];
+        setIsFirstTime(firstProject.isFirstTime);
+        setProjectData(firstProject);
       } catch (error) {
-        console.error(
-          'Error while downloading and loading project data',
-          error,
-        );
+        console.error('Error fetching project data:', error);
       }
     };
 
     void loadProjectData();
   }, []);
 
-  const onTrackingUpdated = (state: any): void => {
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setTrackingInitialized(true);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      setTrackingInitialized(false);
-    }
+  const handleCompleteFirstARScene = (): void => {
+    setIsFirstTime(false);
   };
 
-  return (
-    <ViroARScene onTrackingUpdated={onTrackingUpdated}>
-      <ARScene models={models} />
-    </ViroARScene>
-  );
-};
+  if (isFirstTime === null || projectData === null) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
-const ARScreen: React.FC = ({ navigation }: any) => {
-  const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-
-  return (
-    <GestureHandlerRootView style={styles.container}>
-      <ViroARSceneNavigator
-        autofocus={true}
-        initialScene={{
-          scene: SampleARScene,
-        }}
-        style={styles.f1}
-      />
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-      >
-        <LightsPanel />
-      </BottomSheet>
-    </GestureHandlerRootView>
+  return isFirstTime ? (
+    <FirstARScene onComplete={handleCompleteFirstARScene} />
+  ) : (
+    <ProjectARScene projectData={projectData} />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  loaderContainer: {
     flex: 1,
-  },
-  f1: { flex: 1 },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

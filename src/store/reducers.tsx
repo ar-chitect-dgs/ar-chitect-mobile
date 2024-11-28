@@ -10,6 +10,8 @@ import {
   ADD_SPOT_LIGHT,
   UPDATE_SPOT_LIGHT,
   REMOVE_SPOT_LIGHT,
+  SET_LOCATION,
+  SET_ORIENTATION,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -19,6 +21,7 @@ import {
 
 export interface Reducer {
   lightConfig: LightState;
+  locationConfig: LocationState;
 }
 
 export interface LightState {
@@ -27,22 +30,42 @@ export interface LightState {
   spotLights: SpotLightProps[];
 }
 
-const initialState = {
+export interface LocationState {
+  latitude: number | null;
+  longitude: number | null;
+  orientation: number;
+}
+
+const initialLightState = {
   ambientLights: [
     {
       id: 1,
-      color: '#FFFF00',
+      color: '#FFFFFF',
       intensity: 1000,
     },
   ],
-  directionalLights: [],
+  directionalLights: [
+    {
+      id: 1,
+      color: '#FFFFFF',
+      intensity: 1000,
+      direction: [0.0, 0.0, -1.0],
+      castsShadows: true,
+    },
+  ],
   spotLights: [],
 };
 
+const initialLocationState = {
+  latitude: null,
+  longitude: null,
+  orientation: null,
+};
+
 const lightReducer = (
-  state = initialState,
+  state = initialLightState,
   action: { type: any; payload: { id: any; properties: any } },
-): typeof initialState => {
+): typeof initialLightState => {
   switch (action.type) {
     case ADD_AMBIENT_LIGHT:
       return {
@@ -59,7 +82,6 @@ const lightReducer = (
         ),
       };
     case REMOVE_AMBIENT_LIGHT:
-      console.log(action.payload);
       return {
         ...state,
         ambientLights: state.ambientLights.filter(
@@ -120,6 +142,29 @@ const lightReducer = (
   }
 };
 
+const locationReducer = (
+  state = initialLocationState,
+  action: { type: any; payload: any },
+): typeof initialLocationState => {
+  switch (action.type) {
+    case SET_LOCATION:
+      return {
+        ...state,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+      };
+    case SET_ORIENTATION:
+      console.log('setting orientation');
+      return {
+        ...state,
+        orientation: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   lightConfig: lightReducer,
+  locationConfig: locationReducer,
 });

@@ -5,30 +5,6 @@ import { type Object3D, type ProjectData, type ModelData } from './Interfaces';
 const MODELS_DIRECTORY = '/models/';
 const MODELS_FIRESTORE_DIRECTORY = 'models2';
 
-export const fetchProjectData = async (
-  userId: string,
-): Promise<ProjectData[]> => {
-  try {
-    const snapshot = await firestore()
-      .collection('users')
-      .doc(userId)
-      .collection('projects')
-      .get();
-
-    const projects: ProjectData[] = [];
-
-    snapshot.forEach((doc) => {
-      const projectData = doc.data() as ProjectData;
-      projects.push(projectData);
-    });
-
-    return projects;
-  } catch (error) {
-    console.error('Error fetching project data:', error);
-    throw error;
-  }
-};
-
 export async function fetchObjectsWithModelUrls(
   projectData: ProjectData,
 ): Promise<Object3D[]> {
@@ -37,13 +13,11 @@ export async function fetchObjectsWithModelUrls(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
         .collection(MODELS_FIRESTORE_DIRECTORY)
-        .doc(object.objectId.toString())
+        .doc(object.id.toString())
         .get();
 
       if (!modelDoc.exists) {
-        throw new Error(
-          `Model with id ${object.objectId} not found in Firestore`,
-        );
+        throw new Error(`Model with id ${object.id} not found in Firestore`);
       }
 
       const modelData = modelDoc.data() as ModelData;
@@ -51,12 +25,12 @@ export async function fetchObjectsWithModelUrls(
       const colorData = modelData.color_variants[object.color];
       if (!colorData) {
         throw new Error(
-          `Color ${object.color} not found for model ${object.objectId}`,
+          `Color ${object.color} not found for model ${object.id}`,
         );
       }
 
       return {
-        objectId: object.objectId,
+        id: object.id,
         name: modelData.name,
         position: object.position,
         rotation: object.rotation,

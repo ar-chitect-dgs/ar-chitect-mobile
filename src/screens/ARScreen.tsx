@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import FirstARScene from '../AR/FirstARScene';
 import ProjectARScene from '../AR/ProjectARScene';
-import { fetchProjectData } from '../AR/DataLoader';
 import { type ProjectData } from '../AR/Interfaces';
-import auth from '@react-native-firebase/auth';
+import { fetchProjects } from '../api/projectsApi';
 
 const ARScreen: React.FC = () => {
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
@@ -17,8 +17,8 @@ const ARScreen: React.FC = () => {
         return;
       }
       try {
-        const projectData = await fetchProjectData(user.uid);
-        const firstProject = projectData[0];
+        const projectData = await fetchProjects(user.uid);
+        const firstProject = projectData[0] as ProjectData;
         setIsFirstTime(firstProject.isFirstTime);
         setProjectData(firstProject);
       } catch (error) {

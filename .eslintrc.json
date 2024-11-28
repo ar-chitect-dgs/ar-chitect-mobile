@@ -25,6 +25,7 @@
     "@typescript-eslint/no-empty-function": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "linebreak-style": "off",
+    "@typescript-eslint/no-misused-promises": "off",
     "no-console": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off",

@@ -1,4 +1,3 @@
-// navigation/AppRouter.tsx
 import React from 'react';
 import {
   createDrawerNavigator,
@@ -17,6 +16,8 @@ import { ROUTES } from './routes';
 import { Image, StyleSheet, View } from 'react-native';
 import DrawerHeader from '../components/DrawerHeader';
 import logo from '../assets/logo.png';
+
+import { headerColor } from '../styles/colors';
 
 const Drawer = createDrawerNavigator();
 
@@ -39,7 +40,7 @@ const AppRouter = (): JSX.Element => {
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
         screenOptions={{
-          headerStyle: { backgroundColor: '#EFF1FF' },
+          headerStyle: { backgroundColor: headerColor, shadowOpacity: 0 },
           headerTitleAlign: 'center',
           headerTitle: () => (
             <View style={styles.logoContainer}>

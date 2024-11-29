@@ -10,7 +10,7 @@ import {
 } from '../utils/LocationUtils';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
-import { updateProjectLocationInArray } from '../utils/DataLoader';
+import { updateProjectLocationInArray } from '../api/projectsApi';
 import auth from '@react-native-firebase/auth';
 
 interface FirstARSceneProps {

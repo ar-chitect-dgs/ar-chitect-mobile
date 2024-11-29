@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import auth from '@react-native-firebase/auth';
 import FirstARScene from '../AR/FirstARScene';
 import ProjectARScene from '../AR/ProjectARScene';
-import { fetchProjectData } from '../utils/DataLoader';
-import { type ProjectData } from '../AR/Interfaces';
-import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
 import { setProject } from '../store/actions';
+import { fetchProjects } from '../api/projectsApi';
+import { type Project } from '../api/types';
 
 const ARScreen: React.FC = () => {
-  console.log('xd');
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
   const dispatch = useDispatch();
 
@@ -20,9 +19,7 @@ const ARScreen: React.FC = () => {
         return;
       }
       try {
-        const projects: Record<string, ProjectData> = await fetchProjectData(
-          user.uid,
-        );
+        const projects: Record<string, Project> = await fetchProjects(user.uid);
         const projectId = Object.keys(projects)[0];
         const firstProject = projects[projectId];
         dispatch(setProject({ id: projectId, project: firstProject }));

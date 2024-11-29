@@ -12,7 +12,7 @@ import {
   ViroTrackingStateConstants,
 } from '@reactvision/react-viro';
 import { SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
-import { fetchObjectsWithModelUrls } from '../utils/DataLoader';
+import { fetchObjectsWithModelUrls } from '../api/projectsApi';
 import ARScene from './ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';

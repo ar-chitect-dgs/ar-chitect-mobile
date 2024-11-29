@@ -1,17 +1,14 @@
-import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import {
-  type Object3D,
-  type ProjectData,
-  type ModelData,
-} from '../AR/Interfaces';
+import { type Project } from './types';
+import storage from '@react-native-firebase/storage';
+import { type ModelData, type Object3D } from '../AR/Interfaces';
 
 const MODELS_DIRECTORY = '/models/';
 const MODELS_FIRESTORE_DIRECTORY = 'models2';
 
-export const fetchProjectData = async (
+export const fetchProjects = async (
   userId: string,
-): Promise<Record<string, ProjectData>> => {
+): Promise<Record<string, Project>> => {
   try {
     const snapshot = await firestore()
       .collection('users')
@@ -19,10 +16,10 @@ export const fetchProjectData = async (
       .collection('projects')
       .get();
 
-    const projects: Record<string, ProjectData> = {};
+    const projects: Record<string, Project> = {};
 
     snapshot.forEach((doc) => {
-      const projectData = doc.data() as ProjectData;
+      const projectData = doc.data() as Project;
       const id = doc.id;
       projects[id] = projectData;
     });
@@ -35,20 +32,18 @@ export const fetchProjectData = async (
 };
 
 export async function fetchObjectsWithModelUrls(
-  projectData: ProjectData,
+  projectData: Project,
 ): Promise<Object3D[]> {
   console.log(projectData);
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
         .collection(MODELS_FIRESTORE_DIRECTORY)
-        .doc(object.objectId.toString())
+        .doc(object.id.toString())
         .get();
 
       if (!modelDoc.exists) {
-        throw new Error(
-          `Model with id ${object.objectId} not found in Firestore`,
-        );
+        throw new Error(`Model with id ${object.id} not found in Firestore`);
       }
 
       const modelData = modelDoc.data() as ModelData;
@@ -56,12 +51,12 @@ export async function fetchObjectsWithModelUrls(
       const colorData = modelData.color_variants[object.color];
       if (!colorData) {
         throw new Error(
-          `Color ${object.color} not found for model ${object.objectId}`,
+          `Color ${object.color} not found for model ${object.id}`,
         );
       }
 
       return {
-        objectId: object.objectId,
+        id: object.id,
         name: modelData.name,
         position: object.position,
         rotation: object.rotation,

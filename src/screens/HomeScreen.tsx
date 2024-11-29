@@ -1,48 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import { type DrawerNavigationProp } from '@react-navigation/drawer';
-import { ROUTES } from '../navigation/routes';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
+import { useAuth } from '../hooks/useAuth';
+import ProjectTile from '../components/ProjectTile';
+import { fetchProjects } from '../api/projectsApi';
+import { type Project } from '../api/types';
+import FormattedText from '../components/FormattedText';
+import { headerColor, purple1 } from '../styles/colors';
 
-type HomeScreenNavigationProp = DrawerNavigationProp<any>;
-
-const HomeScreen: React.FC = () => {
-  const [userName, setUserName] = useState<string | null>(null);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+const Projects = (): JSX.Element => {
+  const [projects, setProjects] = useState<Record<string, Project>>();
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const currentUser = auth().currentUser;
-    if (currentUser) {
-      const name = currentUser.displayName ?? currentUser.email;
-      setUserName(name);
-      setProfileImage(currentUser.photoURL);
-    }
-  }, []);
+    const fetchallProjects = async (): Promise<void> => {
+      if (user) {
+        try {
+          const data = await fetchProjects(user.uid);
+          console.log(data);
+          setProjects(data);
+        } catch (error) {
+          console.error('Error fetching projects:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
-  const handleLogout = async (): Promise<void> => {
-    try {
-      await auth().signOut();
-      navigation.reset({
-        index: 0,
-        routes: [{ name: ROUTES.LOGIN }],
-      });
-    } catch (error: any) {
-      console.error('Logout Error:', error.message);
-    }
+    fetchallProjects().catch((error) => {
+      console.error('Error fetching projects:', error);
+      setLoading(false);
+    });
+  }, [user]);
+
+  const handleProjectClick = (project: Project): void => {
+    console.log(`Navigating to project with ID: ${project.id}`);
+    
   };
 
   return (
     <View style={styles.container}>
-      {profileImage ? (
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+      {loading ? (
+        <ActivityIndicator size="large" color={purple1} style={styles.loader} />
+      ) : !projects || Object.keys(projects).length === 0 ? (
+        <FormattedText style={styles.message}>
+          No projects found. You can create one in the editor!
+        </FormattedText>
       ) : (
-        <Text style={styles.noImageText}>No Profile Picture</Text>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {Object.entries(projects).map(([id, project]) => (
+            <View style={{ padding: 10 }} key={id}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleProjectClick(project);
+                }}
+              >
+                <ProjectTile project={project} onClick={() => {}} />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
       )}
-      <Text style={styles.greeting}>Hello, {userName}!</Text>
-      <Button title="Logout" onPress={() => handleLogout} />
     </View>
   );
 };
@@ -50,26 +74,21 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
+    backgroundColor: headerColor,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
+  loader: {
+    marginTop: 20,
   },
-  noImageText: {
+  message: {
+    textAlign: 'center',
+    marginTop: 20,
     fontSize: 16,
-    color: '#888',
-    marginBottom: 20,
+    color: '#666',
   },
-  greeting: {
-    color: '#000',
-    fontSize: 24,
-    marginBottom: 20,
+  scrollContainer: {
+    paddingVertical: 20,
   },
 });
 
-export default HomeScreen;
+export default Projects;

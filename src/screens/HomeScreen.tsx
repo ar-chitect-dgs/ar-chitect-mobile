@@ -41,7 +41,6 @@ const Projects = (): JSX.Element => {
 
   const handleProjectClick = (project: Project): void => {
     console.log(`Navigating to project with ID: ${project.id}`);
-    
   };
 
   return (

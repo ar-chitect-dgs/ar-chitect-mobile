@@ -20,7 +20,8 @@ import {
   type DirectionalLightProps,
   type SpotLightProps,
 } from '../AR/LightInterfaces';
-import { type Object3D, type ProjectData } from '../AR/Interfaces';
+import { type Object3D } from '../AR/Interfaces';
+import { type Project } from '../api/types';
 
 export interface Reducer {
   lightConfig: LightState;
@@ -42,7 +43,7 @@ export interface LocationState {
 
 export interface ProjectState {
   id: string;
-  project: ProjectData | null;
+  project: Project;
   models: Object3D[];
 }
 

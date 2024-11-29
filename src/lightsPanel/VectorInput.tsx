@@ -7,7 +7,11 @@ interface VectorInputProps {
   setVectorInputs: (value: [string, string, string]) => void;
 }
 
-const VectorInput = ({ title, value, setVectorInputs }: VectorInputProps) => {
+const VectorInput = ({
+  title,
+  value,
+  setVectorInputs,
+}: VectorInputProps): JSX.Element => {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{title} :</Text>

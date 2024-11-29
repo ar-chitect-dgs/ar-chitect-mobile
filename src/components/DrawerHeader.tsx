@@ -1,7 +1,7 @@
-// components/DrawerHeader.tsx
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { type FirebaseAuthTypes } from '@react-native-firebase/auth';
+import FormattedText from './FormattedText';
 import profilePlaceholder from '../assets/profile.png';
 
 interface DrawerHeaderProps {
@@ -17,7 +17,7 @@ const DrawerHeader = ({ user }: DrawerHeaderProps): JSX.Element => {
   return (
     <View style={styles.profileContainer}>
       <Image source={profileImage} style={styles.profileImage} />
-      <Text style={styles.greetingText}>Hi, {userName}!</Text>
+      <FormattedText style={styles.greetingText}>Hi, {userName}!</FormattedText>
     </View>
   );
 };

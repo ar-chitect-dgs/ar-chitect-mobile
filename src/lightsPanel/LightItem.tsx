@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-interface LightItemProps<T> {
+interface LightItemProps {
   id: number;
   title: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const LightItem = <T extends { id: number; color: string }>({
+const LightItem = ({
   id,
   title,
   onEdit,
   onDelete,
-}: LightItemProps<T>): JSX.Element => {
+}: LightItemProps): JSX.Element => {
   return (
     <View style={styles.lightItem} key={id.toString()}>
       <Text>{title.slice(0, -1)}</Text>

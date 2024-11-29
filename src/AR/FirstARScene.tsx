@@ -14,10 +14,11 @@ import { updateProjectLocationInArray } from '../api/projectsApi';
 import auth from '@react-native-firebase/auth';
 
 interface FirstARSceneProps {
+  id: string;
   onComplete: () => void;
 }
 
-const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
+const FirstARScene: React.FC<FirstARSceneProps> = ({ id, onComplete }) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [orientation, setOrientation] = useState<number | null>(null);
   const [step, setStep] = useState<number>(1);
@@ -49,7 +50,7 @@ const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
         Alert.alert('Success', 'Location and orientation saved.');
         void updateProjectLocationInArray(
           user.uid,
-          'D1ydLWyz48EnR0IEylkU',
+          id,
           location.latitude,
           location.longitude,
           orientation,

@@ -19,9 +19,10 @@ export const fetchProjects = async (
     const projects: Record<string, Project> = {};
 
     snapshot.forEach((doc) => {
-      const projectData = doc.data() as Project;
+      const projectData = doc.data();
       const id = doc.id;
-      projects[id] = projectData;
+      const newProject = { ...projectData, id };
+      projects[id] = newProject as Project;
     });
 
     return projects;

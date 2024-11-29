@@ -4,7 +4,7 @@ import {
   ViroSpotLight,
 } from '@reactvision/react-viro';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Vector3D, type Object3D } from './Interfaces';
 import {

@@ -104,7 +104,6 @@ export const updateProjectLocationInArray = async (
       orientation,
       isFirstTime: false,
     });
-
   } catch (error) {
     console.error(`Error updating project ${projectId}:`, error);
     throw error;

@@ -7,7 +7,7 @@ import {
   type SpotLightProps,
 } from '../AR/LightInterfaces';
 import { type Project } from '../api/types';
-import { Object3D } from '../AR/Interfaces';
+import { type Object3D } from '../AR/Interfaces';
 
 export const ADD_AMBIENT_LIGHT = 'ADD_AMBIENT_LIGHT';
 export const UPDATE_AMBIENT_LIGHT = 'UPDATE_AMBIENT_LIGHT';

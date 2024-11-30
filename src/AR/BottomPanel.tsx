@@ -11,15 +11,11 @@ const renderScene = ({
 }: {
   route: { key: string; title: string };
   snapPoint: string;
-}) => {
-  switch (route.key) {
-    case 'lights':
-      return <LightsPanel snapPoint={snapPoint} />;
-    case 'models':
-      return <ModelPanel snapPoint={snapPoint} />;
-    default:
-      return null;
+}): JSX.Element => {
+  if (route.key === 'lights') {
+    return <LightsPanel snapPoint={snapPoint} />;
   }
+  return <ModelPanel snapPoint={snapPoint} />;
 };
 
 const routes = [
@@ -49,7 +45,9 @@ const BottomPanel = (): JSX.Element => {
     >
       <TabView
         navigationState={{ index, routes }}
-        renderScene={(props) => renderScene({ ...props, snapPoint })}
+        renderScene={(props): JSX.Element =>
+          renderScene({ ...props, snapPoint })
+        }
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />

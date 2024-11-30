@@ -29,7 +29,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
     onClose();
   };
 
-  const handlePositionChange = (axis: keyof Vector3D, value: number) => {
+  const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     setModel((prev) => ({
       ...prev,
       position: {

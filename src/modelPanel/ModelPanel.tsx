@@ -17,7 +17,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const [selectedModel, setSelectedModel] = useState<Object3D | null>(null);
   const [selectedId, setSelectedId] = useState(0);
 
-  const handleModelClick = (id: number, model: Object3D) => {
+  const handleModelClick = (id: number, model: Object3D): void => {
     setSelectedId(id);
     setSelectedModel(model);
     setIsModalVisible(true);

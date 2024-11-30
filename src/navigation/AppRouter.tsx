@@ -24,6 +24,7 @@ import logo from '../assets/logo.png';
 import { headerColor } from '../styles/colors';
 import { type Project } from '../api/types';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
   Home: undefined;
   AR: { project: Project };

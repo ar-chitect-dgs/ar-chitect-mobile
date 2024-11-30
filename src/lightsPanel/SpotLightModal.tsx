@@ -48,7 +48,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
     ];
   });
 
-  const [inputErrors, setInputErrors] = useState<boolean[]>([
+  const [positionErrors, setPositionErrors] = useState<boolean[]>([
     false,
     false,
     false,
@@ -90,7 +90,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       newInputErrors.some((error) => error) ||
       newDirectionErrors.some((error) => error)
     ) {
-      setInputErrors(newInputErrors);
+      setPositionErrors(newInputErrors);
       setDirectionErrors(newDirectionErrors);
       return;
     }
@@ -126,12 +126,14 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         value={positionInputs}
         title="position"
         setVectorInputs={setPositionInputs}
+        error={positionErrors}
       />
 
       <VectorInput
         value={directionInputs}
         title="direction"
         setVectorInputs={setDirectionInputs}
+        error={directionErrors}
       />
 
       <EditSlider
@@ -213,6 +215,10 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
+  },
+  label: {
+    color: '#000',
+    marginRight: 10,
   },
 });
 

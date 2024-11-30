@@ -104,6 +104,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
         value={directionInputs}
         title="direction"
         setVectorInputs={setDirectionInputs}
+        error={directionErrors}
       />
 
       <EditSlider

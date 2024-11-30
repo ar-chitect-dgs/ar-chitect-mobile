@@ -4,7 +4,12 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+
+import { NavigationContainer, type RouteProp } from '@react-navigation/native';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
 import { useAuth } from '../hooks/useAuth';
 import HomeScreen from '../screens/HomeScreen';
 import ARScreen from '../screens/ARScreen';
@@ -18,8 +23,31 @@ import DrawerHeader from '../components/DrawerHeader';
 import logo from '../assets/logo.png';
 
 import { headerColor } from '../styles/colors';
+import { type Project } from '../api/types';
+
+export type RootStackParamList = {
+  Home: undefined;
+  AR: { project: Project };
+};
+
+export type ARScreenRouteProp = RouteProp<RootStackParamList, 'AR'>;
+
+export type ARScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'AR'
+>;
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function HomeStack(): JSX.Element {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="AR" component={ARScreen} />
+    </Stack.Navigator>
+  );
+}
 
 const CustomDrawerContent = (props: any): JSX.Element => {
   const { user } = useAuth();
@@ -55,10 +83,9 @@ const AppRouter = (): JSX.Element => {
       >
         {isLoggedIn ? (
           <>
-            <Drawer.Screen name={ROUTES.HOME} component={HomeScreen} />
             <Drawer.Screen
-              name={ROUTES.AR}
-              component={ARScreen}
+              name="Projects"
+              component={HomeStack}
               options={{
                 unmountOnBlur: true,
               }}

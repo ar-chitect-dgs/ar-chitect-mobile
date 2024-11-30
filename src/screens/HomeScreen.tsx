@@ -12,11 +12,18 @@ import { fetchProjects } from '../api/projectsApi';
 import { type Project } from '../api/types';
 import FormattedText from '../components/FormattedText';
 import { headerColor, purple1 } from '../styles/colors';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '../navigation/routes';
+import { type StackNavigationProp } from '@react-navigation/stack';
+import { type RootStackParamList } from '../navigation/AppRouter';
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const Projects = (): JSX.Element => {
   const [projects, setProjects] = useState<Record<string, Project>>();
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   useEffect(() => {
     const fetchallProjects = async (): Promise<void> => {
@@ -41,6 +48,7 @@ const Projects = (): JSX.Element => {
 
   const handleProjectClick = (project: Project): void => {
     console.log(`Navigating to project with ID: ${project.id}`);
+    navigation.navigate('AR', { project });
   };
 
   return (
@@ -55,12 +63,13 @@ const Projects = (): JSX.Element => {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {Object.entries(projects).map(([id, project]) => (
             <View style={{ padding: 10 }} key={id}>
-              <TouchableOpacity
-                onPress={() => {
-                  handleProjectClick(project);
-                }}
-              >
-                <ProjectTile project={project} onClick={() => {}} />
+              <TouchableOpacity onPress={() => {}}>
+                <ProjectTile
+                  project={project}
+                  onClick={() => {
+                    handleProjectClick(project);
+                  }}
+                />
               </TouchableOpacity>
             </View>
           ))}

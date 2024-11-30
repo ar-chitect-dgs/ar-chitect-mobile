@@ -4,11 +4,10 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-
 import { NavigationContainer, type RouteProp } from '@react-navigation/native';
 import {
   createStackNavigator,
-  StackNavigationProp,
+  type StackNavigationProp,
 } from '@react-navigation/stack';
 import { useAuth } from '../hooks/useAuth';
 import HomeScreen from '../screens/HomeScreen';

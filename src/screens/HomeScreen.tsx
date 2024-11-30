@@ -13,7 +13,6 @@ import { type Project } from '../api/types';
 import FormattedText from '../components/FormattedText';
 import { headerColor, purple1 } from '../styles/colors';
 import { useNavigation } from '@react-navigation/native';
-import { ROUTES } from '../navigation/routes';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../navigation/AppRouter';
 

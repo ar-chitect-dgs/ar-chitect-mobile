@@ -36,7 +36,7 @@ const BottomPanel = (): JSX.Element => {
 
   const [index, setIndex] = useState(0);
 
-  const handleSheetChange = (index: number) => {
+  const handleSheetChange = (index: number): void => {
     setSnapPoint(snapPoints[index]);
   };
 

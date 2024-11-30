@@ -1,33 +1,28 @@
 import React, { useState } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Switch,
-} from 'react-native';
+import { View, Text, Button, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotLight, updateSpotLight } from '../store/actions';
 import { type SpotLightProps } from '../AR/LightInterfaces';
 import { type Reducer } from '../store/reducers';
-import LightSlider from './LightSlider';
+import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
+import EditingModal from '../components/EditingModal';
 
 interface SpotLightModalProps {
-  visible: boolean;
+  isVisible: boolean;
   isEditing: boolean;
   onClose: () => void;
   selectedLight: SpotLightProps;
+  snapPoint: string;
 }
 
 const SpotLightModal: React.FC<SpotLightModalProps> = ({
-  visible,
+  isVisible,
   isEditing,
   onClose,
   selectedLight,
+  snapPoint,
 }) => {
   const [spotLight, setSpotLight] = useState<SpotLightProps>(selectedLight);
 
@@ -118,108 +113,99 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
-      <View style={styles.modalContent}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.label}>Pick a color for Spot Light</Text>
-          <ColorPicker
-            color={spotLight.color}
-            onColorChange={(color) => {
-              setSpotLight({ ...spotLight, color });
-            }}
-          />
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+      <Text style={styles.label}>Pick a color for Spot Light</Text>
+      <ColorPicker
+        color={spotLight.color}
+        onColorChange={(color) => {
+          setSpotLight({ ...spotLight, color });
+        }}
+      />
 
-          <VectorInput
-            value={positionInputs}
-            title="position"
-            setVectorInputs={setPositionInputs}
-          />
+      <VectorInput
+        value={positionInputs}
+        title="position"
+        setVectorInputs={setPositionInputs}
+      />
 
-          <VectorInput
-            value={directionInputs}
-            title="direction"
-            setVectorInputs={setDirectionInputs}
-          />
+      <VectorInput
+        value={directionInputs}
+        title="direction"
+        setVectorInputs={setDirectionInputs}
+      />
 
-          <LightSlider
-            title="Intensity"
-            value={spotLight.intensity}
-            setValue={(intensity: number) => {
-              setSpotLight({ ...spotLight, intensity });
-            }}
-            minimumValue={0}
-            maximumValue={2000}
-            step={1}
-          />
+      <EditSlider
+        title="Intensity"
+        value={spotLight.intensity}
+        setValue={(intensity: number) => {
+          setSpotLight({ ...spotLight, intensity });
+        }}
+        minimumValue={0}
+        maximumValue={2000}
+        step={1}
+      />
 
-          <LightSlider
-            title="Inner angle"
-            value={spotLight.innerAngle}
-            setValue={(innerAngle: number) => {
-              setSpotLight({ ...spotLight, innerAngle });
-            }}
-            minimumValue={0}
-            maximumValue={90}
-            step={1}
-          />
+      <EditSlider
+        title="Inner angle"
+        value={spotLight.innerAngle}
+        setValue={(innerAngle: number) => {
+          setSpotLight({ ...spotLight, innerAngle });
+        }}
+        minimumValue={0}
+        maximumValue={90}
+        step={1}
+      />
 
-          <LightSlider
-            title="Outer angle"
-            value={spotLight.outerAngle}
-            setValue={(outerAngle: number) => {
-              setSpotLight({ ...spotLight, outerAngle });
-            }}
-            minimumValue={0}
-            maximumValue={90}
-            step={1}
-          />
+      <EditSlider
+        title="Outer angle"
+        value={spotLight.outerAngle}
+        setValue={(outerAngle: number) => {
+          setSpotLight({ ...spotLight, outerAngle });
+        }}
+        minimumValue={0}
+        maximumValue={90}
+        step={1}
+      />
 
-          <LightSlider
-            title="Attentuation Start Distance"
-            value={spotLight.attenuationStartDistance}
-            setValue={(attenuationStartDistance: number) => {
-              setSpotLight({ ...spotLight, attenuationStartDistance });
-            }}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-          />
+      <EditSlider
+        title="Attentuation Start Distance"
+        value={spotLight.attenuationStartDistance}
+        setValue={(attenuationStartDistance: number) => {
+          setSpotLight({ ...spotLight, attenuationStartDistance });
+        }}
+        minimumValue={0}
+        maximumValue={100}
+        step={1}
+      />
 
-          <LightSlider
-            title="Attentuation End Distance"
-            value={spotLight.attenuationEndDistance}
-            setValue={(attenuationEndDistance: number) => {
-              setSpotLight({ ...spotLight, attenuationEndDistance });
-            }}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-          />
+      <EditSlider
+        title="Attentuation End Distance"
+        value={spotLight.attenuationEndDistance}
+        setValue={(attenuationEndDistance: number) => {
+          setSpotLight({ ...spotLight, attenuationEndDistance });
+        }}
+        minimumValue={0}
+        maximumValue={100}
+        step={1}
+      />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Casts Shadow:</Text>
-            <Switch
-              value={spotLight.castsShadow}
-              onValueChange={(value) => {
-                setSpotLight({ ...spotLight, castsShadow: value });
-              }}
-            />
-          </View>
-
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Close" onPress={onClose} />
-        </ScrollView>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Casts Shadow:</Text>
+        <Switch
+          value={spotLight.castsShadow}
+          onValueChange={(value) => {
+            setSpotLight({ ...spotLight, castsShadow: value });
+          }}
+        />
       </View>
-    </Modal>
+
+      <Button title="Save" onPress={handleSave} />
+      <Button title="Close" onPress={onClose} />
+    </EditingModal>
   );
 };
 
 const styles = StyleSheet.create({
-  modalContent: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,16 +213,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-  },
-  label: {
-    color: '#000',
-    marginRight: 10,
   },
 });
 

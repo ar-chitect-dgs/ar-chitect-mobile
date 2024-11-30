@@ -14,6 +14,7 @@ import {
   SET_ORIENTATION,
   SET_PROJECT,
   SET_MODELS,
+  UPDATE_MODEL,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -43,7 +44,7 @@ export interface LocationState {
 
 export interface ProjectState {
   id: string;
-  project: Project;
+  project: Project | null;
   models: Object3D[];
 }
 
@@ -73,7 +74,7 @@ const initialLocationState = {
   orientation: null,
 };
 
-const initialProjectState = {
+const initialProjectState: ProjectState = {
   project: null,
   id: '',
   models: [],
@@ -181,9 +182,9 @@ const locationReducer = (
 };
 
 const projectReducer = (
-  state = initialProjectState,
-  action: { type: any; payload: any },
-): typeof initialProjectState => {
+  state: ProjectState = initialProjectState,
+  action: any,
+): ProjectState => {
   switch (action.type) {
     case SET_PROJECT:
       return {
@@ -195,6 +196,19 @@ const projectReducer = (
       return {
         ...state,
         models: action.payload,
+      };
+    case UPDATE_MODEL:
+      return {
+        ...state,
+        models: state.models.map((model, index) => {
+          if (index === action.payload.index) {
+            return {
+              ...model,
+              ...action.payload.newModel,
+            };
+          }
+          return model;
+        }),
       };
     default:
       return state;

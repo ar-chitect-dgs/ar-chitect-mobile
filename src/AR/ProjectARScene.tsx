@@ -1,30 +1,19 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Alert, View, ActivityIndicator } from 'react-native';
-import {
-  ViroARScene,
-  ViroARSceneNavigator,
-  ViroTrackingStateConstants,
-} from '@reactvision/react-viro';
+import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
 import { SensorTypes, setUpdateIntervalForType } from 'react-native-sensors';
 import { fetchObjectsWithModelUrls } from '../api/projectsApi';
 import ARScene from './ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet from '@gorhom/bottom-sheet';
 import { setLocation, setModels, setOrientation } from '../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import LightsPanel from '../lightsPanel/LightsPanel';
 import {
   getCurrentLocation,
   getCurrentOrientation,
   requestLocationPermission,
 } from '../utils//LocationUtils';
 import { type Reducer } from '../store/reducers';
+import BottomPanel from './BottomPanel';
 
 export type Location = {
   latitude: number;
@@ -41,7 +30,6 @@ const ProjectARScene: React.FC = () => {
     return <ViroARScene></ViroARScene>;
   }
 
-  const [trackingInitialized, setTrackingInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const referenceLocation = {
@@ -93,17 +81,9 @@ const ProjectARScene: React.FC = () => {
     void loadModels();
   }, [project]);
 
-  const onTrackingUpdated = useCallback((state: ViroTrackingStateConstants) => {
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setTrackingInitialized(true);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      setTrackingInitialized(false);
-    }
-  }, []);
-
   const SceneWithModels = useCallback(() => {
     return (
-      <ViroARScene onTrackingUpdated={onTrackingUpdated}>
+      <ViroARScene>
         <ARScene
           models={models}
           referenceLocation={referenceLocation}
@@ -111,10 +91,7 @@ const ProjectARScene: React.FC = () => {
         />
       </ViroARScene>
     );
-  }, [models, onTrackingUpdated, referenceLocation, referenceOrientation]);
-
-  const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['10%', '25%', '50%', '90%'], []);
+  }, [models, referenceLocation, referenceOrientation]);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -129,13 +106,7 @@ const ProjectARScene: React.FC = () => {
           style={styles.f1}
         />
       )}
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-      >
-        <LightsPanel />
-      </BottomSheet>
+      <BottomPanel />
     </GestureHandlerRootView>
   );
 };

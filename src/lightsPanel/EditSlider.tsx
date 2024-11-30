@@ -2,7 +2,7 @@ import Slider from '@react-native-community/slider';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-interface LightSliderProps {
+interface EditSliderProps {
   title: string;
   value: number;
   setValue: (value: number) => void;
@@ -11,14 +11,14 @@ interface LightSliderProps {
   step: number;
 }
 
-const LightSlider: React.FC<LightSliderProps> = ({
+const EditSlider: React.FC<EditSliderProps> = ({
   title,
   value,
   setValue,
   minimumValue,
   maximumValue,
   step,
-}: LightSliderProps) => {
+}: EditSliderProps) => {
   return (
     <>
       <View style={styles.inputContainer}>
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LightSlider;
+export default EditSlider;

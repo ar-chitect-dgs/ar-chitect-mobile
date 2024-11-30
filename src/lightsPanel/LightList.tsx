@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import LightItem from './LightItem';
+import ListItemTile from '../components/ListItemTile';
 
 interface LightListProps<T> {
   lights: T[];
@@ -23,8 +23,9 @@ const LightList = <T extends { id: number; color: string }>({
         <Text style={styles.title}>{title}</Text>
         <Button title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
       </View>
-      {lights.map((light) => (
-        <LightItem
+      {lights.map((light, index) => (
+        <ListItemTile
+          key={index}
           id={light.id}
           title={title}
           onEdit={() => {

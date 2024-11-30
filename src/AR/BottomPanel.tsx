@@ -12,10 +12,14 @@ const renderScene = ({
   route: { key: string; title: string };
   snapPoint: string;
 }): JSX.Element => {
-  if (route.key === 'lights') {
-    return <LightsPanel snapPoint={snapPoint} />;
+  switch (route.key) {
+    case 'lights':
+      return <LightsPanel snapPoint={snapPoint} />;
+    case 'models':
+      return <ModelPanel snapPoint={snapPoint} />;
+    default:
+      return <></>;
   }
-  return <ModelPanel snapPoint={snapPoint} />;
 };
 
 const routes = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Button, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Button, Text } from 'react-native';
 
 interface ListItemTileProps {
   id: number;
@@ -9,7 +9,6 @@ interface ListItemTileProps {
 }
 
 const ListItemTile = ({
-  id,
   title,
   onEdit,
   onDelete,

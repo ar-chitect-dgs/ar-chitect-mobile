@@ -12,16 +12,6 @@ export interface Vector3D {
   z: number;
 }
 
-export interface ProjectData {
-  id: string;
-  projectName: string;
-  objects: ObjectData[];
-  isFirstTime: boolean;
-  latitude: number;
-  longitude: number;
-  orientation: number;
-}
-
 export interface ObjectData {
   id: string;
   position: Vector3D;

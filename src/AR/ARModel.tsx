@@ -11,7 +11,6 @@ interface ARModelProps {
 }
 
 const ARModel: React.FC<ARModelProps> = ({ url, position, rotation }) => {
-  console.log('pos ', position);
   return (
     <Viro3DObject
       source={{ uri: url }}

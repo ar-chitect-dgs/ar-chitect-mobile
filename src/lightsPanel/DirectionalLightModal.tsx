@@ -10,11 +10,12 @@ import {
   ScrollView,
 } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import Slider from '@react-native-community/slider';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
-import { type DirectionalLightProps } from './LightInterfaces';
+import { type DirectionalLightProps } from '../AR/LightInterfaces';
 import { type Reducer } from '../store/reducers';
+import LightSlider from './LightSlider';
+import VectorInput from './VectorInput';
 
 interface DirectionalLightModalProps {
   visible: boolean;
@@ -107,50 +108,22 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
             }}
           />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Direction:</Text>
-            {['X', 'Y', 'Z'].map((axis, index) => (
-              <TextInput
-                key={index}
-                style={styles.input}
-                keyboardType="numeric" // Accepting only numeric input
-                value={directionInputs[index]}
-                onChangeText={(text) => {
-                  const newInputs = [...directionInputs] as [
-                    string,
-                    string,
-                    string,
-                  ];
-                  newInputs[index] = text;
-                  setDirectionInputs(newInputs);
-                }}
-                placeholder={`Enter ${axis} direction`}
-                placeholderTextColor="#999"
-              />
-            ))}
-          </View>
+          <VectorInput
+            value={directionInputs}
+            title="direction"
+            setVectorInputs={setDirectionInputs}
+          />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Intensity:</Text>
-            <View style={styles.sliderContainer}>
-              <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={2000}
-                step={1}
-                value={directionalLight.intensity}
-                onValueChange={(value) => {
-                  setDirectionalLight({
-                    ...directionalLight,
-                    intensity: value,
-                  });
-                }}
-              />
-              <Text style={styles.label}>
-                {directionalLight.intensity.toFixed(0)}
-              </Text>
-            </View>
-          </View>
+          <LightSlider
+            title="Intensity"
+            value={directionalLight.intensity}
+            setValue={(intensity: number) => {
+              setDirectionalLight({ ...directionalLight, intensity });
+            }}
+            minimumValue={0}
+            maximumValue={2000}
+            step={1}
+          />
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Casts Shadow:</Text>
@@ -187,18 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     color: '#000',
   },
-  input: {
-    height: 30,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    width: '30%',
-    color: '#000',
-    marginHorizontal: 5,
-    flexShrink: 1,
-    fontSize: 12,
-  },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'flex-start',
@@ -208,24 +169,6 @@ const styles = StyleSheet.create({
   label: {
     color: '#000',
     marginRight: 10,
-  },
-  sliderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '50%',
-    justifyContent: 'space-between',
-    borderColor: '#ddd',
-    borderWidth: 1,
-    padding: 5,
-    color: '#000',
-  },
-  slider: {
-    width: '70%',
-    height: 40,
-  },
-  sliderValue: {
-    width: '30%',
-    textAlign: 'right',
   },
 });
 

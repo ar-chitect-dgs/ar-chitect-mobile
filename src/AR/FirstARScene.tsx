@@ -7,18 +7,19 @@ import {
   getCurrentOrientation,
   type Location,
   requestLocationPermission,
-} from './LocationUtils';
+} from '../utils/LocationUtils';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
-import { updateProjectLocationInArray } from './DataLoader';
+import { updateProjectLocationInArray } from '../api/projectsApi';
 import auth from '@react-native-firebase/auth';
 
 interface FirstARSceneProps {
+  id: string;
   onComplete: () => void;
 }
 
-const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
-  const [location, setLocation] = useState<Location>(null);
+const FirstARScene: React.FC<FirstARSceneProps> = ({ id, onComplete }) => {
+  const [location, setLocation] = useState<Location | null>(null);
   const [orientation, setOrientation] = useState<number | null>(null);
   const [step, setStep] = useState<number>(1);
   const sheetRef = useRef<BottomSheet>(null);
@@ -49,7 +50,7 @@ const FirstARScene: React.FC<FirstARSceneProps> = ({ onComplete }) => {
         Alert.alert('Success', 'Location and orientation saved.');
         void updateProjectLocationInArray(
           user.uid,
-          'D1ydLWyz48EnR0IEylkU',
+          id,
           location.latitude,
           location.longitude,
           orientation,

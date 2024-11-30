@@ -14,7 +14,7 @@ import FormattedText from '../components/FormattedText';
 import { headerColor, purple1 } from '../styles/colors';
 
 const Projects = (): JSX.Element => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Record<string, Project>>();
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
@@ -41,28 +41,26 @@ const Projects = (): JSX.Element => {
 
   const handleProjectClick = (project: Project): void => {
     console.log(`Navigating to project with ID: ${project.id}`);
-    // navigate to AR
   };
 
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color={purple1} style={styles.loader} />
-      ) : projects.length === 0 ? (
+      ) : !projects || Object.keys(projects).length === 0 ? (
         <FormattedText style={styles.message}>
           No projects found. You can create one in the editor!
         </FormattedText>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {projects.map((project) => (
-            <View style={{ padding: 10 }}>
+          {Object.entries(projects).map(([id, project]) => (
+            <View style={{ padding: 10 }} key={id}>
               <TouchableOpacity
-                key={project.id}
                 onPress={() => {
                   handleProjectClick(project);
                 }}
               >
-                <ProjectTile project={project} />
+                <ProjectTile project={project} onClick={() => {}} />
               </TouchableOpacity>
             </View>
           ))}

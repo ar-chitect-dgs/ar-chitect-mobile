@@ -6,6 +6,7 @@ import {
   type DirectionalLightProps,
   type SpotLightProps,
 } from '../AR/LightInterfaces';
+import { type ProjectData } from '../AR/Interfaces';
 
 export const ADD_AMBIENT_LIGHT = 'ADD_AMBIENT_LIGHT';
 export const UPDATE_AMBIENT_LIGHT = 'UPDATE_AMBIENT_LIGHT';
@@ -21,6 +22,9 @@ export const REMOVE_SPOT_LIGHT = 'REMOVE_SPOT_LIGHT';
 
 export const SET_LOCATION = 'SET_LOCATION';
 export const SET_ORIENTATION = 'SET_ORIENTATION';
+
+export const SET_PROJECT = 'SET_PROJECT';
+export const SET_MODELS = 'SET_MODELS';
 
 export const addAmbientLight = (light: AmbientLightProps): AnyAction => {
   return {
@@ -88,4 +92,20 @@ export const setLocation = (location: any): AnyAction => ({
 export const setOrientation = (orientation: any): AnyAction => ({
   type: SET_ORIENTATION,
   payload: orientation,
+});
+
+export const setProject = ({
+  id,
+  project,
+}: {
+  id: string;
+  project: ProjectData;
+}): AnyAction => ({
+  type: SET_PROJECT,
+  payload: { id, project },
+});
+
+export const setModels = (models: any): AnyAction => ({
+  type: SET_MODELS,
+  payload: models,
 });

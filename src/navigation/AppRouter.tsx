@@ -56,7 +56,13 @@ const AppRouter = (): JSX.Element => {
         {isLoggedIn ? (
           <>
             <Drawer.Screen name={ROUTES.HOME} component={HomeScreen} />
-            <Drawer.Screen name={ROUTES.AR} component={ARScreen} />
+            <Drawer.Screen
+              name={ROUTES.AR}
+              component={ARScreen}
+              options={{
+                unmountOnBlur: true,
+              }}
+            />
             <Drawer.Screen name={ROUTES.PROFILE} component={ProfileScreen} />
             <Drawer.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />
           </>

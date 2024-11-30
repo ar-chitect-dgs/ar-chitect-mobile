@@ -35,10 +35,6 @@ const ARScene: React.FC<ARSceneProps> = ({
     (state: Reducer) => state.locationConfig,
   );
   const { latitude, longitude, orientation } = locationConfig;
-  console.log('Rotation: ', orientation);
-  console.log('Reference: ', referenceOrientation);
-  console.log('Local: ', latitude);
-
   const calculatePosition = (modelPosition: Vector3D): Vector3D => {
     if (!latitude || !longitude || !referenceLocation) {
       return modelPosition;

@@ -42,10 +42,16 @@ const Stack = createStackNavigator();
 
 function HomeStack(): JSX.Element {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="AR" component={ARScreen} />
-    </Stack.Navigator>
+   <Stack.Screen
+        name="Home"
+        options={{ headerShown: false }}
+        component={HomeScreen}
+      />
+      <Stack.Screen
+        name="AR"
+        options={{ headerShown: false }}
+        component={ARScreen}
+      />
   );
 }
 

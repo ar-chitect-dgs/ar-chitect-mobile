@@ -6,23 +6,22 @@ import {
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
-import { type Vector3D, type Object3D } from './Interfaces';
+import { type Vector3D } from './Interfaces';
 import {
   type LocationState,
   type LightState,
   type Reducer,
+  type ProjectState,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 import { type Location } from './ProjectARScene';
 
 interface ARSceneProps {
-  models: Object3D[];
   referenceLocation: Location;
   referenceOrientation: number;
 }
 
 const ARScene: React.FC<ARSceneProps> = ({
-  models,
   referenceLocation,
   referenceOrientation,
 }) => {
@@ -30,6 +29,11 @@ const ARScene: React.FC<ARSceneProps> = ({
     (state: Reducer) => state.lightConfig,
   );
   const { ambientLights, directionalLights, spotLights } = lightConfig;
+
+  const projectConfig: ProjectState = useSelector(
+    (state: Reducer) => state.projectConfig,
+  );
+  const { models } = projectConfig;
 
   const locationConfig: LocationState = useSelector(
     (state: Reducer) => state.locationConfig,

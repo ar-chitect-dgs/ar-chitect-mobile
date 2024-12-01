@@ -29,7 +29,10 @@ const routes = [
 
 const BottomPanel = (): JSX.Element => {
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['10%', '25%', '50%', '90%'], []);
+  const snapPoints = useMemo(
+    () => ['5%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%'],
+    [],
+  );
   const layout = useWindowDimensions();
 
   const [snapPoint, setSnapPoint] = useState<string>(snapPoints[0]);

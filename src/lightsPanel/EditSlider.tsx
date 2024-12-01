@@ -34,7 +34,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
               setValue(value);
             }}
           />
-          <Text style={styles.label}>{value.toFixed(0)}</Text>
+          <Text style={styles.label}>{value.toFixed(1)}</Text>
         </View>
       </View>
     </>

@@ -37,6 +37,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
         [axis]: value,
       },
     }));
+    dispatch(updateModel(id, model));
   };
 
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
@@ -53,7 +54,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
           }}
           minimumValue={-10}
           maximumValue={10}
-          step={1}
+          step={0.5}
         />
       ))}
       <Button title="Save" onPress={handleSave} />

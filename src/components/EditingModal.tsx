@@ -13,7 +13,7 @@ const EditingModal = ({
   children,
 }: EditingModalProps): JSX.Element => {
   const screenHeight = Dimensions.get('window').height;
-  const snapPointHeight = (parseInt(snapPoint) * screenHeight) / 100;
+  const snapPointHeight = (parseInt(snapPoint) * screenHeight) / 100 - 100;
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true}>

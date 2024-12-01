@@ -79,19 +79,18 @@ const ProjectARScene: React.FC = () => {
     };
 
     void loadModels();
-  }, [project]);
+  }, []);
 
   const SceneWithModels = useCallback(() => {
     return (
       <ViroARScene>
         <ARScene
-          models={models}
           referenceLocation={referenceLocation}
           referenceOrientation={referenceOrientation}
         />
       </ViroARScene>
     );
-  }, [models, referenceLocation, referenceOrientation]);
+  }, [dispatch, models, referenceLocation, referenceOrientation]);
 
   return (
     <GestureHandlerRootView style={styles.container}>

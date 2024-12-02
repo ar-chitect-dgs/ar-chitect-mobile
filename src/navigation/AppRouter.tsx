@@ -44,12 +44,12 @@ function HomeStack(): JSX.Element {
   return (
    <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name={ROUTES.HOME}
         options={{ headerShown: false }}
         component={HomeScreen}
       />
       <Stack.Screen
-        name="AR"
+        name={ROUTES.AR}
         options={{ headerShown: false }}
         component={ARScreen}
       />

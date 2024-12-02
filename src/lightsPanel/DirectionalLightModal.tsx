@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TextInput,
-  Switch,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Button, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
 import { type DirectionalLightProps } from '../AR/LightInterfaces';
 import { type Reducer } from '../store/reducers';
-import LightSlider from './LightSlider';
+import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
+import EditingModal from '../components/EditingModal';
 
 interface DirectionalLightModalProps {
-  visible: boolean;
+  isVisible: boolean;
   isEditing: boolean;
   onClose: () => void;
   selectedLight: DirectionalLightProps;
+  snapPoint: string;
 }
 
 const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
-  visible,
+  isVisible,
   isEditing,
   onClose,
   selectedLight,
+  snapPoint,
 }) => {
   const [directionalLight, setDirectionalLight] =
     useState<DirectionalLightProps>(selectedLight);
@@ -97,61 +91,53 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
-      <View style={styles.modalContent}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.label}>Pick a color for Directional Light</Text>
-          <ColorPicker
-            color={directionalLight.color}
-            onColorChange={(color) => {
-              setDirectionalLight({ ...directionalLight, color });
-            }}
-          />
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+      <Text style={styles.label}>Pick a color for Directional Light</Text>
+      <ColorPicker
+        color={directionalLight.color}
+        onColorChange={(color) => {
+          setDirectionalLight({ ...directionalLight, color });
+        }}
+      />
 
-          <VectorInput
-            value={directionInputs}
-            title="direction"
-            setVectorInputs={setDirectionInputs}
-          />
+      <VectorInput
+        value={directionInputs}
+        title="direction"
+        setVectorInputs={setDirectionInputs}
+        error={directionErrors}
+      />
 
-          <LightSlider
-            title="Intensity"
-            value={directionalLight.intensity}
-            setValue={(intensity: number) => {
-              setDirectionalLight({ ...directionalLight, intensity });
-            }}
-            minimumValue={0}
-            maximumValue={2000}
-            step={1}
-          />
+      <EditSlider
+        title="Intensity"
+        value={directionalLight.intensity}
+        setValue={(intensity: number) => {
+          setDirectionalLight({ ...directionalLight, intensity });
+        }}
+        minimumValue={0}
+        maximumValue={2000}
+        step={1}
+      />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Casts Shadow:</Text>
-            <Switch
-              value={directionalLight.castsShadow}
-              onValueChange={(value) => {
-                setDirectionalLight({
-                  ...directionalLight,
-                  castsShadow: value,
-                });
-              }}
-            />
-          </View>
-
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Close" onPress={onClose} />
-        </ScrollView>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Casts Shadow:</Text>
+        <Switch
+          value={directionalLight.castsShadow}
+          onValueChange={(value) => {
+            setDirectionalLight({
+              ...directionalLight,
+              castsShadow: value,
+            });
+          }}
+        />
       </View>
-    </Modal>
+
+      <Button title="Save" onPress={handleSave} />
+      <Button title="Close" onPress={onClose} />
+    </EditingModal>
   );
 };
 
 const styles = StyleSheet.create({
-  modalContent: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -159,12 +145,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
   },
   label: {
     color: '#000',

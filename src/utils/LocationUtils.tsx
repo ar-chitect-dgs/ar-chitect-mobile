@@ -68,7 +68,6 @@ export const getCurrentOrientation = async ({
     const adjustedAngle = (angle + 360) % 360;
     setOrientation(adjustedAngle);
     setStep(3);
-    console.log(angle);
     subscription.unsubscribe();
   });
 };

@@ -35,12 +35,11 @@ export const fetchProjects = async (
 export async function fetchObjectsWithModelUrls(
   projectData: Project,
 ): Promise<Object3D[]> {
-  console.log(projectData);
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
         .collection(MODELS_FIRESTORE_DIRECTORY)
-        .doc(object.id.toString())
+        .doc(object.id)
         .get();
 
       if (!modelDoc.exists) {
@@ -105,8 +104,6 @@ export const updateProjectLocationInArray = async (
       orientation,
       isFirstTime: false,
     });
-
-    console.log(`Project ${projectId} updated successfully.`);
   } catch (error) {
     console.error(`Error updating project ${projectId}:`, error);
     throw error;

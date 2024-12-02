@@ -42,7 +42,7 @@ const Stack = createStackNavigator();
 
 function HomeStack(): JSX.Element {
   return (
-   <Stack.Navigator>
+    <Stack.Navigator>
       <Stack.Screen
         name={ROUTES.HOME}
         options={{ headerShown: false }}
@@ -53,7 +53,7 @@ function HomeStack(): JSX.Element {
         options={{ headerShown: false }}
         component={ARScreen}
       />
-   </Stack.Navigator>
+    </Stack.Navigator>
   );
 }
 

@@ -14,7 +14,7 @@ const ListItemTile = ({
   onDelete,
 }: ListItemTileProps): JSX.Element => (
   <TouchableOpacity style={styles.card} onPress={onEdit}>
-    <Text style={styles.title}>{title.slice(0, -1)}</Text>
+    <Text style={styles.title}>{title}</Text>
     <Button title="Delete" onPress={onDelete} />
   </TouchableOpacity>
 );

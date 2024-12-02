@@ -27,7 +27,7 @@ const ARScreen: React.FC = () => {
         dispatch(setProject({ id, project }));
         setIsFirstTime(project.isFirstTime);
       } catch (error) {
-        console.error('Error fetching project data:', error);
+        // TODO: show error
       }
     };
 
@@ -40,7 +40,11 @@ const ARScreen: React.FC = () => {
 
   return isFirstTime === null || projectId === null ? (
     <View style={styles.loaderContainer}>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        testID="ActivityIndicator"
+      />
     </View>
   ) : isFirstTime ? (
     <FirstARScene id={projectId} onComplete={handleCompleteFirstARScene} />

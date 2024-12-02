@@ -42,7 +42,11 @@ const sampleSpotLight: SpotLightProps = {
   castsShadow: false,
 };
 
-const LightsPanel = (): JSX.Element => {
+interface PanelProps {
+  snapPoint: string;
+}
+
+const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const [selectedAmbientLight, setSelectedAmbientLight] =
     useState<AmbientLightProps>(sampleAmbientLight);
   const [selectedSpotLight, setSelectedSpotLight] =
@@ -93,7 +97,7 @@ const LightsPanel = (): JSX.Element => {
         onDelete={(id) => dispatch(removeAmbientLight(id))}
       />
       <AmbientLightModal
-        visible={isModalVisible.ambientLightModal}
+        isVisible={isModalVisible.ambientLightModal}
         isEditing={isEditing}
         onClose={() => {
           setIsModalVisible({
@@ -103,6 +107,7 @@ const LightsPanel = (): JSX.Element => {
           });
         }}
         selectedLight={selectedAmbientLight}
+        snapPoint={snapPoint}
       />
 
       <LightList
@@ -117,7 +122,7 @@ const LightsPanel = (): JSX.Element => {
         onDelete={(id) => dispatch(removeDirectionalLight(id))}
       />
       <DirectionalLightModal
-        visible={isModalVisible.directionalLightModal}
+        isVisible={isModalVisible.directionalLightModal}
         isEditing={isEditing}
         onClose={() => {
           setIsModalVisible({
@@ -127,6 +132,7 @@ const LightsPanel = (): JSX.Element => {
           });
         }}
         selectedLight={selectedDirectionalLight}
+        snapPoint={snapPoint}
       />
 
       <LightList
@@ -141,7 +147,7 @@ const LightsPanel = (): JSX.Element => {
         onDelete={(id) => dispatch(removeSpotLight(id))}
       />
       <SpotLightModal
-        visible={isModalVisible.spotlightModal}
+        isVisible={isModalVisible.spotlightModal}
         isEditing={isEditing}
         onClose={() => {
           setIsModalVisible({
@@ -151,6 +157,7 @@ const LightsPanel = (): JSX.Element => {
           });
         }}
         selectedLight={selectedSpotLight}
+        snapPoint={snapPoint}
       />
     </View>
   );

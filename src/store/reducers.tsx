@@ -15,13 +15,14 @@ import {
   SET_PROJECT,
   SET_MODELS,
   UPDATE_MODEL,
+  SET_TRANSLATION,
 } from './actions';
 import {
   type AmbientLightProps,
   type DirectionalLightProps,
   type SpotLightProps,
 } from '../AR/LightInterfaces';
-import { type Object3D } from '../AR/Interfaces';
+import { Vector3D, type Object3D } from '../AR/Interfaces';
 import { type Project } from '../api/types';
 
 export interface Reducer {
@@ -40,6 +41,7 @@ export interface LocationState {
   latitude: number | null;
   longitude: number | null;
   orientation: number;
+  translation: Vector3D;
 }
 
 export interface ProjectState {
@@ -72,6 +74,11 @@ const initialLocationState = {
   latitude: null,
   longitude: null,
   orientation: null,
+  translation: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
 };
 
 const initialProjectState: ProjectState = {
@@ -175,6 +182,11 @@ const locationReducer = (
       return {
         ...state,
         orientation: action.payload,
+      };
+    case SET_TRANSLATION:
+      return {
+        ...state,
+        translation: action.payload,
       };
     default:
       return state;

@@ -4,6 +4,7 @@ import { useWindowDimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import LightsPanel from '../lightsPanel/LightsPanel';
 import ModelPanel from '../modelPanel/ModelPanel';
+import ScenePanel from '../modelPanel/ScenePanel';
 
 const renderScene = ({
   route,
@@ -17,6 +18,8 @@ const renderScene = ({
       return <LightsPanel snapPoint={snapPoint} />;
     case 'models':
       return <ModelPanel snapPoint={snapPoint} />;
+    case 'scene':
+      return <ScenePanel snapPoint={snapPoint} />;
     default:
       return <></>;
   }
@@ -25,6 +28,7 @@ const renderScene = ({
 const routes = [
   { key: 'lights', title: 'Lights' },
   { key: 'models', title: 'Models' },
+  { key: 'scene', title: 'Scene' },
 ];
 
 const BottomPanel = (): JSX.Element => {

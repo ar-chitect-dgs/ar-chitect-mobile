@@ -10,7 +10,6 @@ import {
   ADD_SPOT_LIGHT,
   UPDATE_SPOT_LIGHT,
   REMOVE_SPOT_LIGHT,
-  SET_LOCATION,
   SET_ORIENTATION,
   SET_PROJECT,
   SET_MODELS,
@@ -22,12 +21,11 @@ import {
   type DirectionalLightProps,
   type SpotLightProps,
 } from '../AR/LightInterfaces';
-import { Vector3D, type Object3D } from '../AR/Interfaces';
+import { type Vector3D, type Object3D } from '../AR/Interfaces';
 import { type Project } from '../api/types';
 
 export interface Reducer {
   lightConfig: LightState;
-  locationConfig: LocationState;
   projectConfig: ProjectState;
 }
 
@@ -37,17 +35,12 @@ export interface LightState {
   spotLights: SpotLightProps[];
 }
 
-export interface LocationState {
-  latitude: number | null;
-  longitude: number | null;
-  orientation: number;
-  translation: Vector3D;
-}
-
 export interface ProjectState {
   id: string;
   project: Project | null;
   models: Object3D[];
+  orientation: number;
+  translation: Vector3D;
 }
 
 const initialLightState = {
@@ -70,21 +63,16 @@ const initialLightState = {
   spotLights: [],
 };
 
-const initialLocationState = {
-  latitude: null,
-  longitude: null,
-  orientation: null,
+const initialProjectState: ProjectState = {
+  project: null,
+  id: '',
+  models: [],
+  orientation: 0,
   translation: {
     x: 0,
     y: 0,
     z: 0,
   },
-};
-
-const initialProjectState: ProjectState = {
-  project: null,
-  id: '',
-  models: [],
 };
 
 const lightReducer = (
@@ -167,32 +155,6 @@ const lightReducer = (
   }
 };
 
-const locationReducer = (
-  state = initialLocationState,
-  action: { type: any; payload: any },
-): typeof initialLocationState => {
-  switch (action.type) {
-    case SET_LOCATION:
-      return {
-        ...state,
-        latitude: action.payload.latitude,
-        longitude: action.payload.longitude,
-      };
-    case SET_ORIENTATION:
-      return {
-        ...state,
-        orientation: action.payload,
-      };
-    case SET_TRANSLATION:
-      return {
-        ...state,
-        translation: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
 const projectReducer = (
   state: ProjectState = initialProjectState,
   action: any,
@@ -222,6 +184,16 @@ const projectReducer = (
           return model;
         }),
       };
+    case SET_ORIENTATION:
+      return {
+        ...state,
+        orientation: action.payload,
+      };
+    case SET_TRANSLATION:
+      return {
+        ...state,
+        translation: action.payload,
+      };
     default:
       return state;
   }
@@ -229,6 +201,5 @@ const projectReducer = (
 
 export default combineReducers({
   lightConfig: lightReducer,
-  locationConfig: locationReducer,
   projectConfig: projectReducer,
 });

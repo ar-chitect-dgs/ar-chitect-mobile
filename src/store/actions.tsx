@@ -21,7 +21,6 @@ export const ADD_SPOT_LIGHT = 'ADD_SPOT_LIGHT';
 export const UPDATE_SPOT_LIGHT = 'UPDATE_SPOT_LIGHT';
 export const REMOVE_SPOT_LIGHT = 'REMOVE_SPOT_LIGHT';
 
-export const SET_LOCATION = 'SET_LOCATION';
 export const SET_ORIENTATION = 'SET_ORIENTATION';
 export const SET_TRANSLATION = 'SET_TRANSLATION';
 
@@ -85,11 +84,6 @@ export const updateSpotLight = (
 export const removeSpotLight = (id: number): AnyAction => ({
   type: REMOVE_SPOT_LIGHT,
   payload: { id, properties: null },
-});
-
-export const setLocation = (location: any): AnyAction => ({
-  type: SET_LOCATION,
-  payload: location,
 });
 
 export const setTranslation = (translation: any): AnyAction => ({

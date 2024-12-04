@@ -1,44 +1,34 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { type Reducer, type LocationState } from '../store/reducers';
-import { setTranslation } from '../store/actions';
-import { type Vector3D } from '../AR/Interfaces';
-import EditSlider from '../lightsPanel/EditSlider';
+import { View, StyleSheet, Button } from 'react-native';
+import { useSelector } from 'react-redux';
+import { type ProjectState, type Reducer } from '../store/reducers';
+import SceneEditor from './SceneEditor';
 
-const ScenePanel: React.FC = () => {
-  const locationConfig: LocationState = useSelector(
-    (state: Reducer) => state.locationConfig,
+interface PanelProps {
+  snapPoint: string;
+}
+
+const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
+  const { translation, orientation }: ProjectState = useSelector(
+    (state: Reducer) => state.projectConfig,
   );
-  const { translation, orientation } = locationConfig;
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const dispatch = useDispatch();
-
-  const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
-    dispatch(
-      setTranslation({
-        ...translation,
-        [axis]: value,
-      }),
-    );
+  const handleClick = (): void => {
+    setIsModalVisible(true);
   };
-
-  const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
   return (
     <View style={styles.container}>
-      {axes.map((axis) => (
-        <EditSlider
-          key={axis}
-          title={`${axis.toUpperCase()} translation`}
-          value={translation[axis]}
-          setValue={(value: number) => {
-            handlePositionChange(axis, value);
-          }}
-          minimumValue={-10}
-          maximumValue={10}
-          step={0.5}
-        />
-      ))}
+      <Button title="Edit scene" onPress={handleClick} />
+      <SceneEditor
+        orientation={orientation}
+        translation={translation}
+        snapPoint={snapPoint}
+        isVisible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+        }}
+      />
     </View>
   );
 };

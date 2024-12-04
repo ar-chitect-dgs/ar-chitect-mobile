@@ -15,53 +15,19 @@ import {
 import { type Reducer } from '../store/reducers';
 import BottomPanel from './BottomPanel';
 
-export type Location = {
-  latitude: number;
-  longitude: number;
-} | null;
-
 const ProjectARScene: React.FC = () => {
   const dispatch = useDispatch();
   const { project, models } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
 
+  const { translation } = useSelector((state: Reducer) => state.locationConfig);
+
   if (project == null) {
     return <ViroARScene></ViroARScene>;
   }
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const referenceLocation = {
-    latitude: project.latitude,
-    longitude: project.longitude,
-  };
-  const referenceOrientation = project.orientation;
-
-  useEffect(() => {
-    const initializeData = async (): Promise<void> => {
-      const hasPermission = await requestLocationPermission();
-      if (!hasPermission) {
-        Alert.alert('Permission Denied', 'Location access is required.');
-        return;
-      }
-
-      await Promise.all([
-        getCurrentLocation({
-          setLocation: (location) => dispatch(setLocation(location)),
-          setStep: () => {},
-        }),
-        getCurrentOrientation({
-          setOrientation: (orientation) =>
-            dispatch(setOrientation(orientation)),
-          setStep: () => {},
-        }),
-      ]);
-    };
-
-    void initializeData();
-    setUpdateIntervalForType(SensorTypes.magnetometer, 100);
-  }, [dispatch]);
 
   useEffect(() => {
     const loadModels = async (): Promise<void> => {
@@ -84,13 +50,10 @@ const ProjectARScene: React.FC = () => {
   const SceneWithModels = useCallback(() => {
     return (
       <ViroARScene>
-        <ARScene
-          referenceLocation={referenceLocation}
-          referenceOrientation={referenceOrientation}
-        />
+        <ARScene />
       </ViroARScene>
     );
-  }, [dispatch, models, referenceLocation, referenceOrientation]);
+  }, [models, translation]);
 
   return (
     <GestureHandlerRootView style={styles.container}>

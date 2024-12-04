@@ -50,16 +50,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     color: '#000',
   },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    width: '30%',
-    color: '#000',
-    marginHorizontal: 5,
-    flexShrink: 1,
-  },
   label: {
     color: '#000',
     marginRight: 10,
@@ -67,7 +57,7 @@ const styles = StyleSheet.create({
   sliderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%',
+    width: '70%',
     justifyContent: 'space-between',
     borderColor: '#ddd',
     borderWidth: 1,

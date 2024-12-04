@@ -3,12 +3,11 @@ import {
   ViroDirectionalLight,
   ViroSpotLight,
 } from '@reactvision/react-viro';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Vector3D } from './Interfaces';
 import {
-  type LocationState,
   type LightState,
   type Reducer,
   type ProjectState,

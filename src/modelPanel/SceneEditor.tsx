@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { type ProjectState, type Reducer } from '../store/reducers';
+import { StyleSheet, Button } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { setOrientation, setTranslation } from '../store/actions';
 import { type Vector3D } from '../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';

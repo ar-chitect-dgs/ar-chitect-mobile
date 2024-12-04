@@ -67,22 +67,4 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-});
-
 export default SceneEditor;

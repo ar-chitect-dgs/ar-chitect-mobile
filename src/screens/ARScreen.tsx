@@ -51,7 +51,7 @@ const ARScreen: React.FC = () => {
     void loadModels();
   }, []);
 
-  const SceneWithModels = () => {
+  const SceneWithModels = (): JSX.Element => {
     return (
       <ViroARScene>
         <ARScene />

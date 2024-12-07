@@ -5,6 +5,7 @@ import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
+import { useRoute } from '@react-navigation/native';
 
 const testProject = {
   id: 'mockProjectId',
@@ -33,7 +34,6 @@ jest.mock('react-redux', () => ({
 }));
 
 jest.mock('@react-navigation/native', () => ({
-  ...jest.requireActual('@react-navigation/native'),
   useRoute: jest.fn(),
 }));
 
@@ -47,8 +47,10 @@ jest.mock('react-native-gesture-handler', () => ({
 }));
 
 jest.mock('../api/projectsApi', () => ({
-  fetchProjects: jest.fn(async () => Promise.resolve(testProjects)),
-  fetchObjectsWithModelUrls: jest.fn(async () => Promise.resolve(testModels)),
+  fetchProjects: jest.fn(async () => await Promise.resolve(testProjects)),
+  fetchObjectsWithModelUrls: jest.fn(
+    async () => await Promise.resolve(testModels),
+  ),
 }));
 
 jest.mock('../store/actions', () => ({
@@ -72,8 +74,7 @@ describe('ARScreen', () => {
     dispatchMock = jest.fn();
     (useDispatch as unknown as jest.Mock).mockReturnValue(dispatchMock);
 
-    const mockUseRoute = require('@react-navigation/native').useRoute;
-    mockUseRoute.mockReturnValue({
+    (useRoute as unknown as jest.Mock).mockReturnValue({
       params: { project: testProject },
     });
   });

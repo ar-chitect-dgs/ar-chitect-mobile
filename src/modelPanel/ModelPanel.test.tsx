@@ -59,6 +59,7 @@ describe('ModelPanel', () => {
 
     testModels.map((model) => {
       expect(getByText(model.name)).toBeTruthy();
+      return {};
     });
   });
 

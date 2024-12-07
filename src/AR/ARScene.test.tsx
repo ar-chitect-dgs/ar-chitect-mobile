@@ -42,11 +42,8 @@ const testModels = [
   },
 ];
 
-const testLocation = {
-  latitude: 50.1234,
-  longitude: 40.4321,
-  orientation: 90,
-};
+const testTranslation = { x: 1, y: 1, z: 1 };
+const testOrientation: number = 90;
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
@@ -74,20 +71,20 @@ describe('ARScene', () => {
     };
     const projectConfig = {
       models: testModels,
+      translation: testTranslation,
+      orientation: testOrientation,
     };
-    const locationConfig = testLocation;
 
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         lightConfig,
         projectConfig,
-        locationConfig,
       }),
     );
   });
 
   it('Test rendering lights and models basen on config', () => {
-    render(<ARScene referenceLocation={null} referenceOrientation={90} />);
+    render(<ARScene />);
 
     function omitId(light: {
       [x: string]: any;
@@ -125,7 +122,19 @@ describe('ARScene', () => {
       {},
     );
     expect(ARModel).toHaveBeenCalledWith(
-      expect.objectContaining(testModels[0]),
+      expect.objectContaining({
+        ...testModels[0],
+        position: {
+          x: testModels[0].position.x + testTranslation.x,
+          y: testModels[0].position.y + testTranslation.y,
+          z: testModels[0].position.z + testTranslation.z,
+        },
+        rotation: {
+          x: testModels[0].rotation.x,
+          y: testModels[0].rotation.y + testOrientation,
+          z: testModels[0].rotation.z,
+        },
+      }),
       {},
     );
   });

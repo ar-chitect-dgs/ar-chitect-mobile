@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import FirstARScene from '../AR/FirstARScene';
-import ProjectARScene from '../AR/ProjectARScene';
 import { useDispatch } from 'react-redux';
-import { setProject } from '../store/actions';
-import { fetchProjects } from '../api/projectsApi';
-import { type Project } from '../api/types';
+import { setModels, setProject } from '../store/actions';
+import { useRoute } from '@react-navigation/native';
+import { type ARScreenRouteProp } from '../navigation/AppRouter';
+import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
+import { fetchObjectsWithModelUrls } from '../api/projectsApi';
+import ARScene from '../AR/ARScene';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomPanel from '../AR/BottomPanel';
 
 const ARScreen: React.FC = () => {
-  const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
-  const [projectId, setProjectId] = useState<string | null>(null);
   const dispatch = useDispatch();
+  const route = useRoute<ARScreenRouteProp>();
+  const { project } = route.params;
+
+  const data = project;
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
@@ -20,44 +27,93 @@ const ARScreen: React.FC = () => {
         return;
       }
       try {
-        const projects: Record<string, Project> = await fetchProjects(user.uid);
-        const id = Object.keys(projects)[0];
-        setProjectId(id);
-        const project = projects[id];
-        dispatch(setProject({ id, project }));
-        setIsFirstTime(project.isFirstTime);
+        dispatch(setProject({ id: data.id, project: data }));
       } catch (error) {
-        // TODO: show error
+        console.error('Error fetching project data:', error);
+      }
+    };
+    const loadModels = async (): Promise<void> => {
+      setIsLoading(true);
+      try {
+        const modelsArray = await fetchObjectsWithModelUrls(project);
+        dispatch(setModels(modelsArray));
+      } catch (error) {
+        console.error(
+          'Error while downloading and loading project data',
+          error,
+        );
+      } finally {
+        setIsLoading(false);
       }
     };
 
     void loadProjectData();
+    void loadModels();
   }, []);
 
-  const handleCompleteFirstARScene = (): void => {
-    setIsFirstTime(false);
+  const SceneWithModels = (): JSX.Element => {
+    return (
+      <ViroARScene>
+        <ARScene />
+      </ViroARScene>
+    );
   };
 
-  return isFirstTime === null || projectId === null ? (
-    <View style={styles.loaderContainer}>
-      <ActivityIndicator
-        size="large"
-        color="#0000ff"
-        testID="ActivityIndicator"
-      />
+  return (
+    <View style={{ flex: 1 }}>
+      <GestureHandlerRootView style={styles.container}>
+        {isLoading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator
+              testID="activity-indicator"
+              size="large"
+              color="#0000ff"
+            />
+          </View>
+        ) : (
+          <ViroARSceneNavigator
+            autofocus
+            initialScene={{ scene: SceneWithModels }}
+            style={styles.f1}
+          />
+        )}
+        <BottomPanel />
+      </GestureHandlerRootView>
     </View>
-  ) : isFirstTime ? (
-    <FirstARScene id={projectId} onComplete={handleCompleteFirstARScene} />
-  ) : (
-    <ProjectARScene />
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  f1: { flex: 1 },
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

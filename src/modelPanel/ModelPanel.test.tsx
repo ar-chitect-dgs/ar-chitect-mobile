@@ -2,7 +2,6 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { useSelector } from 'react-redux';
 import ModelPanel from './ModelPanel';
-import ListItemTile from '../components/ListItemTile';
 import ModelModal from './ModelModal';
 
 const testProject = {

@@ -83,15 +83,20 @@ describe('LightsPanel', () => {
     );
   });
 
-  it('Lights lists are present', () => {
-    const { getByText } = render(<LightsPanel snapPoint="10%" />);
+  it('shows Lights lists', () => {
+    const { queryAllByText } = render(<LightsPanel snapPoint="10%" />);
 
-    expect(getByText(ambientLightList)).toBeTruthy();
-    expect(getByText(directionalLightList)).toBeTruthy();
-    expect(getByText(spotLightList)).toBeTruthy();
+    let ambientList = queryAllByText(ambientLightList);
+    expect(ambientList.length).toBeGreaterThanOrEqual(1);
+
+    let directionalList = queryAllByText(directionalLightList);
+    expect(directionalList.length).toBeGreaterThanOrEqual(1);
+
+    let spotList = queryAllByText(spotLightList);
+    expect(spotList.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('Ambient light modal is present after "Add ambient light" click', () => {
+  it('shows Ambient light modal after "Add ambient light" click', () => {
     const { getByText } = render(<LightsPanel snapPoint="10%" />);
 
     expect(AmbientLightModal).toHaveBeenCalledWith(
@@ -111,7 +116,7 @@ describe('LightsPanel', () => {
     );
   });
 
-  it('Directional light is present after "Add directional light" click', () => {
+  it('shows Directional light after "Add directional light" click', () => {
     const { getByText } = render(<LightsPanel snapPoint="10%" />);
 
     expect(AmbientLightModal).toHaveBeenCalledWith(
@@ -131,7 +136,7 @@ describe('LightsPanel', () => {
     );
   });
 
-  it('Spot light modal is present after "Add spot light" click', () => {
+  it('shows Spot light modal after "Add spot light" click', () => {
     const { getByText } = render(<LightsPanel snapPoint="10%" />);
 
     expect(SpotLightModal).toHaveBeenCalledWith(

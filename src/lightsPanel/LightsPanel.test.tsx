@@ -86,13 +86,13 @@ describe('LightsPanel', () => {
   it('shows Lights lists', () => {
     const { queryAllByText } = render(<LightsPanel snapPoint="10%" />);
 
-    let ambientList = queryAllByText(ambientLightList);
+    const ambientList = queryAllByText(ambientLightList);
     expect(ambientList.length).toBeGreaterThanOrEqual(1);
 
-    let directionalList = queryAllByText(directionalLightList);
+    const directionalList = queryAllByText(directionalLightList);
     expect(directionalList.length).toBeGreaterThanOrEqual(1);
 
-    let spotList = queryAllByText(spotLightList);
+    const spotList = queryAllByText(spotLightList);
     expect(spotList.length).toBeGreaterThanOrEqual(1);
   });
 

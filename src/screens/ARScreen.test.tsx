@@ -1,14 +1,10 @@
 import React from 'react';
-import { render, waitFor, act } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 import { useDispatch } from 'react-redux';
 import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
-import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
-import BottomPanel from '../AR/BottomPanel';
-import { type ARScreenRouteProp } from '../navigation/AppRouter';
-import { useRoute } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ViroARSceneNavigator } from '@reactvision/react-viro';
 
 const testProject = {
   id: 'mockProjectId',
@@ -51,8 +47,8 @@ jest.mock('react-native-gesture-handler', () => ({
 }));
 
 jest.mock('../api/projectsApi', () => ({
-  fetchProjects: jest.fn(() => Promise.resolve(testProjects)),
-  fetchObjectsWithModelUrls: jest.fn(() => Promise.resolve(testModels)),
+  fetchProjects: jest.fn(async () => Promise.resolve(testProjects)),
+  fetchObjectsWithModelUrls: jest.fn(async () => Promise.resolve(testModels)),
 }));
 
 jest.mock('../store/actions', () => ({

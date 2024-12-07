@@ -4,7 +4,7 @@ import { useWindowDimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import LightsPanel from '../lightsPanel/LightsPanel';
 import ModelPanel from '../modelPanel/ModelPanel';
-import ScenePanel from '../modelPanel/ScenePanel';
+import ScenePanel from '../scenePanel/ScenePanel';
 
 const renderScene = ({
   route,

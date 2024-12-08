@@ -24,7 +24,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
       Alert.alert('Success', 'Logged in successfully!');
       navigation.navigate('Home');
     } catch (error: any) {
-      Alert.alert('Login Error', error.message);
+      Alert.alert('Login Error', error.message as string);
     } finally {
       setLoading(false);
     }

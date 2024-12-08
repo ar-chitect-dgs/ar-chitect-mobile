@@ -74,7 +74,10 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
       <View style={styles.container}>
         <Text style={styles.title}>Create a new account</Text>
 
-        <TouchableOpacity onPress={handleImagePicker} style={styles.imagePicker}>
+        <TouchableOpacity
+          onPress={handleImagePicker}
+          style={styles.imagePicker}
+        >
           {profileImage ? (
             <Image
               source={{ uri: profileImage.uri }}

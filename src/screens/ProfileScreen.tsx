@@ -47,7 +47,10 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
 
         <View style={styles.profileContainer}>
           {user.photoURL ? (
-            <Image source={{ uri: user.photoURL }} style={styles.profileImage} />
+            <Image
+              source={{ uri: user.photoURL }}
+              style={styles.profileImage}
+            />
           ) : (
             <View style={styles.placeholderImage}>
               <Text style={styles.placeholderText}>

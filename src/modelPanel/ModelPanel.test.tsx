@@ -55,7 +55,7 @@ describe('ModelPanel', () => {
   });
 
   it('Models are present', () => {
-    const { getByText } = render(<ModelPanel snapPoint="10%" />);
+    const { getByText } = render(<ModelPanel snapPoint="20%" />);
 
     testModels.map((model) => {
       expect(getByText(model.name)).toBeTruthy();

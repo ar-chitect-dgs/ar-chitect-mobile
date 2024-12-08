@@ -5,6 +5,7 @@ import ListItemTile from '../components/ListItemTile';
 interface LightListProps<T> {
   lights: T[];
   title: string;
+  itemName: string;
   onAdd: () => void;
   onEdit: (light: T) => void;
   onDelete: (id: number) => void;
@@ -13,6 +14,7 @@ interface LightListProps<T> {
 const LightList = <T extends { id: number; color: string }>({
   lights,
   title,
+  itemName,
   onAdd,
   onEdit,
   onDelete,
@@ -27,7 +29,7 @@ const LightList = <T extends { id: number; color: string }>({
         <ListItemTile
           key={index}
           id={light.id}
-          title={title}
+          title={itemName}
           onEdit={() => {
             onEdit(light);
           }}

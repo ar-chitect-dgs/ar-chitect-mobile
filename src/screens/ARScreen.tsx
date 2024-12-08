@@ -64,7 +64,11 @@ const ARScreen: React.FC = () => {
       <GestureHandlerRootView style={styles.container}>
         {isLoading ? (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator
+              testID="activity-indicator"
+              size="large"
+              color="#0000ff"
+            />
           </View>
         ) : (
           <ViroARSceneNavigator

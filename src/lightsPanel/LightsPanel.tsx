@@ -88,6 +88,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={ambientLights}
         title="Ambient Lights"
+        itemName="Ambient Light"
         onAdd={handleAddAmbientLight}
         onEdit={(light) => {
           setSelectedAmbientLight(light);
@@ -113,6 +114,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={directionalLights}
         title="Directional Lights"
+        itemName="Directional Light"
         onAdd={handleAddDirectionalLight}
         onEdit={(light) => {
           setSelectedDirectionalLight(light);
@@ -138,6 +140,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={spotLights}
         title="Spot Lights"
+        itemName="Spot Light"
         onAdd={handleAddSpotLight}
         onEdit={(light) => {
           setSelectedSpotLight(light);

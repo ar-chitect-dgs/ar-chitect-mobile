@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
+import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
+import InputField from '../components/InputField';
+import CustomButton from '../components/CustomButton';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
@@ -20,7 +24,6 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
       Alert.alert('Success', 'Logged in successfully!');
       navigation.navigate('Home');
     } catch (error: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       Alert.alert('Login Error', error.message);
     } finally {
       setLoading(false);
@@ -28,60 +31,77 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Login to your existing account</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        <InputField
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <InputField
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button
-        title={loading ? 'Logging in...' : 'Login'}
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onPress={handleLogin}
-        disabled={loading}
-      />
+        <CustomButton
+          title={loading ? 'Logging in...' : 'Login'}
+          onPress={handleLogin}
+          disabled={loading}
+          style={loading ? styles.disabledButton : undefined}
+        />
 
-      <Button
-        title="Create an account"
-        onPress={() => navigation.navigate('Register')}
-      />
-    </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Register')}
+          style={styles.linkContainer}
+        >
+          <Text style={styles.prelinkText}>Don't have an account? </Text>
+          <Text style={styles.linkText}>Sign-up</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   title: {
-    color: '#000',
-    fontSize: 24,
-    marginBottom: 16,
-    textAlign: 'center',
+    color: textColor,
+    fontSize: 28,
+    marginBottom: 44,
+    alignSelf: 'flex-start',
+    marginLeft: 5,
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    color: '#000',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  linkContainer: {
+    marginTop: 20,
+    alignSelf: 'flex-start',
+    marginLeft: 5,
+  },
+  prelinkText: {
+    color: purple2,
+    fontSize: 18,
+  },
+  linkText: {
+    color: pinkAccent,
+    fontSize: 18,
+    textDecorationLine: 'underline',
+  },
+  disabledButton: {
+    backgroundColor: '#999',
   },
 });
 

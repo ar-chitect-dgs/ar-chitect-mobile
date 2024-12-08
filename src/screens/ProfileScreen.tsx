@@ -19,7 +19,6 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
     try {
       await auth().signOut();
       Alert.alert('Success', 'You have been logged out.');
-      navigation.navigate('Login');
     } catch (error: any) {
       Alert.alert('Logout Error', error.message as string);
     }

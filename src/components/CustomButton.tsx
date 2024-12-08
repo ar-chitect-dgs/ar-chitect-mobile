@@ -1,5 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  type ViewStyle,
+} from 'react-native';
 import { purple2 } from '../styles/colors';
 
 interface CustomButtonProps {

@@ -33,7 +33,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   const uploadImage = async (userId: string): Promise<string | null> => {
     if (!profileImage) return null;
     const reference = storage().ref(`/profilePictures/${userId}`);
-    await reference.putFile(profileImage.uri);
+    await reference.putFile(profileImage.uri as string);
     return await reference.getDownloadURL();
   };
 
@@ -63,7 +63,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         navigation.navigate('Home');
       }
     } catch (error: any) {
-      Alert.alert('Registration Error', error.message);
+      Alert.alert('Registration Error', error.message as string);
     } finally {
       setLoading(false);
     }

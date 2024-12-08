@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
@@ -28,7 +21,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
       Alert.alert('Success', 'You have been logged out.');
       navigation.navigate('Login');
     } catch (error: any) {
-      Alert.alert('Logout Error', error.message);
+      Alert.alert('Logout Error', error.message as string);
     }
   };
 

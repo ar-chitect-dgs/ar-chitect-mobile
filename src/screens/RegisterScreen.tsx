@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
   Alert,
   StyleSheet,
   Image,
   TouchableOpacity,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import { launchImageLibrary } from 'react-native-image-picker';
+import InputField from '../components/InputField';
+import CustomButton from '../components/CustomButton';
+import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 
 const RegisterScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
@@ -31,8 +33,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   const uploadImage = async (userId: string): Promise<string | null> => {
     if (!profileImage) return null;
     const reference = storage().ref(`/profilePictures/${userId}`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    await reference.putFile(profileImage.uri);
+    await reference.putFile(profileImage.uri as string);
     return await reference.getDownloadURL();
   };
 
@@ -50,7 +51,6 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         password,
       );
 
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (userCredential.user) {
         const photoURL = await uploadImage(userCredential.user.uid);
 
@@ -63,80 +63,91 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         navigation.navigate('Home');
       }
     } catch (error: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      Alert.alert('Registration Error', error.message);
+      Alert.alert('Registration Error', error.message as string);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+    <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Create a new account</Text>
 
-      <TouchableOpacity onPress={handleImagePicker} style={styles.imagePicker}>
-        {profileImage ? (
-          <Image
-            source={{ uri: profileImage.uri }}
-            style={styles.profileImage}
-          />
-        ) : (
-          <Text style={styles.imageText}>Add Profile Picture</Text>
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleImagePicker}
+          style={styles.imagePicker}
+        >
+          {profileImage ? (
+            <Image
+              source={{ uri: profileImage.uri }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Text style={styles.imageText}>Pick a profile picture...</Text>
+          )}
+        </TouchableOpacity>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Display Name"
-        placeholderTextColor="#ccc"
-        value={displayName}
-        onChangeText={setDisplayName}
-      />
+        <InputField
+          placeholder="Display Name"
+          value={displayName}
+          onChangeText={setDisplayName}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#ccc"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        <InputField
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="#ccc"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <InputField
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button
-        title={loading ? 'Registering...' : 'Register'}
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onPress={handleRegister}
-        disabled={loading}
-      />
-    </View>
+        <CustomButton
+          title={loading ? 'Registering...' : 'Register'}
+          onPress={handleRegister}
+          disabled={loading}
+        />
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          style={styles.linkContainer}
+        >
+          <Text style={styles.prelinkText}>Already have an account? </Text>
+          <Text style={styles.linkText}>Log-in</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 16,
-    textAlign: 'center',
-    color: '#000',
+    color: textColor,
+    fontSize: 28,
+    marginBottom: 24,
+    alignSelf: 'flex-start',
+    marginLeft: 5,
   },
   imagePicker: {
-    alignItems: 'center',
-    marginBottom: 16,
+    alignSelf: 'flex-start',
+    marginLeft: 5,
+    marginBottom: 34,
   },
   profileImage: {
     width: 100,
@@ -144,16 +155,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   imageText: {
-    color: '#888',
+    color: pinkAccent,
     fontSize: 16,
+    textDecorationLine: 'underline',
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    color: '#000',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  linkContainer: {
+    marginTop: 20,
+    alignSelf: 'flex-start',
+    marginLeft: 5,
+  },
+  prelinkText: {
+    color: purple2,
+    fontSize: 18,
+  },
+  linkText: {
+    color: pinkAccent,
+    fontSize: 18,
+    textDecorationLine: 'underline',
   },
 });
 

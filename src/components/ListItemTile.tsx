@@ -16,7 +16,7 @@ const ListItemTile = ({
   onDelete,
   deleteIconName,
 }: ListItemTileProps): JSX.Element => (
-  <View style={styles.card}>
+  <TouchableOpacity onPress={onEdit} style={styles.card}>
     <Text style={styles.title}>{title}</Text>
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={onEdit} style={styles.iconButton}>
@@ -26,7 +26,7 @@ const ListItemTile = ({
         <Icon name={deleteIconName} size={20} color="blue" />
       </TouchableOpacity>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

@@ -40,6 +40,8 @@ const testSpotLights = [
   },
 ];
 
+jest.mock('../components/ListItemTile', () => jest.fn());
+
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
   useDispatch: jest.fn(),

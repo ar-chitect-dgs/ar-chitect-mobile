@@ -113,7 +113,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   };
 
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       <Text style={styles.label}>Pick a color for Spot Light</Text>
       <ColorPicker
         color={spotLight.color}
@@ -202,7 +202,6 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       </View>
 
       <Button title="Save" onPress={handleSave} />
-      <Button title="Close" onPress={onClose} />
     </EditingModal>
   );
 };

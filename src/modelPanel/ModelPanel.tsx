@@ -44,14 +44,14 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         <ListItemTile
           key={index}
           id={index}
-          title={model.name}
+          title={`${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`}
           onDelete={() => {
             handleToggleHideModel(index, model);
           }}
           onEdit={() => {
             handleModelClick(index, model);
           }}
-          deleteIconName={model.isVisible ? 'eye-slash' : 'eye'}
+          deleteIconName={model.isVisible ? 'eye' : 'eye-slash'}
         />
       ))}
       {selectedModel && (

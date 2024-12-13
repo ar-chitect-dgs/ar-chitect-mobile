@@ -1,10 +1,12 @@
 import {
   ViroAmbientLight,
+  ViroBox,
   ViroDirectionalLight,
+  ViroMaterials,
   ViroSpotLight,
 } from '@reactvision/react-viro';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Vector3D } from './Interfaces';
 import {
@@ -13,8 +15,10 @@ import {
   type ProjectState,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
+import { updateSpotLight } from '../store/actions';
 
 const ARScene: React.FC = () => {
+  const dispatch = useDispatch();
   const lightConfig: LightState = useSelector(
     (state: Reducer) => state.lightConfig,
   );
@@ -41,6 +45,27 @@ const ARScene: React.FC = () => {
     };
   };
 
+  const createMaterials = () => {
+    if (spotLights) {
+      const materials: Record<
+        string,
+        {
+          diffuseColor: string;
+        }
+      > = {};
+
+      spotLights.forEach((light, index) => {
+        materials[light.color] = {
+          diffuseColor: light.color,
+        };
+      });
+
+      ViroMaterials.createMaterials(materials);
+    }
+  };
+
+  createMaterials();
+
   return (
     <>
       {ambientLights.map((light: AmbientLightProps) => (
@@ -56,18 +81,36 @@ const ARScene: React.FC = () => {
         />
       ))}
       {spotLights?.map((light) => (
-        <ViroSpotLight
-          key={light.id}
-          color={light.color}
-          position={light.position}
-          direction={light.direction}
-          intensity={light.intensity}
-          innerAngle={light.innerAngle}
-          outerAngle={light.outerAngle}
-          attenuationStartDistance={light.attenuationStartDistance}
-          attenuationEndDistance={light.attenuationEndDistance}
-          castsShadow={light.castsShadow}
-        />
+        <>
+          <ViroSpotLight
+            key={light.id}
+            color={light.color}
+            position={light.position}
+            direction={light.direction}
+            intensity={light.intensity}
+            innerAngle={light.innerAngle}
+            outerAngle={light.outerAngle}
+            attenuationStartDistance={light.attenuationStartDistance}
+            attenuationEndDistance={light.attenuationEndDistance}
+            castsShadow={light.castsShadow}
+          />
+          <ViroBox
+            key={light.id + spotLights.length}
+            position={light.position}
+            height={0.2}
+            length={0.2}
+            width={0.2}
+            materials={[light.color]}
+            onDrag={(dragToPos) => {
+              dispatch(
+                updateSpotLight(light.id, {
+                  ...light,
+                  position: [dragToPos[0], dragToPos[1], dragToPos[2]],
+                }),
+              );
+            }}
+          />
+        </>
       ))}
       {models.map((model, index) => (
         <ARModel

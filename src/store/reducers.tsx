@@ -60,7 +60,21 @@ const initialLightState = {
       castsShadows: true,
     },
   ],
-  spotLights: [],
+  spotLights: [
+    {
+      id: 1,
+      color: '#FFFFFF',
+      intensity: 1000,
+      position: [0.0, 0.0, -2.0],
+      direction: [0.0, 0.0, -1.0],
+      castsShadows: true,
+      innerAngle: 0,
+      outerAngle: 45,
+      attenuationStartDistance: 0,
+      attenuationEndDistance: 50,
+      castsShadow: true,
+    },
+  ],
 };
 
 const initialProjectState: ProjectState = {

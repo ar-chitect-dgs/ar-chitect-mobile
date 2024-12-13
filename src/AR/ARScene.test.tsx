@@ -6,6 +6,7 @@ import {
   ViroAmbientLight,
   ViroDirectionalLight,
   ViroSpotLight,
+  ViroMaterials,
 } from '@reactvision/react-viro';
 import ARModel from '../AR/ARModel';
 
@@ -49,16 +50,26 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
 
+const MockViroMaterials = {
+  createMaterials: jest.fn(),
+};
+
 jest.mock('@reactvision/react-viro', () => ({
+  __esModule: true,
+  ViroBox: jest.fn(),
   ViroAmbientLight: jest.fn(),
   ViroDirectionalLight: jest.fn(),
   ViroSpotLight: jest.fn(),
+  ViroMaterials: {
+    createMaterials: jest.fn(),
+  },
 }));
 
 jest.mock('../AR/ARModel', () => jest.fn(() => null));
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
+  useDispatch: jest.fn(),
 }));
 
 describe('ARScene', () => {

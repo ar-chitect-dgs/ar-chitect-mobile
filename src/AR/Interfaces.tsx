@@ -4,6 +4,7 @@ export interface Object3D {
   url: string;
   position: Vector3D;
   rotation: Vector3D;
+  isVisible: boolean;
 }
 
 export interface Vector3D {

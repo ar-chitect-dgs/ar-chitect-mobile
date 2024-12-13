@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
 import ListItemTile from '../components/ListItemTile';
 import ModelModal from './ModelModal';
 import { type Object3D } from '../AR/Interfaces';
+import { updateModel } from '../store/actions';
 
 interface PanelProps {
   snapPoint: string;
@@ -12,6 +13,7 @@ interface PanelProps {
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { models } = useSelector((state: Reducer) => state.projectConfig);
+  const dispatch = useDispatch();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Object3D | null>(null);
@@ -21,6 +23,16 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     setSelectedId(id);
     setSelectedModel(model);
     setIsModalVisible(true);
+  };
+
+  const handleToggleHideModel = (id: number, model: Object3D): void => {
+    const visible = model.isVisible;
+    dispatch(
+      updateModel(id, {
+        ...model,
+        isVisible: !visible,
+      }),
+    );
   };
 
   return (
@@ -33,10 +45,13 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           key={index}
           id={index}
           title={model.name}
-          onDelete={() => {}}
+          onDelete={() => {
+            handleToggleHideModel(index, model);
+          }}
           onEdit={() => {
             handleModelClick(index, model);
           }}
+          deleteIconName={model.isVisible ? 'eye-slash' : 'eye'}
         />
       ))}
       {selectedModel && (

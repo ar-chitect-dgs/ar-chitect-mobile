@@ -1,22 +1,32 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Button, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface ListItemTileProps {
   id: number;
   title: string;
   onEdit: () => void;
   onDelete: () => void;
+  deleteIconName: string;
 }
 
 const ListItemTile = ({
   title,
   onEdit,
   onDelete,
+  deleteIconName,
 }: ListItemTileProps): JSX.Element => (
-  <TouchableOpacity style={styles.card} onPress={onEdit}>
+  <View style={styles.card}>
     <Text style={styles.title}>{title}</Text>
-    <Button title="Delete" onPress={onDelete} />
-  </TouchableOpacity>
+    <View style={styles.iconContainer}>
+      <TouchableOpacity onPress={onEdit} style={styles.iconButton}>
+        <Icon name="edit" size={20} color="blue" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onDelete} style={styles.iconButton}>
+        <Icon name={deleteIconName} size={20} color="blue" />
+      </TouchableOpacity>
+    </View>
+  </View>
 );
 
 const styles = StyleSheet.create({
@@ -24,6 +34,7 @@ const styles = StyleSheet.create({
     margin: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 20,
@@ -35,6 +46,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     color: 'black',
+    flex: 1,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 20,
   },
 });
 

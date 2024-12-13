@@ -1,16 +1,26 @@
 import React from 'react';
-import { View, StyleSheet, Modal, ScrollView, Dimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface EditingModalProps {
   isVisible: boolean;
   snapPoint: string;
   children: React.ReactNode;
+  onClose: () => void;
 }
 
 const EditingModal = ({
   snapPoint,
   isVisible,
   children,
+  onClose,
 }: EditingModalProps): JSX.Element => {
   const screenHeight = Dimensions.get('window').height;
   const snapPointHeight = (parseInt(snapPoint) * screenHeight) / 100 - 100;
@@ -19,6 +29,9 @@ const EditingModal = ({
     <Modal visible={isVisible} animationType="slide" transparent={true}>
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContent, { height: snapPointHeight }]}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Icon name="window-close" size={30} color="black" />
+          </TouchableOpacity>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {children}
           </ScrollView>
@@ -49,6 +62,12 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
   },
   scrollContainer: {
     flexGrow: 1,

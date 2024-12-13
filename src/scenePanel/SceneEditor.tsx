@@ -38,7 +38,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
 
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       {axes.map((axis) => (
         <EditSlider
           key={axis}
@@ -62,7 +62,6 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
         maximumValue={180}
         step={10}
       />
-      <Button title="Close" onPress={onClose} />
     </EditingModal>
   );
 };

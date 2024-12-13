@@ -36,6 +36,7 @@ const LightList = <T extends { id: number; color: string }>({
           onDelete={() => {
             onDelete(light.id);
           }}
+          deleteIconName="trash"
         />
       ))}
     </View>

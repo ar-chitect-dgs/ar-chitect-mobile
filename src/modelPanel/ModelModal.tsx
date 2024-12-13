@@ -24,11 +24,6 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const [model, setModel] = useState<Object3D>(selectedModel);
   const dispatch = useDispatch();
 
-  const handleSave = (): void => {
-    dispatch(updateModel(id, model));
-    onClose();
-  };
-
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     setModel((prev) => ({
       ...prev,
@@ -43,7 +38,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
 
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       {axes.map((axis) => (
         <EditSlider
           key={axis}
@@ -57,8 +52,6 @@ const ModelModal: React.FC<ModelModalProps> = ({
           step={0.5}
         />
       ))}
-      <Button title="Save" onPress={handleSave} />
-      <Button title="Close" onPress={onClose} />
     </EditingModal>
   );
 };

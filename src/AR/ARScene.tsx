@@ -69,14 +69,16 @@ const ARScene: React.FC = () => {
           castsShadow={light.castsShadow}
         />
       ))}
-      {models.map((model, index) => (
-        <ARModel
-          key={index}
-          url={model.url}
-          position={calculatePosition(model.position)}
-          rotation={calculateRotation(model.rotation)}
-        />
-      ))}
+      {models
+        .filter((model) => model.isVisible)
+        .map((model, index) => (
+          <ARModel
+            key={index}
+            url={model.url}
+            position={calculatePosition(model.position)}
+            rotation={calculateRotation(model.rotation)}
+          />
+        ))}
     </>
   );
 };

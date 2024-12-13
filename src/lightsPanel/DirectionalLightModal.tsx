@@ -91,7 +91,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   };
 
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint}>
+    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       <Text style={styles.label}>Pick a color for Directional Light</Text>
       <ColorPicker
         color={directionalLight.color}
@@ -132,7 +132,6 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
       </View>
 
       <Button title="Save" onPress={handleSave} />
-      <Button title="Close" onPress={onClose} />
     </EditingModal>
   );
 };

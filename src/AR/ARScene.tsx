@@ -5,7 +5,7 @@ import {
   ViroMaterials,
   ViroSpotLight,
 } from '@reactvision/react-viro';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
 import { type Vector3D } from './Interfaces';
@@ -45,7 +45,7 @@ const ARScene: React.FC = () => {
     };
   };
 
-  const createMaterials = () => {
+  const createMaterials = (): void => {
     if (spotLights) {
       const materials: Record<
         string,
@@ -54,7 +54,7 @@ const ARScene: React.FC = () => {
         }
       > = {};
 
-      spotLights.forEach((light, index) => {
+      spotLights.forEach((light) => {
         materials[light.color] = {
           diffuseColor: light.color,
         };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
 
@@ -33,8 +33,11 @@ const testModels = [
   },
 ];
 
+jest.mock('react-native-vector-icons/FontAwesome', () => jest.fn());
+
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
+  useDispatch: jest.fn(),
 }));
 
 jest.mock('./ModelModal', () => jest.fn());
@@ -58,7 +61,11 @@ describe('ModelPanel', () => {
     const { getByText } = render(<ModelPanel snapPoint="20%" />);
 
     testModels.map((model) => {
-      expect(getByText(model.name)).toBeTruthy();
+      expect(
+        getByText(
+          `${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`,
+        ),
+      ).toBeTruthy();
       return {};
     });
   });
@@ -66,7 +73,11 @@ describe('ModelPanel', () => {
   it('Model modal is present after click on any model', () => {
     const { getByText } = render(<ModelPanel snapPoint="10%" />);
 
-    fireEvent.press(getByText(testModels[0].name));
+    fireEvent.press(
+      getByText(
+        `${testModels[0].name} (x: ${testModels[0].position.x}, y: ${testModels[0].position.y}, z: ${testModels[0].position.z})`,
+      ),
+    );
     expect(ModelModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

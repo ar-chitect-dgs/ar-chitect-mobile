@@ -61,6 +61,7 @@ export async function fetchObjectsWithModelUrls(
         position: object.position,
         rotation: object.rotation,
         url: colorData.url,
+        isVisible: true,
       };
     }),
   );

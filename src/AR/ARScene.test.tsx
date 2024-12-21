@@ -40,6 +40,7 @@ const testModels = [
     url: 'model1.glb',
     position: { x: 1, y: 0, z: 0 },
     rotation: { x: 0, y: 0, z: 0 },
+    isVisible: true,
   },
 ];
 
@@ -134,7 +135,7 @@ describe('ARScene', () => {
     );
     expect(ARModel).toHaveBeenCalledWith(
       expect.objectContaining({
-        ...testModels[0],
+        url: testModels[0].url,
         position: {
           x: testModels[0].position.x + testTranslation.x,
           y: testModels[0].position.y + testTranslation.y,

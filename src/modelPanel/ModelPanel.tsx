@@ -41,7 +41,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     );
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     if (!user || !project) {
       return;
     }

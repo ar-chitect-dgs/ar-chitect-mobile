@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { ModelObject, type Project } from './types';
+import { type ModelObject, type Project } from './types';
 import storage from '@react-native-firebase/storage';
 import { type ModelData, type Object3D } from '../AR/Interfaces';
 

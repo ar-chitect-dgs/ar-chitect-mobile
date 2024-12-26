@@ -68,22 +68,22 @@ const ARScene: React.FC = () => {
 
   return (
     <>
-      {ambientLights.map((light: AmbientLightProps) => (
-        <ViroAmbientLight key={light.id} color={light.color} />
+      {ambientLights.map((light: AmbientLightProps, index) => (
+        <ViroAmbientLight key={index} color={light.color} />
       ))}
-      {directionalLights?.map((light) => (
+      {directionalLights?.map((light, index) => (
         <ViroDirectionalLight
-          key={light.id}
+          key={index}
           color={light.color}
           direction={light.direction}
           intensity={light.intensity}
           castsShadow={light.castsShadow}
         />
       ))}
-      {spotLights?.map((light) => (
+      {spotLights?.map((light, index) => (
         <>
           <ViroSpotLight
-            key={light.id}
+            key={index}
             color={light.color}
             position={light.position}
             direction={light.direction}
@@ -95,7 +95,7 @@ const ARScene: React.FC = () => {
             castsShadow={light.castsShadow}
           />
           <ViroBox
-            key={light.id + spotLights.length}
+            key={index * 10}
             position={light.position}
             height={0.2}
             length={0.2}

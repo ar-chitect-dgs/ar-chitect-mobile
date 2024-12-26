@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
 import ListItemTile from '../components/ListItemTile';
 import ModelModal from './ModelModal';
 import { type Object3D } from '../AR/Interfaces';
 import { updateModel } from '../store/actions';
+import { saveProject } from '../api/projectsApi';
+import { useAuth } from '../hooks/useAuth';
 
 interface PanelProps {
   snapPoint: string;
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const { models } = useSelector((state: Reducer) => state.projectConfig);
+  const { models, project } = useSelector(
+    (state: Reducer) => state.projectConfig,
+  );
   const dispatch = useDispatch();
+
+  const { user } = useAuth();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Object3D | null>(null);
@@ -35,6 +41,17 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     );
   };
 
+  const handleSave = () => {
+    if (!user || !project) {
+      return;
+    }
+    saveProject(user?.uid, project?.id, project?.objects, models).catch(
+      (error) => {
+        console.error('Error saving project:', error);
+      },
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -44,7 +61,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         <ListItemTile
           key={index}
           id={index}
-          title={`${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`}
+          title={`${model.name} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
           onDelete={() => {
             handleToggleHideModel(index, model);
           }}
@@ -65,6 +82,9 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           id={selectedId}
         />
       )}
+      <View style={styles.header}>
+        <Button onPress={handleSave} title="Save" />
+      </View>
     </View>
   );
 };

@@ -44,7 +44,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         <ListItemTile
           key={index}
           id={index}
-          title={`${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`}
+          title={`${model.name}\n(x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
           onDelete={() => {
             handleToggleHideModel(index, model);
           }}

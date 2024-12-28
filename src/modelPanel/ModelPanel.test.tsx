@@ -63,7 +63,7 @@ describe('ModelPanel', () => {
     testModels.map((model) => {
       expect(
         getByText(
-          `${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`,
+          `${model.name}\n(x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`,
         ),
       ).toBeTruthy();
       return {};
@@ -75,7 +75,7 @@ describe('ModelPanel', () => {
 
     fireEvent.press(
       getByText(
-        `${testModels[0].name} (x: ${testModels[0].position.x}, y: ${testModels[0].position.y}, z: ${testModels[0].position.z})`,
+        `${testModels[0].name}\n(x: ${testModels[0].position.x}, y: ${testModels[0].position.y}, z: ${testModels[0].position.z})`,
       ),
     );
     expect(ModelModal).toHaveBeenCalledWith(

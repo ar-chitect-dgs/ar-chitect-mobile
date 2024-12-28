@@ -1,8 +1,9 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
+import { writeToFile } from '@react-native-firebase/storage';
 
 const testProject = {
   id: 'mockProjectId',
@@ -32,6 +33,20 @@ const testModels = [
     rotation: { x: 2, y: 2, z: 2 },
   },
 ];
+
+const testUser = {
+  id: '123',
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+};
+
+jest.mock('../hooks/useAuth', () => ({
+  useAuth: jest.fn(() => testUser),
+}));
+
+jest.mock('../api/projectsApi', () => ({
+  saveProject: jest.fn(),
+}));
 
 jest.mock('react-native-vector-icons/FontAwesome', () => jest.fn());
 
@@ -63,7 +78,7 @@ describe('ModelPanel', () => {
     testModels.map((model) => {
       expect(
         getByText(
-          `${model.name} (x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`,
+          `${model.name} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`,
         ),
       ).toBeTruthy();
       return {};
@@ -75,7 +90,7 @@ describe('ModelPanel', () => {
 
     fireEvent.press(
       getByText(
-        `${testModels[0].name} (x: ${testModels[0].position.x}, y: ${testModels[0].position.y}, z: ${testModels[0].position.z})`,
+        `${testModels[0].name} (x: ${testModels[0].position.x.toFixed(1)}, y: ${testModels[0].position.y.toFixed(1)}, z: ${testModels[0].position.z.toFixed(1)})`,
       ),
     );
     expect(ModelModal).toHaveBeenCalledWith(

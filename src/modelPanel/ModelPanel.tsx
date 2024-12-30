@@ -8,6 +8,7 @@ import { type Object3D } from '../AR/Interfaces';
 import { updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
+import ErrorPopup from '../components/ErrorPopup';
 
 interface PanelProps {
   snapPoint: string;
@@ -24,6 +25,10 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedModel, setSelectedModel] = useState<Object3D | null>(null);
   const [selectedId, setSelectedId] = useState(0);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   const handleModelClick = (id: number, model: Object3D): void => {
     setSelectedId(id);
@@ -45,11 +50,12 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     if (!user || !project) {
       return;
     }
-    saveProject(user?.uid, project?.id, project?.objects, models).catch(
-      (error) => {
-        console.error('Error saving project:', error);
-      },
-    );
+    saveProject(user?.uid, project?.id, project?.objects, models).catch(() => {
+      setAlert({
+        isVisible: true,
+        message: 'Error saving changes.',
+      });
+    });
   };
 
   return (
@@ -85,6 +91,16 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <View style={styles.header}>
         <Button onPress={handleSave} title="Save" />
       </View>
+      <ErrorPopup
+        isVisible={alert.isVisible}
+        message={alert.message}
+        onClose={() => {
+          setAlert((prev) => ({
+            ...prev,
+            isVisible: false,
+          }));
+        }}
+      />
     </View>
   );
 };

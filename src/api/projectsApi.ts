@@ -125,7 +125,6 @@ export const saveProject = async (
       objects: updatedObjects,
       modifiedAt: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error(`Error updating objects for project ${projectId}:`, error);
     throw error;

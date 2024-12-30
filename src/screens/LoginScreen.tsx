@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
+import ErrorPopup from '../components/ErrorPopup';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   const handleLogin = async (): Promise<void> => {
     if (email === '' || password === '') {
-      Alert.alert('Error', 'Please fill in all fields');
+      setAlert({
+        isVisible: true,
+        message: 'Please fill in all fields.',
+      });
       return;
     }
 
@@ -21,10 +29,12 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
 
     try {
       await auth().signInWithEmailAndPassword(email, password);
-      Alert.alert('Success', 'Logged in successfully!');
       navigation.navigate('Home');
     } catch (error: any) {
-      Alert.alert('Login Error', error.message as string);
+      setAlert({
+        isVisible: true,
+        message: 'Login failed.',
+      });
     } finally {
       setLoading(false);
     }
@@ -65,6 +75,16 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.linkText}>Sign-up</Text>
         </TouchableOpacity>
       </View>
+      <ErrorPopup
+        isVisible={alert.isVisible}
+        message={alert.message}
+        onClose={() => {
+          setAlert((prev) => ({
+            ...prev,
+            isVisible: false,
+          }));
+        }}
+      />
     </LinearGradient>
   );
 };

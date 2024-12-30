@@ -6,7 +6,6 @@ import {
   ViroAmbientLight,
   ViroDirectionalLight,
   ViroSpotLight,
-  ViroMaterials,
 } from '@reactvision/react-viro';
 import ARModel from '../AR/ARModel';
 
@@ -50,10 +49,6 @@ const testOrientation: number = 90;
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
-
-const MockViroMaterials = {
-  createMaterials: jest.fn(),
-};
 
 jest.mock('@reactvision/react-viro', () => ({
   __esModule: true,

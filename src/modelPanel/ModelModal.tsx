@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';
@@ -25,14 +24,15 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const dispatch = useDispatch();
 
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
-    setModel((prev) => ({
-      ...prev,
+    const newModel: Object3D = {
+      ...model,
       position: {
-        ...prev.position,
+        ...model.position,
         [axis]: value,
       },
-    }));
-    dispatch(updateModel(id, model));
+    };
+    setModel(newModel);
+    dispatch(updateModel(id, newModel));
   };
 
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
@@ -44,12 +44,12 @@ const ModelModal: React.FC<ModelModalProps> = ({
           key={axis}
           title={`${axis.toUpperCase()} Position`}
           value={model.position[axis]}
-          setValue={(value: number) => {
-            handlePositionChange(axis, value);
+          setValue={(newValue: number) => {
+            handlePositionChange(axis, newValue);
           }}
           minimumValue={-10}
           maximumValue={10}
-          step={0.5}
+          step={0.1}
         />
       ))}
     </EditingModal>

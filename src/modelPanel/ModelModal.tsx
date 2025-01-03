@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';

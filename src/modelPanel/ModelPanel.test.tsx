@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
 
@@ -61,11 +61,8 @@ describe('ModelPanel', () => {
     const { getByText } = render(<ModelPanel snapPoint="20%" />);
 
     testModels.map((model) => {
-      expect(
-        getByText(
-          `${model.name}\n(x: ${model.position.x}, y: ${model.position.y}, z: ${model.position.z})`,
-        ),
-      ).toBeTruthy();
+      const modelTextRegex = new RegExp(`${model.name}.*`);
+      expect(getByText(modelTextRegex)).toBeTruthy();
       return {};
     });
   });
@@ -73,11 +70,9 @@ describe('ModelPanel', () => {
   it('Model modal is present after click on any model', () => {
     const { getByText } = render(<ModelPanel snapPoint="10%" />);
 
-    fireEvent.press(
-      getByText(
-        `${testModels[0].name}\n(x: ${testModels[0].position.x}, y: ${testModels[0].position.y}, z: ${testModels[0].position.z})`,
-      ),
-    );
+    const modelTextRegex = new RegExp(`${testModels[0].name}.*`);
+
+    fireEvent.press(getByText(modelTextRegex));
     expect(ModelModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { type Project } from './types';
+import { type ModelObject, type Project } from './types';
 import storage from '@react-native-firebase/storage';
 import { type ModelData, type Object3D } from '../AR/Interfaces';
 
@@ -85,12 +85,11 @@ export const fetchGLBUrl = async (path: string): Promise<string> => {
   return url;
 };
 
-export const updateProjectLocationInArray = async (
+export const saveProject = async (
   userId: string,
   projectId: string,
-  latitude: number,
-  longitude: number,
-  orientation: number,
+  oldObjects: ModelObject[],
+  newObjects: Object3D[],
 ): Promise<void> => {
   try {
     const projectRef = firestore()
@@ -99,14 +98,35 @@ export const updateProjectLocationInArray = async (
       .collection('projects')
       .doc(projectId);
 
-    await projectRef.update({
-      latitude,
-      longitude,
-      orientation,
-      isFirstTime: false,
+    const updatedObjects = oldObjects.map((modelObject, index) => {
+      const correspondingObject3D = newObjects[index];
+
+      if (correspondingObject3D) {
+        return {
+          ...modelObject,
+          position: {
+            x: correspondingObject3D.position.x,
+            y: correspondingObject3D.position.y,
+            z: correspondingObject3D.position.z,
+          },
+          rotation: {
+            x: correspondingObject3D.rotation.x,
+            y: correspondingObject3D.rotation.y,
+            z: correspondingObject3D.rotation.z,
+          },
+        };
+      }
+      return modelObject;
     });
+
+    await projectRef.update({
+      objects: updatedObjects,
+      modifiedAt: new Date().toISOString(),
+    });
+
+    console.log(`Successfully updated objects for project ${projectId}`);
   } catch (error) {
-    console.error(`Error updating project ${projectId}:`, error);
+    console.error(`Error updating objects for project ${projectId}:`, error);
     throw error;
   }
 };

@@ -3,7 +3,6 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { useSelector } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
-import { writeToFile } from '@react-native-firebase/storage';
 
 const testProject = {
   id: 'mockProjectId',
@@ -84,7 +83,6 @@ describe('ModelPanel', () => {
 
   it('Model modal is present after click on any model', () => {
     const { getByText } = render(<ModelPanel snapPoint="10%" />);
-
 
     const modelTextRegex = new RegExp(`${testModels[0].name}.*`);
 

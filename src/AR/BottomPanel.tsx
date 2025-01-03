@@ -1,10 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import React, { useRef, useMemo, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
-import { TabView } from 'react-native-tab-view';
+import { useWindowDimensions, StyleSheet, Text } from 'react-native';
+import { TabView, TabBar } from 'react-native-tab-view';
 import LightsPanel from '../lightsPanel/LightsPanel';
 import ModelPanel from '../modelPanel/ModelPanel';
 import ScenePanel from '../scenePanel/ScenePanel';
+import { purple2 } from '../styles/colors';
 
 const renderScene = ({
   route,
@@ -47,6 +48,21 @@ const BottomPanel = (): JSX.Element => {
     setSnapPoint(snapPoints[index]);
   };
 
+  const renderTabBar = (props: any): JSX.Element => (
+    <TabBar
+      {...props}
+      indicatorStyle={styles.indicator}
+      style={styles.tabBar}
+      renderLabel={({
+        route,
+        color,
+      }: {
+        route: { key: string; title: string };
+        color: string;
+      }) => <Text style={[styles.label, { color }]}>{route.title}</Text>}
+    />
+  );
+
   return (
     <BottomSheet
       ref={sheetRef}
@@ -61,9 +77,22 @@ const BottomPanel = (): JSX.Element => {
         }
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
       />
     </BottomSheet>
   );
 };
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: purple2,
+  },
+  indicator: {
+    backgroundColor: 'white',
+  },
+  label: {
+    fontWeight: 'bold',
+  },
+});
 
 export default BottomPanel;

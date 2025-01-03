@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotLight, updateSpotLight } from '../store/actions';
@@ -8,6 +8,8 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
+import { opaquePurple2, purple2 } from '../styles/colors';
+import FilledButton from '../components/FilledButton';
 
 interface SpotLightModalProps {
   isVisible: boolean;
@@ -124,14 +126,14 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
 
       <VectorInput
         value={positionInputs}
-        title="position"
+        title="Position"
         setVectorInputs={setPositionInputs}
         error={positionErrors}
       />
 
       <VectorInput
         value={directionInputs}
-        title="direction"
+        title="Direction"
         setVectorInputs={setDirectionInputs}
         error={directionErrors}
       />
@@ -170,7 +172,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <EditSlider
-        title="Attentuation Start Distance"
+        title="Attentuation start"
         value={spotLight.attenuationStartDistance}
         setValue={(attenuationStartDistance: number) => {
           setSpotLight({ ...spotLight, attenuationStartDistance });
@@ -178,10 +180,11 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         minimumValue={0}
         maximumValue={100}
         step={1}
+        sliderLength="short"
       />
 
       <EditSlider
-        title="Attentuation End Distance"
+        title="Attentuation end"
         value={spotLight.attenuationEndDistance}
         setValue={(attenuationEndDistance: number) => {
           setSpotLight({ ...spotLight, attenuationEndDistance });
@@ -189,6 +192,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         minimumValue={0}
         maximumValue={100}
         step={1}
+        sliderLength="short"
       />
 
       <View style={styles.inputContainer}>
@@ -198,10 +202,12 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
           onValueChange={(value) => {
             setSpotLight({ ...spotLight, castsShadow: value });
           }}
+          thumbColor={spotLight.castsShadow ? opaquePurple2 : '#f4f3f4'}
+          trackColor={{ false: '#989898', true: purple2 }}
         />
       </View>
 
-      <Button title="Save" onPress={handleSave} />
+      <FilledButton title="Save" onPress={handleSave} />
     </EditingModal>
   );
 };
@@ -214,10 +220,12 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
+    marginBottom: 10,
   },
   label: {
     color: '#000',
     marginRight: 10,
+    fontSize: 16,
   },
 });
 

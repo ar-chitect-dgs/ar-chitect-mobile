@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { purple2 } from '../styles/colors';
 
 interface EditingModalProps {
   isVisible: boolean;
@@ -30,7 +31,7 @@ const EditingModal = ({
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContent, { height: snapPointHeight }]}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Icon name="window-close" size={30} color="black" />
+            <Icon name="window-close" size={25} color={purple2} />
           </TouchableOpacity>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {children}
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 10,
-    right: 10,
+    right: 15,
     zIndex: 1,
   },
   scrollContainer: {

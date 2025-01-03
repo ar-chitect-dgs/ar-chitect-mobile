@@ -1,6 +1,7 @@
 import Slider from '@react-native-community/slider';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { opaquePurple2, purple2 } from '../styles/colors';
 
 interface EditSliderProps {
   title: string;
@@ -9,6 +10,7 @@ interface EditSliderProps {
   minimumValue: number;
   maximumValue: number;
   step: number;
+  sliderLength?: 'short' | 'long';
 }
 
 const EditSlider: React.FC<EditSliderProps> = ({
@@ -18,14 +20,17 @@ const EditSlider: React.FC<EditSliderProps> = ({
   minimumValue,
   maximumValue,
   step,
+  sliderLength = 'long',
 }: EditSliderProps) => {
+  const sliderWidth = sliderLength === 'short' ? '70%' : '75%';
+
   return (
     <>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>{title} :</Text>
+        <Text style={styles.label}>{title}:</Text>
         <View style={styles.sliderContainer}>
           <Slider
-            style={styles.slider}
+            style={[styles.slider, { width: sliderWidth }]}
             minimumValue={minimumValue}
             maximumValue={maximumValue}
             step={step}
@@ -33,8 +38,11 @@ const EditSlider: React.FC<EditSliderProps> = ({
             onValueChange={(value) => {
               setValue(value);
             }}
+            minimumTrackTintColor={purple2}
+            maximumTrackTintColor={opaquePurple2}
+            thumbTintColor={purple2}
           />
-          <Text style={styles.label}>{value.toFixed(1)}</Text>
+          <Text style={styles.value}>{value.toFixed(1)}</Text>
         </View>
       </View>
     </>
@@ -43,6 +51,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
 
 const styles = StyleSheet.create({
   inputContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
@@ -53,6 +62,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#000',
     marginRight: 10,
+    fontSize: 16,
   },
   sliderContainer: {
     flexDirection: 'row',
@@ -61,12 +71,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderColor: '#ddd',
     borderWidth: 1,
+    borderRadius: 5,
     padding: 5,
     color: '#000',
+    flex: 1,
+    marginRight: 5,
   },
   slider: {
-    width: '70%',
     height: 40,
+  },
+  value: {
+    padding: 8,
+    margin: 0,
+    color: '#000',
+    fontSize: 16,
   },
 });
 

@@ -29,7 +29,7 @@ const VectorInput = ({
                 newInputs[index] = text;
                 setVectorInputs(newInputs);
               }}
-              placeholder={`Enter ${axis} ${title}`}
+              placeholder={`${axis}`}
               placeholderTextColor="#999"
             />
             {error[index] && (
@@ -46,10 +46,13 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
     width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   inputRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flex: 1,
   },
   inputWrapper: {
     flex: 1,
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#000',
     fontSize: 16,
-    marginBottom: 5,
+    marginRight: 10,
   },
 });
 

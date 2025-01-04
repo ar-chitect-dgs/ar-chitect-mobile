@@ -58,6 +58,7 @@ export async function fetchObjectsWithModelUrls(
       return {
         id: object.id,
         name: modelData.name,
+        modelName: object.modelName ?? modelData.name,
         position: object.position,
         rotation: object.rotation,
         url: colorData.url,
@@ -104,6 +105,7 @@ export const saveProject = async (
       if (correspondingObject3D) {
         return {
           ...modelObject,
+          modelName: correspondingObject3D.modelName,
           position: {
             x: correspondingObject3D.position.x,
             y: correspondingObject3D.position.y,

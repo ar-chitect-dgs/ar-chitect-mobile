@@ -16,6 +16,11 @@ import {
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 import { updateSpotLight } from '../store/actions';
+import {
+  calculateCenterOfGravity,
+  calculatePositionWithRotation,
+  rotateObjectAroundOrigin,
+} from '../utils/utils';
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,15 +32,7 @@ const ARScene: React.FC = () => {
   const projectConfig: ProjectState = useSelector(
     (state: Reducer) => state.projectConfig,
   );
-  const { models, translation, orientation } = projectConfig;
-
-  const calculatePosition = (modelPosition: Vector3D): Vector3D => {
-    return {
-      x: modelPosition.x + translation.x,
-      y: modelPosition.y + translation.y,
-      z: modelPosition.z + translation.z,
-    };
-  };
+  const { models, translation, orientation, project } = projectConfig;
 
   const calculateRotation = (modelRotation: Vector3D): Vector3D => {
     return {
@@ -118,7 +115,11 @@ const ARScene: React.FC = () => {
           <ARModel
             key={index}
             url={model.url}
-            position={calculatePosition(model.position)}
+            position={rotateObjectAroundOrigin(
+              model.position,
+              translation,
+              orientation,
+            )}
             rotation={calculateRotation(model.rotation)}
           />
         ))}

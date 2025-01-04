@@ -1,12 +1,12 @@
 export interface Vector {
   x: number;
   y: number;
-  z: number;
 }
 
 export interface ModelObject {
   id: string;
   name: string;
+  modelName: string;
   url: string;
   color: string;
   position: Vector;

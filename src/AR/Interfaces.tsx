@@ -1,6 +1,7 @@
 export interface Object3D {
   id: string;
   name: string;
+  modelName: string;
   url: string;
   position: Vector3D;
   rotation: Vector3D;

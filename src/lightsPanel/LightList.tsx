@@ -9,15 +9,19 @@ interface LightListProps<T> {
   onAdd: () => void;
   onEdit: (light: T) => void;
   onDelete: (id: number) => void;
+  onHide?: (id: number) => void;
 }
 
-const LightList = <T extends { id: number; color: string }>({
+const LightList = <
+  T extends { id: number; color: string; isVisible: boolean },
+>({
   lights,
   title,
   itemName,
   onAdd,
   onEdit,
   onDelete,
+  onHide,
 }: LightListProps<T>): JSX.Element => {
   return (
     <View style={styles.container}>
@@ -33,10 +37,18 @@ const LightList = <T extends { id: number; color: string }>({
           onEdit={() => {
             onEdit(light);
           }}
+          onHide={
+            onHide
+              ? () => {
+                  onHide(light.id);
+                }
+              : undefined
+          }
+          hideIconName={light.isVisible ? 'eye' : 'eye-slash'}
           onDelete={() => {
             onDelete(light.id);
           }}
-          deleteIconName="trash"
+          color={light.color}
         />
       ))}
     </View>

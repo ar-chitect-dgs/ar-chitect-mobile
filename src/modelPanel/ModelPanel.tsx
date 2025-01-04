@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
@@ -14,7 +14,7 @@ interface PanelProps {
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const { models, project } = useSelector(
+  const { models, project, autoSave } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
   const dispatch = useDispatch();
@@ -52,6 +52,23 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     );
   };
 
+  useEffect(() => {
+    let autoSaveInterval: NodeJS.Timeout | null = null;
+
+    if (autoSave) {
+      autoSaveInterval = setInterval(() => {
+        handleSave();
+        console.log('saved');
+      }, 3000);
+    }
+
+    return () => {
+      if (autoSaveInterval !== null) {
+        clearInterval(autoSaveInterval);
+      }
+    };
+  }, [autoSave, dispatch, models]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -68,7 +85,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           onEdit={() => {
             handleModelClick(index, model);
           }}
-          deleteIconName={model.isVisible ? 'eye' : 'eye-slash'}
+          hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
         />
       ))}
       {selectedModel && (

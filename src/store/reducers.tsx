@@ -15,6 +15,10 @@ import {
   SET_MODELS,
   UPDATE_MODEL,
   SET_TRANSLATION,
+  HIDE_SPOT_LIGHT,
+  RESET_LIGHTS,
+  SET_SAVE_LIGHTS,
+  SET_AUTO_SAVE,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -33,6 +37,7 @@ export interface LightState {
   ambientLights: AmbientLightProps[];
   directionalLights: DirectionalLightProps[];
   spotLights: SpotLightProps[];
+  saveLights: boolean;
 }
 
 export interface ProjectState {
@@ -41,6 +46,7 @@ export interface ProjectState {
   models: Object3D[];
   orientation: number;
   translation: Vector3D;
+  autoSave: boolean;
 }
 
 const initialLightState = {
@@ -73,8 +79,10 @@ const initialLightState = {
       attenuationStartDistance: 0,
       attenuationEndDistance: 50,
       castsShadow: true,
+      isVisible: true,
     },
   ],
+  saveLights: false,
 };
 
 const initialProjectState: ProjectState = {
@@ -87,6 +95,7 @@ const initialProjectState: ProjectState = {
     y: 0,
     z: 0,
   },
+  autoSave: false,
 };
 
 const lightReducer = (
@@ -163,6 +172,22 @@ const lightReducer = (
           (light: SpotLightProps) => light.id !== action.payload.id,
         ),
       };
+    case HIDE_SPOT_LIGHT:
+      return {
+        ...state,
+        spotLights: state.spotLights.map((light: SpotLightProps) =>
+          light.id === action.payload.id
+            ? { ...light, isVisible: !light.isVisible }
+            : light,
+        ),
+      };
+    case RESET_LIGHTS:
+      return initialLightState;
+    case SET_SAVE_LIGHTS:
+      return {
+        ...state,
+        saveLights: action.payload.properties,
+      };
 
     default:
       return state;
@@ -207,6 +232,11 @@ const projectReducer = (
       return {
         ...state,
         translation: action.payload,
+      };
+    case SET_AUTO_SAVE:
+      return {
+        ...state,
+        autoSave: action.payload,
       };
     default:
       return state;

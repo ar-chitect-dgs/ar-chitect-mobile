@@ -45,6 +45,16 @@ const ARScene: React.FC = () => {
     };
   };
 
+  const calculateLightPosition = (
+    position: [number, number, number],
+  ): [number, number, number] => {
+    return [
+      position[0] + translation.x,
+      position[1] + translation.y,
+      position[2] + translation.z,
+    ];
+  };
+
   const createMaterials = (): void => {
     if (spotLights) {
       const materials: Record<
@@ -85,7 +95,7 @@ const ARScene: React.FC = () => {
           <ViroSpotLight
             key={light.id}
             color={light.color}
-            position={light.position}
+            position={calculateLightPosition(light.position)}
             direction={light.direction}
             intensity={light.intensity}
             innerAngle={light.innerAngle}
@@ -94,22 +104,24 @@ const ARScene: React.FC = () => {
             attenuationEndDistance={light.attenuationEndDistance}
             castsShadow={light.castsShadow}
           />
-          <ViroBox
-            key={light.id + spotLights.length}
-            position={light.position}
-            height={0.2}
-            length={0.2}
-            width={0.2}
-            materials={[light.color]}
-            onDrag={(dragToPos) => {
-              dispatch(
-                updateSpotLight(light.id, {
-                  ...light,
-                  position: [dragToPos[0], dragToPos[1], dragToPos[2]],
-                }),
-              );
-            }}
-          />
+          {light.isVisible && (
+            <ViroBox
+              key={light.id + spotLights.length}
+              position={calculateLightPosition(light.position)}
+              height={0.2}
+              length={0.2}
+              width={0.2}
+              materials={[light.color]}
+              onDrag={(dragToPos) => {
+                dispatch(
+                  updateSpotLight(light.id, {
+                    ...light,
+                    position: [dragToPos[0], dragToPos[1], dragToPos[2]],
+                  }),
+                );
+              }}
+            />
+          )}
         </>
       ))}
       {models

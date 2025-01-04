@@ -8,6 +8,7 @@ import { type Object3D } from '../AR/Interfaces';
 import { updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
+import FilledButton from '../components/FilledButton';
 
 interface PanelProps {
   snapPoint: string;
@@ -83,7 +84,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         />
       )}
       <View style={styles.header}>
-        <Button onPress={handleSave} title="Save" />
+        <FilledButton onPress={handleSave} title="Save" />
       </View>
     </View>
   );

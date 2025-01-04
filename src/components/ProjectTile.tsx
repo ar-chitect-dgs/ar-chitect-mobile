@@ -14,7 +14,7 @@ const ProjectTile = ({ project, onClick }: ProjectTileProps): JSX.Element => (
   <TouchableOpacity style={styles.card} onPress={onClick}>
     <Image
       style={styles.thumbnail}
-      source={{ uri: project.thumb}}
+      source={{ uri: project.thumb }}
       resizeMode="cover"
     />
     <View style={styles.details}>

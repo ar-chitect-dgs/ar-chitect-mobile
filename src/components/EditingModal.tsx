@@ -33,7 +33,10 @@ const EditingModal = ({
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Icon name="window-close" size={25} color={purple2} />
           </TouchableOpacity>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={true}
+          >
             {children}
           </ScrollView>
         </View>
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
   },
   modalContent: {
     width: '100%',
@@ -75,6 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
+    paddingBottom: 20,
   },
   label: {
     color: '#000',

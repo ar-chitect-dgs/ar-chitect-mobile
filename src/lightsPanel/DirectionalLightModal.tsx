@@ -8,6 +8,7 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
+import NameInput from './NameInput';
 import { opaquePurple2, purple2 } from '../styles/colors';
 import FilledButton from '../components/FilledButton';
 
@@ -94,7 +95,13 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
 
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <Text style={styles.label}>Pick a color for Directional Light</Text>
+      <NameInput
+        title="Name: "
+        value={directionalLight.name}
+        setName={(name: string) => {
+          setDirectionalLight({ ...directionalLight, name });
+        }}
+      />
       <ColorPicker
         color={directionalLight.color}
         onColorChange={(color) => {

@@ -8,6 +8,7 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
+import NameInput from './NameInput';
 import { opaquePurple2, purple2 } from '../styles/colors';
 import FilledButton from '../components/FilledButton';
 
@@ -116,7 +117,13 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
 
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <Text style={styles.label}>Pick a color for Spot Light</Text>
+      <NameInput
+        title="Name: "
+        value={spotLight.name}
+        setName={(name: string) => {
+          setSpotLight({ ...spotLight, name });
+        }}
+      />
       <ColorPicker
         color={spotLight.color}
         onColorChange={(color) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
 
@@ -21,12 +21,14 @@ const testProject = {
 const testModels = [
   {
     name: 'model1',
+    modelName: 'model1',
     url: 'model1.glb',
     position: { x: 1, y: 0, z: 0 },
     rotation: { x: 0, y: 0, z: 0 },
   },
   {
     name: 'model2',
+    modelName: 'model2',
     url: 'model2.glb',
     position: { x: 1, y: 1, z: 1 },
     rotation: { x: 2, y: 2, z: 2 },
@@ -64,6 +66,10 @@ describe('ModelPanel', () => {
       models: testModels,
     };
 
+    const mockDispatch = jest.fn();
+
+    (useDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         projectConfig,
@@ -75,7 +81,7 @@ describe('ModelPanel', () => {
     const { getByText } = render(<ModelPanel snapPoint="20%" />);
 
     testModels.map((model) => {
-      const modelTextRegex = new RegExp(`${model.name}.*`);
+      const modelTextRegex = new RegExp(`${model.modelName}.*`);
       expect(getByText(modelTextRegex)).toBeTruthy();
       return {};
     });
@@ -84,7 +90,7 @@ describe('ModelPanel', () => {
   it('Model modal is present after click on any model', () => {
     const { getByText } = render(<ModelPanel snapPoint="10%" />);
 
-    const modelTextRegex = new RegExp(`${testModels[0].name}.*`);
+    const modelTextRegex = new RegExp(`${testModels[0].modelName}.*`);
 
     fireEvent.press(getByText(modelTextRegex));
     expect(ModelModal).toHaveBeenCalledWith(

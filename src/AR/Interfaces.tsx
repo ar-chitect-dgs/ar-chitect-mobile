@@ -1,10 +1,12 @@
 export interface Object3D {
   id: string;
   name: string;
+  modelName: string;
   url: string;
   position: Vector3D;
   rotation: Vector3D;
   isVisible: boolean;
+  isSelected: boolean;
 }
 
 export interface Vector3D {

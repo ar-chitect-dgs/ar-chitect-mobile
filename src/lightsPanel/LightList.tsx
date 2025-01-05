@@ -6,16 +6,14 @@ import MenuButton from '../components/MenuButton';
 interface LightListProps<T> {
   lights: T[];
   title: string;
-  itemName: string;
   onAdd: () => void;
   onEdit: (light: T) => void;
   onDelete: (id: number) => void;
 }
 
-const LightList = <T extends { id: number; color: string }>({
+const LightList = <T extends { id: number; color: string; name: string }>({
   lights,
   title,
-  itemName,
   onAdd,
   onEdit,
   onDelete,
@@ -30,7 +28,7 @@ const LightList = <T extends { id: number; color: string }>({
         <ListItemTile
           key={index}
           id={light.id}
-          title={itemName}
+          title={light.name}
           onEdit={() => {
             onEdit(light);
           }}

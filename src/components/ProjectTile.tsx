@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import placeholder from '../assets/placeholder_project.png';
 import { type Project } from '../api/types';
 import FormattedText from './FormattedText';
 import { purple1 } from '../styles/colors';
@@ -12,7 +11,11 @@ interface ProjectTileProps {
 
 const ProjectTile = ({ project, onClick }: ProjectTileProps): JSX.Element => (
   <TouchableOpacity style={styles.card} onPress={onClick}>
-    <Image style={styles.thumbnail} source={placeholder} resizeMode="cover" />
+    <Image
+      style={styles.thumbnail}
+      source={{ uri: project.thumb }}
+      resizeMode="cover"
+    />
     <View style={styles.details}>
       <View style={styles.header}>
         <FormattedText style={styles.name}>{project.projectName}</FormattedText>

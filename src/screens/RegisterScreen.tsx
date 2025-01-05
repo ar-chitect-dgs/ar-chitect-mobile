@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import { launchImageLibrary } from 'react-native-image-picker';
 import InputField from '../components/InputField';
-import CustomButton from '../components/CustomButton';
+import FilledButton from '../components/FilledButton';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import ErrorPopup from '../components/ErrorPopup';
 
@@ -115,7 +115,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
           secureTextEntry
         />
 
-        <CustomButton
+        <FilledButton
           title={loading ? 'Registering...' : 'Register'}
           onPress={handleRegister}
           disabled={loading}

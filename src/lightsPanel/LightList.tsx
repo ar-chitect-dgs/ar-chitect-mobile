@@ -1,20 +1,19 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ListItemTile from '../components/ListItemTile';
+import MenuButton from '../components/MenuButton';
 
 interface LightListProps<T> {
   lights: T[];
   title: string;
-  itemName: string;
   onAdd: () => void;
   onEdit: (light: T) => void;
   onDelete: (id: number) => void;
 }
 
-const LightList = <T extends { id: number; color: string }>({
+const LightList = <T extends { id: number; color: string; name: string }>({
   lights,
   title,
-  itemName,
   onAdd,
   onEdit,
   onDelete,
@@ -23,13 +22,13 @@ const LightList = <T extends { id: number; color: string }>({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <Button title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
+        <MenuButton title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
       </View>
       {lights.map((light, index) => (
         <ListItemTile
           key={index}
           id={light.id}
-          title={itemName}
+          title={light.name}
           onEdit={() => {
             onEdit(light);
           }}

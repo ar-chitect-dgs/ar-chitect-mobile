@@ -1,4 +1,3 @@
-// redux/reducer.js
 import { combineReducers } from 'redux';
 import {
   ADD_AMBIENT_LIGHT,
@@ -38,7 +37,7 @@ export interface LightState {
 export interface ProjectState {
   id: string;
   project: Project | null;
-  models: Object3D[];
+  models: Record<number, Object3D>;
   orientation: number;
   translation: Vector3D;
 }
@@ -47,6 +46,7 @@ const initialLightState = {
   ambientLights: [
     {
       id: 1,
+      name: 'Ambient light',
       color: '#FFFFFF',
       intensity: 1000,
     },
@@ -54,6 +54,7 @@ const initialLightState = {
   directionalLights: [
     {
       id: 1,
+      name: 'Directional light',
       color: '#FFFFFF',
       intensity: 1000,
       direction: [0.0, 0.0, -1.0],
@@ -63,6 +64,7 @@ const initialLightState = {
   spotLights: [
     {
       id: 1,
+      name: 'Spot light light',
       color: '#FFFFFF',
       intensity: 1000,
       position: [0.0, 0.0, -2.0],
@@ -188,16 +190,22 @@ const projectReducer = (
     case UPDATE_MODEL:
       return {
         ...state,
-        models: state.models.map((model, index) => {
-          if (index === action.payload.index) {
-            return {
-              ...model,
-              ...action.payload.newModel,
-            };
-          }
-          return model;
-        }),
+        models: Object.entries(state.models).reduce(
+          (acc, [key, model]) => {
+            if (key === action.payload.index.toString()) {
+              acc[key] = {
+                ...model,
+                ...action.payload.newModel,
+              };
+            } else {
+              acc[key] = model;
+            }
+            return acc;
+          },
+          {} satisfies Record<number, Object3D>,
+        ),
       };
+
     case SET_ORIENTATION:
       return {
         ...state,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
 import ListItemTile from '../components/ListItemTile';
@@ -9,9 +9,15 @@ import { updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
 import ErrorPopup from '../components/ErrorPopup';
+import FilledButton from '../components/FilledButton';
 
 interface PanelProps {
   snapPoint: string;
+}
+
+interface SelectedModel {
+  id: number;
+  model: Object3D;
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
@@ -23,16 +29,16 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { user } = useAuth();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<Object3D | null>(null);
-  const [selectedId, setSelectedId] = useState(0);
   const [alert, setAlert] = useState({
     isVisible: false,
     message: '',
   });
+  const [selectedModel, setSelectedModel] = useState<SelectedModel | null>(
+    null,
+  );
 
   const handleModelClick = (id: number, model: Object3D): void => {
-    setSelectedId(id);
-    setSelectedModel(model);
+    setSelectedModel({ id, model });
     setIsModalVisible(true);
   };
 
@@ -42,6 +48,19 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       updateModel(id, {
         ...model,
         isVisible: !visible,
+      }),
+    );
+  };
+
+  const handleSelectModel = (
+    id: number,
+    model: Object3D,
+    select: boolean,
+  ): void => {
+    dispatch(
+      updateModel(id, {
+        ...model,
+        isSelected: select,
       }),
     );
   };
@@ -63,33 +82,40 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <View style={styles.header}>
         <Text style={styles.title}>Models:</Text>
       </View>
-      {models.map((model, index) => (
-        <ListItemTile
-          key={index}
-          id={index}
-          title={`${model.name} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
-          onDelete={() => {
-            handleToggleHideModel(index, model);
-          }}
-          onEdit={() => {
-            handleModelClick(index, model);
-          }}
-          deleteIconName={model.isVisible ? 'eye' : 'eye-slash'}
-        />
-      ))}
+      {Object.entries(models).map(([key, model]) => {
+        const numericKey = Number(key);
+        return (
+          <ListItemTile
+            key={numericKey}
+            id={numericKey}
+            title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
+            onDelete={() => {
+              handleToggleHideModel(numericKey, model);
+            }}
+            onEdit={() => {
+              const selected = { ...model, isSelected: true };
+              handleSelectModel(numericKey, selected, true);
+              handleModelClick(numericKey, selected);
+            }}
+            deleteIconName={model.isVisible ? 'eye' : 'eye-slash'}
+          />
+        );
+      })}
+
       {selectedModel && (
         <ModelModal
           snapPoint={snapPoint}
           isVisible={isModalVisible}
           onClose={() => {
+            setSelectedModel(null);
             setIsModalVisible(false);
           }}
-          selectedModel={selectedModel}
-          id={selectedId}
+          selectedModel={selectedModel.model}
+          id={selectedModel.id}
         />
       )}
       <View style={styles.header}>
-        <Button onPress={handleSave} title="Save" />
+        <FilledButton onPress={handleSave} title="Save" />
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}

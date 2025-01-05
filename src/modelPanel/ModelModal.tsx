@@ -4,6 +4,7 @@ import { updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
 import EditingModal from '../components/EditingModal';
+import NameInput from '../lightsPanel/NameInput';
 
 interface ModelModalProps {
   isVisible: boolean;
@@ -31,6 +32,15 @@ const ModelModal: React.FC<ModelModalProps> = ({
         [axis]: value,
       },
     };
+    dispatch(updateModel(id, newModel));
+    setModel(newModel);
+  };
+
+  const handleNameChange = (newName: string): void => {
+    const newModel: Object3D = {
+      ...model,
+      modelName: newName,
+    };
     setModel(newModel);
     dispatch(updateModel(id, newModel));
   };
@@ -38,7 +48,24 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
 
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
+    <EditingModal
+      isVisible={isVisible}
+      snapPoint={snapPoint}
+      onClose={() => {
+        dispatch(
+          updateModel(id, {
+            ...model,
+            isSelected: false,
+          }),
+        );
+        onClose();
+      }}
+    >
+      <NameInput
+        title="Name: "
+        value={model.modelName}
+        setName={handleNameChange}
+      />
       {axes.map((axis) => (
         <EditSlider
           key={axis}

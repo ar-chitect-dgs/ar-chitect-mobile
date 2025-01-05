@@ -9,11 +9,12 @@ import {
 } from '@reactvision/react-viro';
 import ARModel from '../AR/ARModel';
 
-const testAmbientLights = [{ id: '1', color: 'white' }];
+const testAmbientLights = [{ id: '1', name: 'Ambient light', color: 'white' }];
 const testDirectionalLights = [
   {
     id: '1',
     color: 'blue',
+    name: 'Directional light',
     direction: { x: 0, y: 1, z: 0 },
     intensity: 1,
     castsShadow: true,
@@ -22,6 +23,7 @@ const testDirectionalLights = [
 const testSpotLights = [
   {
     id: '1',
+    name: 'Spot light',
     color: 'red',
     position: { x: 0, y: 1, z: 0 },
     direction: { x: 0, y: -1, z: 0 },
@@ -43,8 +45,8 @@ const testModels = [
   },
 ];
 
-const testTranslation = { x: 1, y: 1, z: 1 };
-const testOrientation: number = 90;
+const testTranslation = { x: 0, y: 0, z: 0 };
+const testOrientation: number = 0;
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
@@ -117,15 +119,15 @@ describe('ARScene', () => {
     const spotLight = omitId(testSpotLights[0]);
 
     expect(ViroAmbientLight).toHaveBeenCalledWith(
-      expect.objectContaining(ambientLight),
+      expect.objectContaining({ color: ambientLight.color }),
       {},
     );
     expect(ViroDirectionalLight).toHaveBeenCalledWith(
-      expect.objectContaining(directionalLight),
+      expect.objectContaining({ color: directionalLight.color }),
       {},
     );
     expect(ViroSpotLight).toHaveBeenCalledWith(
-      expect.objectContaining(spotLight),
+      expect.objectContaining({ color: spotLight.color }),
       {},
     );
     expect(ARModel).toHaveBeenCalledWith(

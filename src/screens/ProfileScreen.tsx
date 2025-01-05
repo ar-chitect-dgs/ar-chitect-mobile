@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
 import CustomButton from '../components/CustomButton';
 import ErrorPopup from '../components/ErrorPopup';
+import FilledButton from '../components/FilledButton';
 
 const ProfileScreen: React.FC = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
@@ -62,7 +63,6 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.email}>{user.email}</Text>
         </View>
 
-        <CustomButton title="Logout" onPress={handleLogout} />
         <ErrorPopup
           isVisible={alert.isVisible}
           message={alert.message}
@@ -73,6 +73,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
             }));
           }}
         />
+        <FilledButton title="Logout" onPress={handleLogout} />
       </View>
     </LinearGradient>
   );

@@ -6,6 +6,7 @@ import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
 import ErrorPopup from '../components/ErrorPopup';
+import FilledButton from '../components/FilledButton';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
@@ -60,7 +61,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
           secureTextEntry
         />
 
-        <CustomButton
+        <FilledButton
           title={loading ? 'Logging in...' : 'Login'}
           onPress={handleLogin}
           disabled={loading}

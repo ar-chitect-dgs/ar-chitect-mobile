@@ -21,12 +21,14 @@ import LightList from './LightList';
 
 const sampleAmbientLight: AmbientLightProps = {
   id: -1,
+  name: 'Ambient light',
   color: '#FFFFFF',
   intensity: 1000,
   isVisible: true,
 };
 const sampleDirectionalLight: DirectionalLightProps = {
   id: -1,
+  name: 'Directional light',
   color: '#FFFFFF',
   intensity: 1000,
   direction: [-2, 0, -3],
@@ -35,6 +37,7 @@ const sampleDirectionalLight: DirectionalLightProps = {
 };
 const sampleSpotLight: SpotLightProps = {
   id: -1,
+  name: 'Spot light',
   color: '#FFFFFF',
   intensity: 1000,
   position: [0, 0, 0],
@@ -93,7 +96,6 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={ambientLights}
         title="Ambient Lights"
-        itemName="Ambient Light"
         onAdd={handleAddAmbientLight}
         onEdit={(light) => {
           setSelectedAmbientLight(light);
@@ -119,7 +121,6 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={directionalLights}
         title="Directional Lights"
-        itemName="Directional Light"
         onAdd={handleAddDirectionalLight}
         onEdit={(light) => {
           setSelectedDirectionalLight(light);
@@ -145,7 +146,6 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <LightList
         lights={spotLights}
         title="Spot Lights"
-        itemName="Spot Light"
         onAdd={handleAddSpotLight}
         onEdit={(light) => {
           setSelectedSpotLight(light);

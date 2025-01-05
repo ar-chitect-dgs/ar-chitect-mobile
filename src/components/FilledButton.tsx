@@ -7,14 +7,14 @@ import {
 } from 'react-native';
 import { purple2 } from '../styles/colors';
 
-interface CustomButtonProps {
+interface FilledButtonProps {
   title: string;
   onPress: () => void;
   disabled?: boolean;
   style?: ViewStyle;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({
+const FilledButton: React.FC<FilledButtonProps> = ({
   title,
   onPress,
   disabled = false,
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomButton;
+export default FilledButton;

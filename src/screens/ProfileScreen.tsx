@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
-import CustomButton from '../components/CustomButton';
+import FilledButton from '../components/FilledButton';
 
 const ProfileScreen: React.FC = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
@@ -55,7 +55,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.email}>{user.email}</Text>
         </View>
 
-        <CustomButton title="Logout" onPress={handleLogout} />
+        <FilledButton title="Logout" onPress={handleLogout} />
       </View>
     </LinearGradient>
   );

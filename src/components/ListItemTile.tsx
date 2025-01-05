@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { purple2 } from '../styles/colors';
 
 interface ListItemTileProps {
   id: number;
@@ -25,16 +26,16 @@ const ListItemTile = ({
     {color && <View style={[styles.colorBox, { backgroundColor: color }]} />}
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={onEdit} style={styles.iconButton}>
-        <Icon name="edit" size={20} color="blue" />
+        <Icon name="edit" size={20} color={purple2} />
       </TouchableOpacity>
       {onHide && (
         <TouchableOpacity onPress={onHide} style={styles.iconButton}>
-          <Icon name={hideIconName} size={20} color="blue" />
+          <Icon name={hideIconName} size={20} color={purple2} />
         </TouchableOpacity>
       )}
       {onDelete && (
         <TouchableOpacity onPress={onDelete} style={styles.iconButton}>
-          <Icon name="trash" size={20} color="blue" />
+          <Icon name="trash" size={20} color={purple2} />
         </TouchableOpacity>
       )}
     </View>
@@ -43,7 +44,7 @@ const ListItemTile = ({
 
 const styles = StyleSheet.create({
   card: {
-    margin: 5,
+    marginVertical: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

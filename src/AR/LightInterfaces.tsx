@@ -1,7 +1,6 @@
-// interfaces/LightInterfaces.ts
-
 export interface AmbientLightProps {
   id: number;
+  name: string;
   color: string;
   intensity: number;
   isVisible: boolean;
@@ -9,6 +8,7 @@ export interface AmbientLightProps {
 
 export interface DirectionalLightProps {
   id: number;
+  name: string;
   color: string;
   direction: [number, number, number];
   intensity: number;
@@ -18,6 +18,7 @@ export interface DirectionalLightProps {
 
 export interface SpotLightProps {
   id: number;
+  name: string;
   color: string;
   position: [number, number, number];
   direction: [number, number, number];

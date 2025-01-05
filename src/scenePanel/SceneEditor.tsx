@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setOrientation, setTranslation } from '../store/actions';
 import { type Vector3D } from '../AR/Interfaces';
@@ -38,29 +39,35 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      {axes.map((axis) => (
-        <EditSlider
-          key={axis}
-          title={`${axis.toUpperCase()} translation`}
-          value={newTranslation[axis]}
-          setValue={(value: number) => {
-            handlePositionChange(axis, value);
-          }}
-          minimumValue={-10}
-          maximumValue={10}
-          step={0.5}
-        />
-      ))}
-      <EditSlider
-        title={'Rotation'}
-        value={newOrientation}
-        setValue={(value: number) => {
-          handleRotationChange(value);
+      <View
+        style={{
+          paddingTop: 20,
         }}
-        minimumValue={-180}
-        maximumValue={180}
-        step={10}
-      />
+      >
+        {axes.map((axis) => (
+          <EditSlider
+            key={axis}
+            title={`${axis.toUpperCase()} translation`}
+            value={newTranslation[axis]}
+            setValue={(value: number) => {
+              handlePositionChange(axis, value);
+            }}
+            minimumValue={-10}
+            maximumValue={10}
+            step={0.5}
+          />
+        ))}
+        <EditSlider
+          title={'Rotation'}
+          value={newOrientation}
+          setValue={(value: number) => {
+            handleRotationChange(value);
+          }}
+          minimumValue={-180}
+          maximumValue={180}
+          step={10}
+        />
+      </View>
     </EditingModal>
   );
 };

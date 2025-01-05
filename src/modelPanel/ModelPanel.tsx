@@ -8,6 +8,7 @@ import { type Object3D } from '../AR/Interfaces';
 import { updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
+import FilledButton from '../components/FilledButton';
 
 interface PanelProps {
   snapPoint: string;
@@ -61,7 +62,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         <ListItemTile
           key={index}
           id={index}
-          title={`${model.name} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
+          title={`${model.name}\n(x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
           onDelete={() => {
             handleToggleHideModel(index, model);
           }}
@@ -83,7 +84,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         />
       )}
       <View style={styles.header}>
-        <Button onPress={handleSave} title="Save" />
+        <FilledButton onPress={handleSave} title="Save" />
       </View>
     </View>
   );

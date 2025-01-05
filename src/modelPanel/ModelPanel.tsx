@@ -100,7 +100,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
             key={numericKey}
             id={numericKey}
             title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
-            onDelete={() => {
+            onHide={() => {
               handleToggleHideModel(numericKey, model);
             }}
             onEdit={() => {

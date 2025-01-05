@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../store/actions';
@@ -8,6 +9,7 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import EditingModal from '../components/EditingModal';
 import NameInput from './NameInput';
+import FilledButton from '../components/FilledButton';
 
 interface AmbientLightModalProps {
   isVisible: boolean;
@@ -58,21 +60,32 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
           setAmbientLight({ ...ambientLight, color });
         }}
       />
-
-      <EditSlider
-        title="Intensity"
-        value={ambientLight.intensity}
-        setValue={(intensity: number) => {
-          setAmbientLight({ ...ambientLight, intensity });
-        }}
-        minimumValue={0}
-        maximumValue={2000}
-        step={1}
-      />
-
-      <Button title="Save" onPress={handleSave} />
+      <View style={styles.container}>
+        <EditSlider
+          title="Intensity"
+          value={ambientLight.intensity}
+          setValue={(intensity: number) => {
+            setAmbientLight({ ...ambientLight, intensity });
+          }}
+          minimumValue={0}
+          maximumValue={2000}
+          step={1}
+        />
+      </View>
+      <FilledButton title="Save" onPress={handleSave} />
     </EditingModal>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    color: '#000',
+    marginRight: 10,
+  },
+  container: {
+    marginBottom: 10,
+    flex: 1,
+  },
+});
 
 export default AmbientLightModal;

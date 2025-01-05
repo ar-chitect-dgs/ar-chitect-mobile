@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
@@ -9,6 +9,8 @@ import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
 import NameInput from './NameInput';
+import { opaquePurple2, purple2 } from '../styles/colors';
+import FilledButton from '../components/FilledButton';
 
 interface DirectionalLightModalProps {
   isVisible: boolean;
@@ -109,7 +111,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
 
       <VectorInput
         value={directionInputs}
-        title="direction"
+        title="Direction"
         setVectorInputs={setDirectionInputs}
         error={directionErrors}
       />
@@ -126,7 +128,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Casts Shadow:</Text>
+        <Text style={styles.label}>Cast Shadow:</Text>
         <Switch
           value={directionalLight.castsShadow}
           onValueChange={(value) => {
@@ -135,10 +137,12 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
               castsShadow: value,
             });
           }}
+          thumbColor={directionalLight.castsShadow ? opaquePurple2 : '#f4f3f4'}
+          trackColor={{ false: '#989898', true: purple2 }}
         />
       </View>
 
-      <Button title="Save" onPress={handleSave} />
+      <FilledButton title="Save" onPress={handleSave} />
     </EditingModal>
   );
 };
@@ -151,10 +155,14 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     color: '#000',
+    marginBottom: 20,
+    paddingRight: 10,
   },
   label: {
     color: '#000',
     marginRight: 10,
+    marginTop: 3,
+    fontSize: 16,
   },
 });
 

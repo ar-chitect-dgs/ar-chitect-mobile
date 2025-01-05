@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ListItemTile from '../components/ListItemTile';
+import MenuButton from '../components/MenuButton';
 
 interface LightListProps<T> {
   lights: T[];
@@ -21,7 +22,7 @@ const LightList = <T extends { id: number; color: string; name: string }>({
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <Button title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
+        <MenuButton title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
       </View>
       {lights.map((light, index) => (
         <ListItemTile

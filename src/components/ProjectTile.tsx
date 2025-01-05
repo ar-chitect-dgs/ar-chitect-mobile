@@ -12,7 +12,11 @@ interface ProjectTileProps {
 
 const ProjectTile = ({ project, onClick }: ProjectTileProps): JSX.Element => (
   <TouchableOpacity style={styles.card} onPress={onClick}>
-    <Image style={styles.thumbnail} source={placeholder} resizeMode="cover" />
+    <Image
+      style={styles.thumbnail}
+      source={{ uri: project.thumb }}
+      resizeMode="cover"
+    />
     <View style={styles.details}>
       <View style={styles.header}>
         <FormattedText style={styles.name}>{project.projectName}</FormattedText>

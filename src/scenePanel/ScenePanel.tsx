@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { type ProjectState, type Reducer } from '../store/reducers';
 import SceneEditor from './SceneEditor';
+import FilledButton from '../components/FilledButton';
 
 interface PanelProps {
   snapPoint: string;
@@ -19,7 +20,7 @@ const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
   };
   return (
     <View style={styles.container}>
-      <Button title="Edit scene" onPress={handleClick} />
+      <FilledButton title="Edit scene" onPress={handleClick} />
       <SceneEditor
         orientation={orientation}
         translation={translation}

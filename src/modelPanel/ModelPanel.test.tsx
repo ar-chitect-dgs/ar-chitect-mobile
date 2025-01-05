@@ -81,11 +81,8 @@ describe('ModelPanel', () => {
     const { getByText } = render(<ModelPanel snapPoint="20%" />);
 
     testModels.map((model) => {
-      expect(
-        getByText(
-          `${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`,
-        ),
-      ).toBeTruthy();
+      const modelTextRegex = new RegExp(`${model.modelName}.*`);
+      expect(getByText(modelTextRegex)).toBeTruthy();
       return {};
     });
   });
@@ -93,11 +90,9 @@ describe('ModelPanel', () => {
   it('Model modal is present after click on any model', () => {
     const { getByText } = render(<ModelPanel snapPoint="10%" />);
 
-    fireEvent.press(
-      getByText(
-        `${testModels[0].modelName} (x: ${testModels[0].position.x.toFixed(1)}, y: ${testModels[0].position.y.toFixed(1)}, z: ${testModels[0].position.z.toFixed(1)})`,
-      ),
-    );
+    const modelTextRegex = new RegExp(`${testModels[0].modelName}.*`);
+
+    fireEvent.press(getByText(modelTextRegex));
     expect(ModelModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

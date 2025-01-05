@@ -8,7 +8,6 @@ import {
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ARModel from '../AR/ARModel';
-import { type Vector3D } from './Interfaces';
 import {
   type LightState,
   type Reducer,
@@ -16,11 +15,7 @@ import {
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 import { updateSpotLight } from '../store/actions';
-import {
-  calculateGlobalPosition,
-  calculateRotation,
-  rotateObjectAroundOrigin,
-} from '../utils/utils';
+import { calculateGlobalPosition, calculateRotation } from '../utils/utils';
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,7 +38,7 @@ const ARScene: React.FC = () => {
         }
       > = {};
 
-      materials['middle'] = {
+      materials.middle = {
         diffuseColor: '#f00',
       };
 

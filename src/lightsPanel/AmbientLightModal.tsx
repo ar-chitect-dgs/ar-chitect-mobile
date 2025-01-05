@@ -75,5 +75,4 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
   );
 };
 
-
 export default AmbientLightModal;

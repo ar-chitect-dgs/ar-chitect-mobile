@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';

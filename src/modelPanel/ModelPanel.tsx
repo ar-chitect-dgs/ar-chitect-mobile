@@ -13,10 +13,10 @@ interface PanelProps {
   snapPoint: string;
 }
 
-type SelectedModel = {
+interface SelectedModel {
   id: number;
   model: Object3D;
-};
+}
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { models, project } = useSelector(

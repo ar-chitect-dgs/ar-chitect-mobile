@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Switch,
-  TextInput,
-} from 'react-native';
+import { View, Text, Button, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotLight, updateSpotLight } from '../store/actions';

@@ -23,10 +23,6 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
   const handleLogout = async (): Promise<void> => {
     try {
       await auth().signOut();
-      setAlert({
-        isVisible: true,
-        message: 'You have been logged out.',
-      });
     } catch (error: any) {
       setAlert({
         isVisible: true,

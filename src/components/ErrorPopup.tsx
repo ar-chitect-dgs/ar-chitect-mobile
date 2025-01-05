@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { purple2 } from '../styles/colors';
 
 export interface ErrorPopupProps {
   isVisible: boolean;
@@ -21,6 +22,7 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({
     >
       <View style={styles.overlay}>
         <View style={[styles.alertBox, styles.errorBox]}>
+          <Text style={styles.title}>Error</Text>
           <Text style={styles.message}>{message}</Text>
           <TouchableOpacity onPress={onClose} style={styles.button}>
             <Text style={styles.buttonText}>OK</Text>
@@ -50,13 +52,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   errorBox: {
-    backgroundColor: '#ffe6e6',
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    color: purple2,
   },
   message: {
     fontSize: 14,
@@ -65,13 +68,15 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    backgroundColor: '#2196F3',
-    borderRadius: 5,
+    alignSelf: 'center',
+    borderColor: purple2,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 50,
+    borderWidth: 1,
+    borderRadius: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: purple2,
     fontSize: 16,
     fontWeight: 'bold',
   },

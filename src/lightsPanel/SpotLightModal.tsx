@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Switch,
+  TextInput,
+} from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotLight, updateSpotLight } from '../store/actions';
@@ -8,6 +15,7 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
+import NameInput from './NameInput';
 
 interface SpotLightModalProps {
   isVisible: boolean;
@@ -114,7 +122,13 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
 
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <Text style={styles.label}>Pick a color for Spot Light</Text>
+      <NameInput
+        title="Name: "
+        value={spotLight.name}
+        setName={(name: string) => {
+          setSpotLight({ ...spotLight, name });
+        }}
+      />
       <ColorPicker
         color={spotLight.color}
         onColorChange={(color) => {

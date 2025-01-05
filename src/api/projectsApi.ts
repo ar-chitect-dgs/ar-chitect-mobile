@@ -34,7 +34,7 @@ export const fetchProjects = async (
 
 export async function fetchObjectsWithModelUrls(
   projectData: Project,
-): Promise<Object3D[]> {
+): Promise<Record<number, Object3D>> {
   const results = await Promise.all(
     projectData.objects.map(async (object) => {
       const modelDoc = await firestore()
@@ -63,11 +63,12 @@ export async function fetchObjectsWithModelUrls(
         rotation: object.rotation,
         url: colorData.url,
         isVisible: true,
+        isSelected: false,
       };
     }),
   );
 
-  const updatedObjects = await Promise.all(
+  const updatedObjectsArray = await Promise.all(
     results.map(async (object: Object3D) => {
       const glbUrl = await fetchGLBUrl(object.url);
       return {
@@ -75,6 +76,14 @@ export async function fetchObjectsWithModelUrls(
         url: glbUrl,
       };
     }),
+  );
+
+  const updatedObjects = updatedObjectsArray.reduce<Record<number, Object3D>>(
+    (acc, object, index) => {
+      acc[index] = object;
+      return acc;
+    },
+    {},
   );
 
   return updatedObjects;
@@ -90,7 +99,7 @@ export const saveProject = async (
   userId: string,
   projectId: string,
   oldObjects: ModelObject[],
-  newObjects: Object3D[],
+  newObjects: Record<number, Object3D>,
 ): Promise<void> => {
   try {
     const projectRef = firestore()

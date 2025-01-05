@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Switch,
+  TextInput,
+} from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
@@ -8,6 +15,7 @@ import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../components/EditingModal';
+import NameInput from './NameInput';
 
 interface DirectionalLightModalProps {
   isVisible: boolean;
@@ -92,7 +100,13 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
 
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <Text style={styles.label}>Pick a color for Directional Light</Text>
+      <NameInput
+        title="Name: "
+        value={directionalLight.name}
+        setName={(name: string) => {
+          setDirectionalLight({ ...directionalLight, name });
+        }}
+      />
       <ColorPicker
         color={directionalLight.color}
         onColorChange={(color) => {

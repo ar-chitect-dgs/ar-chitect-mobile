@@ -5,6 +5,7 @@ import { updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
 import EditingModal from '../components/EditingModal';
+import NameInput from '../lightsPanel/NameInput';
 
 interface ModelModalProps {
   isVisible: boolean;
@@ -24,7 +25,6 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const [model, setModel] = useState<Object3D>(selectedModel);
   const dispatch = useDispatch();
 
-  // Funkcja do zmiany pozycji modelu
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     const newModel: Object3D = {
       ...model,
@@ -33,11 +33,10 @@ const ModelModal: React.FC<ModelModalProps> = ({
         [axis]: value,
       },
     };
-    setModel(newModel);
     dispatch(updateModel(id, newModel));
+    setModel(newModel);
   };
 
-  // Funkcja do zmiany nazwy modelu
   const handleNameChange = (newName: string): void => {
     const newModel: Object3D = {
       ...model,
@@ -50,15 +49,24 @@ const ModelModal: React.FC<ModelModalProps> = ({
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
 
   return (
-    <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Model Name: </Text>
-        <TextInput
-          style={styles.textInput}
-          value={model.modelName}
-          onChangeText={handleNameChange}
-        />
-      </View>
+    <EditingModal
+      isVisible={isVisible}
+      snapPoint={snapPoint}
+      onClose={() => {
+        dispatch(
+          updateModel(id, {
+            ...model,
+            isSelected: false,
+          }),
+        );
+        onClose();
+      }}
+    >
+      <NameInput
+        title="Name: "
+        value={model.modelName}
+        setName={handleNameChange}
+      />
       {axes.map((axis) => (
         <EditSlider
           key={axis}
@@ -75,30 +83,5 @@ const ModelModal: React.FC<ModelModalProps> = ({
     </EditingModal>
   );
 };
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-    width: '50%',
-    justifyContent: 'space-between',
-    color: '#000',
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#000',
-  },
-  textInput: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    fontSize: 16,
-    color: '#000',
-  },
-});
 
 export default ModelModal;

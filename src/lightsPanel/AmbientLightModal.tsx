@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, Button, StyleSheet } from 'react-native';
+import { Button } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../store/actions';
@@ -7,6 +7,7 @@ import { type AmbientLightProps } from '../AR/LightInterfaces';
 import { type Reducer } from '../store/reducers';
 import EditSlider from './EditSlider';
 import EditingModal from '../components/EditingModal';
+import NameInput from './NameInput';
 
 interface AmbientLightModalProps {
   isVisible: boolean;
@@ -44,7 +45,13 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
 
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
-      <Text style={styles.label}>Pick a color for Directional Light</Text>
+      <NameInput
+        title="Name: "
+        value={ambientLight.name}
+        setName={(name: string) => {
+          setAmbientLight({ ...ambientLight, name });
+        }}
+      />
       <ColorPicker
         color={ambientLight.color}
         onColorChange={(color) => {
@@ -68,11 +75,5 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  label: {
-    color: '#000',
-    marginRight: 10,
-  },
-});
 
 export default AmbientLightModal;

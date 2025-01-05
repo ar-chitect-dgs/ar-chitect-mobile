@@ -1,13 +1,13 @@
 import { type Vector3D } from '../AR/Interfaces';
 
-export const shiftToOrigin = (
-  objectPosition: Vector3D,
-  origin: Vector3D,
+export const calculateRotation = (
+  modelRotation: Vector3D,
+  orientation: number,
 ): Vector3D => {
   return {
-    x: objectPosition.x - origin.x,
-    y: objectPosition.y,
-    z: objectPosition.z - origin.z,
+    x: modelRotation.x,
+    y: modelRotation.y - orientation,
+    z: modelRotation.z,
   };
 };
 
@@ -26,27 +26,16 @@ export const rotateAroundY = (position: Vector3D, angle: number): Vector3D => {
   };
 };
 
-export const shiftBackToOriginalPosition = (
-  rotatedPosition: Vector3D,
-  origin: Vector3D,
+export const calculateGlobalPosition = (
+  localPosition: Vector3D,
+  translation: Vector3D,
+  orientation: number,
 ): Vector3D => {
-  console.log(rotatedPosition.y);
-  console.log(origin.y);
+  const rotatedPosition = rotateAroundY(localPosition, orientation);
+
   return {
-    x: rotatedPosition.x + origin.x,
-    y: rotatedPosition.y + origin.y,
-    z: rotatedPosition.z + origin.z,
+    x: rotatedPosition.x + translation.x,
+    y: rotatedPosition.y + translation.y,
+    z: rotatedPosition.z + translation.z,
   };
-};
-
-export const rotateObjectAroundOrigin = (
-  objectPosition: Vector3D,
-  origin: Vector3D,
-  rotationAngle: number,
-): Vector3D => {
-  const shiftedPosition = shiftToOrigin(objectPosition, origin);
-
-  const rotatedPosition = rotateAroundY(shiftedPosition, rotationAngle);
-
-  return shiftBackToOriginalPosition(rotatedPosition, origin);
 };

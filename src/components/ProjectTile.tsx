@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import placeholder from '../assets/placeholder_project.png';
 import { type Project } from '../api/types';
 import FormattedText from './FormattedText';
 import { purple1 } from '../styles/colors';

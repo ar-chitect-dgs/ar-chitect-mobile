@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
 import ListItemTile from '../components/ListItemTile';

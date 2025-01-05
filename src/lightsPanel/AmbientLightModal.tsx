@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'react-native';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../store/actions';

@@ -16,9 +16,10 @@ const ARScreen: React.FC = () => {
   const dispatch = useDispatch();
   const route = useRoute<ARScreenRouteProp>();
   const { project } = route.params;
-  const { saveLights }: LightState = useSelector(
+  const lightConfig: LightState = useSelector(
     (state: Reducer) => state.lightConfig,
   );
+  const { saveLights } = lightConfig;
 
   const data = project;
 

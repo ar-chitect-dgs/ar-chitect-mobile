@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
@@ -31,6 +31,7 @@ const testModels = [
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
+  useSelector: jest.fn(),
 }));
 
 jest.mock('@react-navigation/native', () => ({
@@ -73,6 +74,16 @@ describe('ARScreen', () => {
   beforeEach(() => {
     dispatchMock = jest.fn();
     (useDispatch as unknown as jest.Mock).mockReturnValue(dispatchMock);
+
+    const lightConfig = {
+      saveLights: true,
+    };
+
+    (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
+      callback({
+        lightConfig,
+      }),
+    );
 
     (useRoute as unknown as jest.Mock).mockReturnValue({
       params: { project: testProject },

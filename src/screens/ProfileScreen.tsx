@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
+import CustomButton from '../components/CustomButton';
+import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 
 const ProfileScreen: React.FC = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   useEffect(() => {
     const currentUser = auth().currentUser;
@@ -18,9 +24,11 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
   const handleLogout = async (): Promise<void> => {
     try {
       await auth().signOut();
-      Alert.alert('Success', 'You have been logged out.');
     } catch (error: any) {
-      Alert.alert('Logout Error', error.message as string);
+      setAlert({
+        isVisible: true,
+        message: 'Logout failed.',
+      });
     }
   };
 
@@ -55,6 +63,16 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.email}>{user.email}</Text>
         </View>
 
+        <ErrorPopup
+          isVisible={alert.isVisible}
+          message={alert.message}
+          onClose={() => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+          }}
+        />
         <FilledButton title="Logout" onPress={handleLogout} />
       </View>
     </LinearGradient>

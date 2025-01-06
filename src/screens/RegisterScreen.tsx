@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Alert,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
@@ -14,6 +7,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import InputField from '../components/InputField';
 import FilledButton from '../components/FilledButton';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
+import ErrorPopup from '../components/ErrorPopup';
 
 const RegisterScreen: React.FC = ({ navigation }: any) => {
   const [email, setEmail] = useState<string>('');
@@ -21,6 +15,10 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   const [displayName, setDisplayName] = useState<string>('');
   const [profileImage, setProfileImage] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   const handleImagePicker = (): void => {
     void launchImageLibrary({ mediaType: 'photo' }, (response) => {
@@ -39,7 +37,10 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
 
   const handleRegister = async (): Promise<void> => {
     if (email === '' || password === '' || displayName === '') {
-      Alert.alert('Error', 'Please fill in all fields');
+      setAlert({
+        isVisible: true,
+        message: 'Please fill in all fields.',
+      });
       return;
     }
 
@@ -58,12 +59,17 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
           displayName,
           photoURL,
         });
-
-        Alert.alert('Success', 'Account created successfully!');
+        setAlert({
+          isVisible: true,
+          message: 'Account created successfully!',
+        });
         navigation.navigate('Home');
       }
     } catch (error: any) {
-      Alert.alert('Registration Error', error.message as string);
+      setAlert({
+        isVisible: true,
+        message: 'Registration error.',
+      });
     } finally {
       setLoading(false);
     }
@@ -122,6 +128,16 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.prelinkText}>Already have an account? </Text>
           <Text style={styles.linkText}>Log-in</Text>
         </TouchableOpacity>
+        <ErrorPopup
+          isVisible={alert.isVisible}
+          message={alert.message}
+          onClose={() => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+          }}
+        />
       </View>
     </LinearGradient>
   );

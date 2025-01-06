@@ -43,6 +43,7 @@ export async function fetchObjectsWithModelUrls(
         .get();
 
       if (!modelDoc.exists) {
+        console.error(`Model with id ${object.id} not found in Firestore`);
         throw new Error(`Model with id ${object.id} not found in Firestore`);
       }
 
@@ -50,6 +51,7 @@ export async function fetchObjectsWithModelUrls(
 
       const colorData = modelData.color_variants[object.color];
       if (!colorData) {
+        console.error(`Color ${object.color} not found for model ${object.id}`);
         throw new Error(
           `Color ${object.color} not found for model ${object.id}`,
         );
@@ -134,8 +136,6 @@ export const saveProject = async (
       objects: updatedObjects,
       modifiedAt: new Date().toISOString(),
     });
-
-    console.log(`Successfully updated objects for project ${projectId}`);
   } catch (error) {
     console.error(`Error updating objects for project ${projectId}:`, error);
     throw error;

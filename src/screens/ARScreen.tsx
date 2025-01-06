@@ -11,6 +11,7 @@ import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomPanel from '../AR/BottomPanel';
 import { type LightState, type Reducer } from '../store/reducers';
+import ErrorPopup from '../components/ErrorPopup';
 
 const ARScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const ARScreen: React.FC = () => {
   const data = project;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   useEffect(() => {
     const loadProjectData = async (): Promise<void> => {
@@ -34,7 +39,10 @@ const ARScreen: React.FC = () => {
       try {
         dispatch(setProject({ id: data.id, project: data }));
       } catch (error) {
-        console.error('Error fetching project data:', error);
+        setAlert({
+          isVisible: true,
+          message: 'Error fetching project data.',
+        });
       }
     };
     const loadModels = async (): Promise<void> => {
@@ -43,10 +51,10 @@ const ARScreen: React.FC = () => {
         const modelsArray = await fetchObjectsWithModelUrls(project);
         dispatch(setModels(modelsArray));
       } catch (error) {
-        console.error(
-          'Error while downloading and loading project data',
-          error,
-        );
+        setAlert({
+          isVisible: true,
+          message: 'Error fetching model data.',
+        });
       } finally {
         setIsLoading(false);
       }
@@ -88,6 +96,16 @@ const ARScreen: React.FC = () => {
         )}
         <BottomPanel />
       </GestureHandlerRootView>
+      <ErrorPopup
+        isVisible={alert.isVisible}
+        message={alert.message}
+        onClose={() => {
+          setAlert((prev) => ({
+            ...prev,
+            isVisible: false,
+          }));
+        }}
+      />
     </View>
   );
 };

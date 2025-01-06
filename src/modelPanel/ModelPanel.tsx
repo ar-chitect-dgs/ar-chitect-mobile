@@ -8,6 +8,7 @@ import { type Object3D } from '../AR/Interfaces';
 import { updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
+import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 
 interface PanelProps {
@@ -28,6 +29,10 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { user } = useAuth();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [alert, setAlert] = useState({
+    isVisible: false,
+    message: '',
+  });
   const [selectedModel, setSelectedModel] = useState<SelectedModel | null>(
     null,
   );
@@ -64,11 +69,12 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     if (!user || !project) {
       return;
     }
-    saveProject(user?.uid, project?.id, project?.objects, models).catch(
-      (error) => {
-        console.error('Error saving project:', error);
-      },
-    );
+    saveProject(user?.uid, project?.id, project?.objects, models).catch(() => {
+      setAlert({
+        isVisible: true,
+        message: 'Error saving changes.',
+      });
+    });
   };
 
   useEffect(() => {
@@ -127,6 +133,16 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <View style={styles.header}>
         <FilledButton onPress={handleSave} title="Save" />
       </View>
+      <ErrorPopup
+        isVisible={alert.isVisible}
+        message={alert.message}
+        onClose={() => {
+          setAlert((prev) => ({
+            ...prev,
+            isVisible: false,
+          }));
+        }}
+      />
     </View>
   );
 };

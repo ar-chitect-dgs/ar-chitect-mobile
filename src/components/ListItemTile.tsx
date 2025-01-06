@@ -7,25 +7,37 @@ interface ListItemTileProps {
   id: number;
   title: string;
   onEdit: () => void;
-  onDelete: () => void;
-  deleteIconName: string;
+  onDelete?: () => void;
+  onHide?: () => void;
+  hideIconName?: string;
+  color?: string;
 }
 
 const ListItemTile = ({
   title,
   onEdit,
   onDelete,
-  deleteIconName,
+  onHide,
+  hideIconName,
+  color,
 }: ListItemTileProps): JSX.Element => (
   <TouchableOpacity onPress={onEdit} style={styles.card}>
     <Text style={styles.title}>{title}</Text>
+    {color && <View style={[styles.colorBox, { backgroundColor: color }]} />}
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={onEdit} style={styles.iconButton}>
         <Icon name="edit" size={20} color={purple2} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={onDelete} style={styles.iconButton}>
-        <Icon name={deleteIconName} size={20} color={purple2} />
-      </TouchableOpacity>
+      {onHide && (
+        <TouchableOpacity onPress={onHide} style={styles.iconButton}>
+          <Icon name={hideIconName} size={20} color={purple2} />
+        </TouchableOpacity>
+      )}
+      {onDelete && (
+        <TouchableOpacity onPress={onDelete} style={styles.iconButton}>
+          <Icon name="trash" size={20} color={purple2} />
+        </TouchableOpacity>
+      )}
     </View>
   </TouchableOpacity>
 );
@@ -61,6 +73,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     backgroundColor: '#e0e0e0',
     borderRadius: 20,
+  },
+  colorBox: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    borderRadius: 4,
   },
 });
 

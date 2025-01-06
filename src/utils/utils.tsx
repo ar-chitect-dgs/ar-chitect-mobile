@@ -39,3 +39,30 @@ export const calculateGlobalPosition = (
     z: rotatedPosition.z + translation.z,
   };
 };
+
+export const calculateLocalPosition = (
+  globalPosition: Vector3D,
+  translation: Vector3D,
+  orientation: number,
+): Vector3D => {
+  const translatedPosition = {
+    x: globalPosition.x - translation.x,
+    y: globalPosition.y - translation.y,
+    z: globalPosition.z - translation.z,
+  };
+
+  const angleInRadians = (-orientation * Math.PI) / 180;
+  const cosAngle = Math.cos(angleInRadians);
+  const sinAngle = Math.sin(angleInRadians);
+
+  const localX =
+    translatedPosition.x * cosAngle + translatedPosition.z * sinAngle;
+  const localZ =
+    -translatedPosition.x * sinAngle + translatedPosition.z * cosAngle;
+
+  return {
+    x: localX,
+    y: translatedPosition.y,
+    z: localZ,
+  };
+};

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { useDispatch } from 'react-redux';
-import { setModels, setProject } from '../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetLightsState, setModels, setProject } from '../store/actions';
 import { useRoute } from '@react-navigation/native';
 import { type ARScreenRouteProp } from '../navigation/AppRouter';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
@@ -10,12 +10,17 @@ import { fetchObjectsWithModelUrls } from '../api/projectsApi';
 import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomPanel from '../AR/BottomPanel';
+import { type LightState, type Reducer } from '../store/reducers';
 import ErrorPopup from '../components/ErrorPopup';
 
 const ARScreen: React.FC = () => {
   const dispatch = useDispatch();
   const route = useRoute<ARScreenRouteProp>();
   const { project } = route.params;
+  const lightConfig: LightState = useSelector(
+    (state: Reducer) => state.lightConfig,
+  );
+  const { saveLights } = lightConfig;
 
   const data = project;
 
@@ -55,6 +60,10 @@ const ARScreen: React.FC = () => {
       }
     };
 
+    if (!saveLights) {
+      console.log('reset');
+      dispatch(resetLightsState());
+    }
     void loadProjectData();
     void loadModels();
   }, []);

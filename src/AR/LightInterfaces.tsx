@@ -3,6 +3,7 @@ export interface AmbientLightProps {
   name: string;
   color: string;
   intensity: number;
+  isVisible: boolean;
 }
 
 export interface DirectionalLightProps {
@@ -12,6 +13,7 @@ export interface DirectionalLightProps {
   direction: [number, number, number];
   intensity: number;
   castsShadow: boolean;
+  isVisible: boolean;
 }
 
 export interface SpotLightProps {
@@ -26,4 +28,5 @@ export interface SpotLightProps {
   attenuationStartDistance: number;
   attenuationEndDistance: number;
   castsShadow: boolean;
+  isVisible: true;
 }

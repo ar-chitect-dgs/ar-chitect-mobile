@@ -7,6 +7,7 @@ interface ARModelProps {
   position: Vector3D;
   rotation: Vector3D;
   selected: boolean;
+  onDrag: (dragToPos: any) => void;
 }
 
 const ARModel: React.FC<ARModelProps> = ({
@@ -14,6 +15,7 @@ const ARModel: React.FC<ARModelProps> = ({
   position,
   rotation,
   selected,
+  onDrag,
 }) => {
   return (
     <Viro3DObject
@@ -22,6 +24,7 @@ const ARModel: React.FC<ARModelProps> = ({
       rotation={[rotation.x, rotation.y, rotation.z]}
       type="GLB"
       opacity={selected ? 0.5 : 1}
+      onDrag={onDrag}
     />
   );
 };

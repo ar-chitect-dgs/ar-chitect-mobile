@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../store/reducers';
@@ -21,7 +21,7 @@ interface SelectedModel {
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const { models, project } = useSelector(
+  const { models, project, autoSave } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
   const dispatch = useDispatch();
@@ -77,6 +77,23 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     });
   };
 
+  useEffect(() => {
+    let autoSaveInterval: NodeJS.Timeout | null = null;
+
+    if (autoSave) {
+      autoSaveInterval = setInterval(() => {
+        handleSave();
+        console.log('saved');
+      }, 30000);
+    }
+
+    return () => {
+      if (autoSaveInterval !== null) {
+        clearInterval(autoSaveInterval);
+      }
+    };
+  }, [autoSave, dispatch, models]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -89,7 +106,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
             key={numericKey}
             id={numericKey}
             title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
-            onDelete={() => {
+            onHide={() => {
               handleToggleHideModel(numericKey, model);
             }}
             onEdit={() => {
@@ -97,11 +114,10 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
               handleSelectModel(numericKey, selected, true);
               handleModelClick(numericKey, selected);
             }}
-            deleteIconName={model.isVisible ? 'eye' : 'eye-slash'}
+            hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
           />
         );
       })}
-
       {selectedModel && (
         <ModelModal
           snapPoint={snapPoint}

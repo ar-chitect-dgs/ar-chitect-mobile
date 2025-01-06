@@ -14,20 +14,21 @@ import {
   type ProjectState,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
-import { updateSpotLight } from '../store/actions';
-import { calculateGlobalPosition, calculateRotation } from '../utils/utils';
+import { updateModel, updateSpotLight } from '../store/actions';
+import {
+  calculateGlobalPosition,
+  calculateLocalPosition,
+  calculateRotation,
+} from '../utils/utils';
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
-  const lightConfig: LightState = useSelector(
-    (state: Reducer) => state.lightConfig,
-  );
-  const { ambientLights, directionalLights, spotLights } = lightConfig;
+  const { ambientLights, directionalLights, spotLights }: LightState =
+    useSelector((state: Reducer) => state.lightConfig);
 
-  const projectConfig: ProjectState = useSelector(
+  const { models, translation, orientation }: ProjectState = useSelector(
     (state: Reducer) => state.projectConfig,
   );
-  const { models, translation, orientation } = projectConfig;
 
   const createMaterials = (): void => {
     if (spotLights) {
@@ -37,10 +38,6 @@ const ARScene: React.FC = () => {
           diffuseColor: string;
         }
       > = {};
-
-      materials.middle = {
-        diffuseColor: '#f00',
-      };
 
       spotLights.forEach((light) => {
         materials[light.color] = {
@@ -108,26 +105,33 @@ const ARScene: React.FC = () => {
               attenuationEndDistance={light.attenuationEndDistance}
               castsShadow={light.castsShadow}
             />
-            <ViroBox
-              key={light.id + spotLights.length}
-              position={[newPosition.x, newPosition.y, newPosition.z]}
-              height={0.2}
-              length={0.2}
-              width={0.2}
-              materials={[light.color]}
-              onDrag={(dragToPos) => {
-                dispatch(
-                  updateSpotLight(light.id, {
-                    ...light,
-                    position: [
-                      dragToPos[0] - translation.x,
-                      dragToPos[1] - translation.y,
-                      dragToPos[2] - translation.z,
-                    ],
-                  }),
-                );
-              }}
-            />
+            {light.isVisible && (
+              <ViroBox
+                key={light.id + spotLights.length}
+                position={[newPosition.x, newPosition.y, newPosition.z]}
+                height={0.2}
+                length={0.2}
+                width={0.2}
+                materials={[light.color]}
+                onDrag={(dragToPos) => {
+                  const dragPosition = calculateLocalPosition(
+                    { x: dragToPos[0], y: dragToPos[1], z: dragToPos[2] },
+                    translation,
+                    orientation,
+                  );
+                  dispatch(
+                    updateSpotLight(light.id, {
+                      ...light,
+                      position: [
+                        dragPosition.x,
+                        dragPosition.y,
+                        dragPosition.z,
+                      ],
+                    }),
+                  );
+                }}
+              />
+            )}
           </>
         );
       })}
@@ -144,15 +148,21 @@ const ARScene: React.FC = () => {
             )}
             rotation={calculateRotation(model.rotation, orientation)}
             selected={model.isSelected}
+            onDrag={(dragToPos: number[]) => {
+              console.log(dragToPos);
+              dispatch(
+                updateModel(Number(key), {
+                  ...model,
+                  position: calculateLocalPosition(
+                    { x: dragToPos[0], y: dragToPos[1], z: dragToPos[2] },
+                    translation,
+                    orientation,
+                  ),
+                }),
+              );
+            }}
           />
         ))}
-      <ViroBox
-        position={[translation.x, translation.y, translation.z]}
-        height={0.2}
-        length={0.2}
-        width={0.2}
-        materials={['middle']}
-      />
     </>
   );
 };

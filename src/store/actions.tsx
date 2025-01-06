@@ -20,6 +20,10 @@ export const REMOVE_DIRECTIONAL_LIGHT = 'REMOVE_DIRECTIONAL_LIGHT';
 export const ADD_SPOT_LIGHT = 'ADD_SPOT_LIGHT';
 export const UPDATE_SPOT_LIGHT = 'UPDATE_SPOT_LIGHT';
 export const REMOVE_SPOT_LIGHT = 'REMOVE_SPOT_LIGHT';
+export const HIDE_SPOT_LIGHT = 'HIDE_SPOT_LIGHT';
+
+export const RESET_LIGHTS = 'RESET_LIGHTS';
+export const SET_SAVE_LIGHTS = 'SET_SAVE_LIGHTS';
 
 export const SET_ORIENTATION = 'SET_ORIENTATION';
 export const SET_TRANSLATION = 'SET_TRANSLATION';
@@ -27,6 +31,8 @@ export const SET_TRANSLATION = 'SET_TRANSLATION';
 export const SET_PROJECT = 'SET_PROJECT';
 export const SET_MODELS = 'SET_MODELS';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
+
+export const SET_AUTO_SAVE = 'SET_AUTO_SAVE';
 
 export const addAmbientLight = (light: AmbientLightProps): AnyAction => {
   return {
@@ -86,6 +92,21 @@ export const removeSpotLight = (id: number): AnyAction => ({
   payload: { id, properties: null },
 });
 
+export const hideSpotLight = (id: number): AnyAction => ({
+  type: HIDE_SPOT_LIGHT,
+  payload: { id, properties: null },
+});
+
+export const resetLightsState = (): AnyAction => ({
+  type: RESET_LIGHTS,
+  payload: { id: 0, properties: null },
+});
+
+export const setSaveLights = (save: boolean): AnyAction => ({
+  type: SET_SAVE_LIGHTS,
+  payload: { id: 0, properties: save },
+});
+
 export const setTranslation = (translation: any): AnyAction => ({
   type: SET_TRANSLATION,
   payload: translation,
@@ -115,4 +136,9 @@ export const setModels = (models: any): AnyAction => ({
 export const updateModel = (index: number, newModel: Object3D): AnyAction => ({
   type: UPDATE_MODEL,
   payload: { index, newModel },
+});
+
+export const setAutoSave = (autoSave: boolean): AnyAction => ({
+  type: SET_AUTO_SAVE,
+  payload: autoSave,
 });

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  hideSpotLight,
   removeAmbientLight,
   removeDirectionalLight,
   removeSpotLight,
+  updateSpotLight,
 } from '../store/actions';
 import { type Reducer } from '../store/reducers';
 import {
@@ -22,6 +24,7 @@ const sampleAmbientLight: AmbientLightProps = {
   name: 'Ambient light',
   color: '#FFFFFF',
   intensity: 1000,
+  isVisible: true,
 };
 const sampleDirectionalLight: DirectionalLightProps = {
   id: -1,
@@ -30,6 +33,7 @@ const sampleDirectionalLight: DirectionalLightProps = {
   intensity: 1000,
   direction: [-2, 0, -3],
   castsShadow: false,
+  isVisible: true,
 };
 const sampleSpotLight: SpotLightProps = {
   id: -1,
@@ -43,6 +47,7 @@ const sampleSpotLight: SpotLightProps = {
   attenuationStartDistance: 10,
   attenuationEndDistance: 20,
   castsShadow: false,
+  isVisible: true,
 };
 
 interface PanelProps {
@@ -148,6 +153,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           setIsEditing(true);
         }}
         onDelete={(id) => dispatch(removeSpotLight(id))}
+        onHide={(id) => dispatch(hideSpotLight(id))}
       />
       <SpotLightModal
         isVisible={isModalVisible.spotlightModal}

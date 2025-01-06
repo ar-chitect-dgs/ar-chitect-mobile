@@ -18,6 +18,7 @@ import {
   RESET_LIGHTS,
   SET_SAVE_LIGHTS,
   SET_AUTO_SAVE,
+  SET_UNSAVED_CHANGES,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -46,6 +47,7 @@ export interface ProjectState {
   orientation: number;
   translation: Vector3D;
   autoSave: boolean;
+  unsavedChanges: boolean;
 }
 
 const initialLightState = {
@@ -98,6 +100,7 @@ const initialProjectState: ProjectState = {
     z: 0,
   },
   autoSave: false,
+  unsavedChanges: false,
 };
 
 const lightReducer = (
@@ -215,6 +218,7 @@ const projectReducer = (
     case UPDATE_MODEL:
       return {
         ...state,
+        unsavedChanges: true,
         models: Object.entries(state.models).reduce(
           (acc, [key, model]) => {
             if (key === action.payload.index.toString()) {
@@ -245,6 +249,11 @@ const projectReducer = (
       return {
         ...state,
         autoSave: action.payload,
+      };
+    case SET_UNSAVED_CHANGES:
+      return {
+        ...state,
+        unsavedChanges: action.payload,
       };
     default:
       return state;

@@ -112,7 +112,6 @@ export const saveProject = async (
 
     const updatedObjects = oldObjects.map((modelObject, index) => {
       const correspondingObject3D = newObjects[index];
-      console.log(correspondingObject3D);
 
       if (correspondingObject3D) {
         return {

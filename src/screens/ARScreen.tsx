@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetLightsState, setModels, setProject } from '../store/actions';
-import { useRoute } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { type ARScreenRouteProp } from '../navigation/AppRouter';
 import { ViroARScene, ViroARSceneNavigator } from '@reactvision/react-viro';
 import { fetchObjectsWithModelUrls } from '../api/projectsApi';
 import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomPanel from '../AR/BottomPanel';
-import { type LightState, type Reducer } from '../store/reducers';
-import ErrorPopup from '../components/ErrorPopup';
+import { ProjectState, type LightState, type Reducer } from '../store/reducers';
+import ErrorPopup, { type ErrorPopupProps } from '../components/ErrorPopup';
 
 const ARScreen: React.FC = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const route = useRoute<ARScreenRouteProp>();
   const { project } = route.params;
   const lightConfig: LightState = useSelector(
@@ -22,12 +27,23 @@ const ARScreen: React.FC = () => {
   );
   const { saveLights } = lightConfig;
 
+  // const projectConfig: ProjectState = useSelector(
+  //   (state: Reducer) => state.projectConfig,
+  // );
+  // const { unsavedChanges } = projectConfig;
+  const unsavedChanges = true;
+
   const data = project;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [alert, setAlert] = useState({
+  const [alert, setAlert] = useState<ErrorPopupProps>({
     isVisible: false,
+    title: '',
     message: '',
+    closeText: '',
+    confirmText: undefined,
+    onClose: () => {},
+    onConfirm: undefined,
   });
 
   useEffect(() => {
@@ -41,7 +57,17 @@ const ARScreen: React.FC = () => {
       } catch (error) {
         setAlert({
           isVisible: true,
+          title: 'Error',
           message: 'Error fetching project data.',
+          onClose: () => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+          },
+          closeText: 'OK',
+          onConfirm: undefined,
+          confirmText: undefined,
         });
       }
     };
@@ -53,7 +79,17 @@ const ARScreen: React.FC = () => {
       } catch (error) {
         setAlert({
           isVisible: true,
+          title: 'Error',
           message: 'Error fetching model data.',
+          onClose: () => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+          },
+          closeText: 'OK',
+          onConfirm: undefined,
+          confirmText: undefined,
         });
       } finally {
         setIsLoading(false);
@@ -61,12 +97,45 @@ const ARScreen: React.FC = () => {
     };
 
     if (!saveLights) {
-      console.log('reset');
       dispatch(resetLightsState());
     }
     void loadProjectData();
     void loadModels();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const handleBeforeRemove = (e: any) => {
+        e.preventDefault();
+        if (unsavedChanges) {
+          setAlert({
+            isVisible: true,
+            title: 'Unsaved changes.',
+            message: 'Are you sure you want to exit without saving changes?',
+            onClose: () => {
+              setAlert((prev) => ({
+                ...prev,
+                isVisible: false,
+              }));
+            },
+            closeText: 'Cancel',
+            onConfirm: () => {
+              navigation.dispatch(e.data.action);
+            },
+            confirmText: 'Yes',
+          });
+        } else {
+          navigation.dispatch(e.data.action);
+        }
+      };
+
+      navigation.addListener('beforeRemove', handleBeforeRemove);
+
+      return () => {
+        navigation.removeListener('beforeRemove', handleBeforeRemove);
+      };
+    }, [navigation, unsavedChanges]),
+  );
 
   const SceneWithModels = (): JSX.Element => {
     return (
@@ -98,6 +167,7 @@ const ARScreen: React.FC = () => {
       </GestureHandlerRootView>
       <ErrorPopup
         isVisible={alert.isVisible}
+        title={alert.title}
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({
@@ -105,6 +175,9 @@ const ARScreen: React.FC = () => {
             isVisible: false,
           }));
         }}
+        closeText={alert.closeText}
+        onConfirm={alert.onConfirm}
+        confirmText={alert.confirmText}
       />
     </View>
   );

@@ -78,6 +78,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}
+        title="Error"
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({
@@ -85,6 +86,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
             isVisible: false,
           }));
         }}
+        closeText="OK"
       />
     </LinearGradient>
   );

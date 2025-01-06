@@ -65,6 +65,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
 
         <ErrorPopup
           isVisible={alert.isVisible}
+          title="Error"
           message={alert.message}
           onClose={() => {
             setAlert((prev) => ({
@@ -72,6 +73,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
               isVisible: false,
             }));
           }}
+          closeText="OK"
         />
         <FilledButton title="Logout" onPress={handleLogout} />
       </View>

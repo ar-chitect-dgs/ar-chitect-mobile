@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateModel } from '../store/actions';
+import { setUnsavedChanges, updateModel } from '../store/actions';
 import { type Vector3D, type Object3D } from '../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
 import EditingModal from '../components/EditingModal';
@@ -74,6 +74,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
           setValue={(newValue: number) => {
             handlePositionChange(axis, newValue);
           }}
+          onSlidingComplete={() => dispatch(setUnsavedChanges(true))}
           minimumValue={-10}
           maximumValue={10}
           step={0.1}

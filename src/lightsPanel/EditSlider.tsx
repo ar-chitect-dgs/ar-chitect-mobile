@@ -7,6 +7,7 @@ interface EditSliderProps {
   title: string;
   value: number;
   setValue: (value: number) => void;
+  onSlidingComplete?: () => void;
   minimumValue: number;
   maximumValue: number;
   step: number;
@@ -17,6 +18,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
   title,
   value,
   setValue,
+  onSlidingComplete,
   minimumValue,
   maximumValue,
   step,
@@ -38,6 +40,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
             onValueChange={(value) => {
               setValue(value);
             }}
+            {...(onSlidingComplete && { onSlidingComplete })}
             minimumTrackTintColor={purple2}
             maximumTrackTintColor={opaquePurple2}
             thumbTintColor={purple2}

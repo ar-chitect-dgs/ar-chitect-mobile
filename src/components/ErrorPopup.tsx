@@ -4,14 +4,22 @@ import { purple2 } from '../styles/colors';
 
 export interface ErrorPopupProps {
   isVisible: boolean;
+  title: string;
   message: string;
+  onConfirm?: () => void;
+  confirmText?: string;
   onClose: () => void;
+  closeText: string;
 }
 
 const ErrorPopup: React.FC<ErrorPopupProps> = ({
   isVisible,
+  title,
   message,
+  onConfirm,
+  confirmText,
   onClose,
+  closeText,
 }) => {
   return (
     <Modal
@@ -22,11 +30,25 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({
     >
       <View style={styles.overlay}>
         <View style={[styles.alertBox, styles.errorBox]}>
-          <Text style={styles.title}>Error</Text>
+          <Text style={styles.title}>{title}</Text>
           <Text style={styles.message}>{message}</Text>
-          <TouchableOpacity onPress={onClose} style={styles.button}>
-            <Text style={styles.buttonText}>OK</Text>
-          </TouchableOpacity>
+
+          <View style={styles.buttonContainer}>
+            {onConfirm && confirmText && (
+              <TouchableOpacity
+                onPress={onConfirm}
+                style={[styles.confirmButton, styles.marginRight]}
+              >
+                <Text style={styles.confirmButtonText}>{confirmText}</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={onClose}
+              style={[styles.button, styles.marginRight]}
+            >
+              <Text style={styles.buttonText}>{closeText}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -67,16 +89,36 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#333',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   button: {
-    alignSelf: 'center',
     borderColor: purple2,
     paddingVertical: 10,
-    paddingHorizontal: 50,
+    paddingHorizontal: 30,
     borderWidth: 1,
     borderRadius: 5,
   },
+  confirmButton: {
+    borderColor: purple2,
+    backgroundColor: purple2,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  marginRight: {
+    marginRight: 10,
+  },
   buttonText: {
     color: purple2,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  confirmButtonText: {
+    color: '#ffff',
     fontSize: 16,
     fontWeight: 'bold',
   },

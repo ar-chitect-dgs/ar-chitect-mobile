@@ -5,7 +5,7 @@ import { type Reducer } from '../store/reducers';
 import ListItemTile from '../components/ListItemTile';
 import ModelModal from './ModelModal';
 import { type Object3D } from '../AR/Interfaces';
-import { updateModel } from '../store/actions';
+import { setUnsavedChanges, updateModel } from '../store/actions';
 import { saveProject } from '../api/projectsApi';
 import { useAuth } from '../hooks/useAuth';
 import ErrorPopup from '../components/ErrorPopup';
@@ -21,9 +21,10 @@ interface SelectedModel {
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const { models, project, autoSave } = useSelector(
+  const { models, project } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
+  const { autoSave } = useSelector((state: Reducer) => state.settingsConfig);
   const dispatch = useDispatch();
 
   const { user } = useAuth();
@@ -65,25 +66,27 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     );
   };
 
-  const handleSave = (): void => {
+  const handleSave = async (): Promise<void> => {
     if (!user || !project) {
       return;
     }
-    saveProject(user?.uid, project?.id, project?.objects, models).catch(() => {
+    try {
+      await saveProject(user?.uid, project?.id, project?.objects, models);
+      dispatch(setUnsavedChanges(false));
+    } catch (error) {
       setAlert({
         isVisible: true,
         message: 'Error saving changes.',
       });
-    });
+    }
   };
 
   useEffect(() => {
     let autoSaveInterval: NodeJS.Timeout | null = null;
 
     if (autoSave) {
-      autoSaveInterval = setInterval(() => {
-        handleSave();
-        console.log('saved');
+      autoSaveInterval = setInterval(async () => {
+        await handleSave();
       }, 30000);
     }
 
@@ -135,6 +138,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}
+        title="Error"
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({
@@ -142,6 +146,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
             isVisible: false,
           }));
         }}
+        closeText="OK"
       />
     </View>
   );

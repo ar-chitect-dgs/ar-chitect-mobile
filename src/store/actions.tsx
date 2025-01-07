@@ -33,6 +33,7 @@ export const SET_MODELS = 'SET_MODELS';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
 
 export const SET_AUTO_SAVE = 'SET_AUTO_SAVE';
+export const SET_UNSAVED_CHANGES = 'SET_UNSAVED_CHANGES';
 
 export const addAmbientLight = (light: AmbientLightProps): AnyAction => {
   return {
@@ -141,4 +142,9 @@ export const updateModel = (index: number, newModel: Object3D): AnyAction => ({
 export const setAutoSave = (autoSave: boolean): AnyAction => ({
   type: SET_AUTO_SAVE,
   payload: autoSave,
+});
+
+export const setUnsavedChanges = (unsavedChanges: boolean): AnyAction => ({
+  type: SET_UNSAVED_CHANGES,
+  payload: unsavedChanges,
 });

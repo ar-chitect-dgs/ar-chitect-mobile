@@ -130,6 +130,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         </TouchableOpacity>
         <ErrorPopup
           isVisible={alert.isVisible}
+          title="Error"
           message={alert.message}
           onClose={() => {
             setAlert((prev) => ({
@@ -137,6 +138,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
               isVisible: false,
             }));
           }}
+          closeText="OK"
         />
       </View>
     </LinearGradient>

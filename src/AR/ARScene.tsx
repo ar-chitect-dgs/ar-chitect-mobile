@@ -149,7 +149,6 @@ const ARScene: React.FC = () => {
             rotation={calculateRotation(model.rotation, orientation)}
             selected={model.isSelected}
             onDrag={(dragToPos: number[]) => {
-              console.log(dragToPos);
               dispatch(
                 updateModel(Number(key), {
                   ...model,

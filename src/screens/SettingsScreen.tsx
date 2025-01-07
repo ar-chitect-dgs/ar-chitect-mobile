@@ -5,8 +5,9 @@ import { setSaveLights, setAutoSave } from '../store/actions';
 import { type Reducer } from '../store/reducers';
 
 const SettingsScreen: React.FC = () => {
-  const { autoSave } = useSelector((state: Reducer) => state.projectConfig);
-  const { saveLights } = useSelector((state: Reducer) => state.lightConfig);
+  const { autoSave, saveLights } = useSelector(
+    (state: Reducer) => state.settingsConfig,
+  );
 
   const dispatch = useDispatch();
   const [saveLightsEnabled, setSaveLightsEnabled] = useState(saveLights);

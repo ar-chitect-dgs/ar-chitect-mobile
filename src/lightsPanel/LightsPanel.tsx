@@ -6,7 +6,6 @@ import {
   removeAmbientLight,
   removeDirectionalLight,
   removeSpotLight,
-  updateSpotLight,
 } from '../store/actions';
 import { type Reducer } from '../store/reducers';
 import {

@@ -38,7 +38,7 @@ jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn(),
   useNavigation: jest.fn(() => ({
     addListener: jest.fn((_, callback) => {
-      callback()
+      callback();
     }),
   })),
 }));

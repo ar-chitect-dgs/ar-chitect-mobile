@@ -11,7 +11,6 @@ import {
 import {
   type EventArg,
   type NavigationAction,
-  useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
@@ -103,45 +102,40 @@ const ARScreen: React.FC = () => {
     void loadModels();
   }, []);
 
-  useFocusEffect(
+  useEffect(
     useCallback(() => {
       const handleBeforeRemove = (
         e: EventArg<'beforeRemove', true, { action: NavigationAction }>,
       ): void => {
-        e.preventDefault();
-        if (unsavedChanges) {
-          setAlert({
-            isVisible: true,
-            title: 'Unsaved changes.',
-            message: 'Are you sure you want to exit without saving changes?',
-            onClose: () => {
-              setAlert((prev) => ({
-                ...prev,
-                isVisible: false,
-              }));
-              dispatch(setUnsavedChanges(false));
-            },
-            closeText: 'Cancel',
-            onConfirm: () => {
-              setAlert((prev) => ({
-                ...prev,
-                isVisible: false,
-              }));
-              dispatch(setUnsavedChanges(false));
-              navigation.dispatch(e.data.action);
-            },
-            confirmText: 'Yes',
-          });
-        } else {
-          navigation.dispatch(e.data.action);
+        if (!unsavedChanges) {
+          return;
         }
+        e.preventDefault();
+        setAlert({
+          isVisible: true,
+          title: 'Unsaved changes.',
+          message: 'Are you sure you want to exit without saving changes?',
+          onClose: () => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+            dispatch(setUnsavedChanges(false));
+          },
+          closeText: 'Cancel',
+          onConfirm: () => {
+            setAlert((prev) => ({
+              ...prev,
+              isVisible: false,
+            }));
+            dispatch(setUnsavedChanges(false));
+            navigation.dispatch(e.data.action);
+          },
+          confirmText: 'Yes',
+        });
       };
 
       navigation.addListener('beforeRemove', handleBeforeRemove);
-
-      return () => {
-        navigation.removeListener('beforeRemove', handleBeforeRemove);
-      };
     }, [navigation, unsavedChanges]),
   );
 

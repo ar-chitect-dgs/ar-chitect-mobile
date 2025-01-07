@@ -21,9 +21,10 @@ interface SelectedModel {
 }
 
 const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const { models, project, autoSave } = useSelector(
+  const { models, project } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
+  const { autoSave } = useSelector((state: Reducer) => state.settingsConfig);
   const dispatch = useDispatch();
 
   const { user } = useAuth();
@@ -86,7 +87,6 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     if (autoSave) {
       autoSaveInterval = setInterval(async () => {
         await handleSave();
-        console.log('saved');
       }, 30000);
     }
 

@@ -2,7 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetLightsState, setModels, setProject } from '../store/actions';
+import {
+  resetLightsState,
+  setModels,
+  setProject,
+  setUnsavedChanges,
+} from '../store/actions';
 import {
   useFocusEffect,
   useNavigation,
@@ -14,7 +19,7 @@ import { fetchObjectsWithModelUrls } from '../api/projectsApi';
 import ARScene from '../AR/ARScene';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomPanel from '../AR/BottomPanel';
-import { ProjectState, type LightState, type Reducer } from '../store/reducers';
+import { type Reducer } from '../store/reducers';
 import ErrorPopup, { type ErrorPopupProps } from '../components/ErrorPopup';
 
 const ARScreen: React.FC = () => {
@@ -22,16 +27,9 @@ const ARScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<ARScreenRouteProp>();
   const { project } = route.params;
-  const lightConfig: LightState = useSelector(
-    (state: Reducer) => state.lightConfig,
+  const { saveLights, unsavedChanges } = useSelector(
+    (state: Reducer) => state.settingsConfig,
   );
-  const { saveLights } = lightConfig;
-
-  // const projectConfig: ProjectState = useSelector(
-  //   (state: Reducer) => state.projectConfig,
-  // );
-  // const { unsavedChanges } = projectConfig;
-  const unsavedChanges = true;
 
   const data = project;
 
@@ -117,9 +115,15 @@ const ARScreen: React.FC = () => {
                 ...prev,
                 isVisible: false,
               }));
+              dispatch(setUnsavedChanges(false));
             },
             closeText: 'Cancel',
             onConfirm: () => {
+              setAlert((prev) => ({
+                ...prev,
+                isVisible: false,
+              }));
+              dispatch(setUnsavedChanges(false));
               navigation.dispatch(e.data.action);
             },
             confirmText: 'Yes',

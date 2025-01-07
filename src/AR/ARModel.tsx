@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Viro3DObject } from '@reactvision/react-viro';
 import { type Vector3D } from './Interfaces';
-import { ViroClickState } from '@reactvision/react-viro/dist/components/Types/ViroEvents';
+import { type ViroClickState } from '@reactvision/react-viro/dist/components/Types/ViroEvents';
+import { useDispatch } from 'react-redux';
+import { setUnsavedChanges } from '../store/actions';
 
 interface ARModelProps {
   url: string;
@@ -19,17 +21,14 @@ const ARModel: React.FC<ARModelProps> = ({
   onDrag,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleTouch = (
-    state: ViroClickState,
-    touchPos: [number, number, number],
-  ): void => {
-    console.log('touch');
+  const handleTouch = (state: ViroClickState): void => {
     if (state === 1) {
       setIsDragging(true);
-      console.log('yes');
     } else if (state === 3) {
       setIsDragging(false);
+      dispatch(setUnsavedChanges(true));
     }
   };
 

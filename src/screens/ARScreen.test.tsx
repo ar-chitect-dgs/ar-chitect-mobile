@@ -5,7 +5,7 @@ import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const testProject = {
   id: 'mockProjectId',
@@ -36,8 +36,11 @@ jest.mock('react-redux', () => ({
 
 jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn(),
-  useNavigation: jest.fn(),
-  useFocusEffect: jest.fn(),
+  useNavigation: jest.fn(() => ({
+    addListener: jest.fn((_, callback) => {
+      callback()
+    }),
+  })),
 }));
 
 jest.mock('@reactvision/react-viro', () => ({

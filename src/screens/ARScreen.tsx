@@ -9,6 +9,8 @@ import {
   setUnsavedChanges,
 } from '../store/actions';
 import {
+  type EventArg,
+  type NavigationAction,
   useFocusEffect,
   useNavigation,
   useRoute,
@@ -103,7 +105,9 @@ const ARScreen: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      const handleBeforeRemove = (e: any) => {
+      const handleBeforeRemove = (
+        e: EventArg<'beforeRemove', true, { action: NavigationAction }>,
+      ): void => {
         e.preventDefault();
         if (unsavedChanges) {
           setAlert({

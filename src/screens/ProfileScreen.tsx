@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
-import CustomButton from '../components/CustomButton';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 

@@ -5,7 +5,7 @@ import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
-import { useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 
 const testProject = {
   id: 'mockProjectId',
@@ -36,6 +36,8 @@ jest.mock('react-redux', () => ({
 
 jest.mock('@react-navigation/native', () => ({
   useRoute: jest.fn(),
+  useNavigation: jest.fn(),
+  useFocusEffect: jest.fn(),
 }));
 
 jest.mock('@reactvision/react-viro', () => ({
@@ -75,13 +77,13 @@ describe('ARScreen', () => {
     dispatchMock = jest.fn();
     (useDispatch as unknown as jest.Mock).mockReturnValue(dispatchMock);
 
-    const lightConfig = {
+    const settingsConfig = {
       saveLights: true,
     };
 
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
-        lightConfig,
+        settingsConfig,
       }),
     );
 

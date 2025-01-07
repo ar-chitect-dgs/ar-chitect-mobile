@@ -5,7 +5,7 @@ import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
 import { setModels, setProject } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const testProject = {
   id: 'mockProjectId',

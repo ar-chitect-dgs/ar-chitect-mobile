@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
-  settingsState,
+  type settingsState,
   type ProjectState,
   type Reducer,
 } from '../store/reducers';

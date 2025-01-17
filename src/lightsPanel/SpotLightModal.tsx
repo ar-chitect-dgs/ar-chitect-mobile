@@ -16,7 +16,7 @@ interface SpotLightModalProps {
   isVisible: boolean;
   isEditing: boolean;
   stepSize: number;
-  angleStepSize: number,
+  angleStepSize: number;
   onClose: () => void;
   selectedLight: SpotLightProps;
   snapPoint: string;

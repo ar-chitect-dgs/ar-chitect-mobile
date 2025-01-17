@@ -77,10 +77,14 @@ describe('LightsPanel', () => {
       directionalLights: testDirectionalLights,
       spotLights: testSpotLights,
     };
-
+    const settingsConfig = {
+      stepSize: 1,
+      angleStepSize: 1,
+    };
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         lightConfig,
+        settingsConfig,
       }),
     );
   });

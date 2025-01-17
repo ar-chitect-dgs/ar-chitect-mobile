@@ -13,6 +13,7 @@ import FilledButton from '../components/FilledButton';
 interface AmbientLightModalProps {
   isVisible: boolean;
   isEditing: boolean;
+  stepSize: number;
   onClose: () => void;
   selectedLight: AmbientLightProps;
   snapPoint: string;
@@ -21,6 +22,7 @@ interface AmbientLightModalProps {
 const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
   isVisible,
   isEditing,
+  stepSize,
   onClose,
   selectedLight,
   snapPoint,
@@ -68,7 +70,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
           }}
           minimumValue={0}
           maximumValue={2000}
-          step={1}
+          step={stepSize}
         />
       </View>
       <FilledButton title="Save" onPress={handleSave} />

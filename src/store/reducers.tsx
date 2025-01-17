@@ -19,6 +19,9 @@ import {
   SET_SAVE_LIGHTS,
   SET_AUTO_SAVE,
   SET_UNSAVED_CHANGES,
+  SET_SCALE,
+  SET_STEP_SIZE,
+  SET_ANGLE_STEP_SIZE,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -46,12 +49,15 @@ export interface ProjectState {
   models: Record<number, Object3D>;
   orientation: number;
   translation: Vector3D;
+  scale: number;
 }
 
 export interface settingsState {
   autoSave: boolean;
   unsavedChanges: boolean;
   saveLights: boolean;
+  stepSize: number;
+  angleStepSize: number;
 }
 
 const initialLightState = {
@@ -102,12 +108,15 @@ const initialProjectState: ProjectState = {
     y: 0,
     z: 0,
   },
+  scale: 1,
 };
 
 const initialSettingsState: settingsState = {
   autoSave: false,
   unsavedChanges: false,
   saveLights: false,
+  stepSize: 0.1,
+  angleStepSize: 5,
 };
 
 const lightReducer = (
@@ -245,6 +254,11 @@ const projectReducer = (
         ...state,
         translation: action.payload,
       };
+    case SET_SCALE:
+      return {
+        ...state,
+        scale: action.payload,
+      };
     default:
       return state;
   }
@@ -268,7 +282,17 @@ const settingsReducer = (
     case SET_SAVE_LIGHTS:
       return {
         ...state,
-        saveLights: action.payload.properties,
+        saveLights: action.payload,
+      };
+    case SET_STEP_SIZE:
+      return {
+        ...state,
+        stepSize: action.payload,
+      };
+    case SET_ANGLE_STEP_SIZE:
+      return {
+        ...state,
+        angleStepSize: action.payload,
       };
     default:
       return state;

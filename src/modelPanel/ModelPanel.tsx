@@ -24,7 +24,9 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { models, project } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
-  const { autoSave } = useSelector((state: Reducer) => state.settingsConfig);
+  const { autoSave, stepSize } = useSelector(
+    (state: Reducer) => state.settingsConfig,
+  );
   const dispatch = useDispatch();
 
   const { user } = useAuth();
@@ -124,6 +126,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       {selectedModel && (
         <ModelModal
           snapPoint={snapPoint}
+          stepSize={stepSize}
           isVisible={isModalVisible}
           onClose={() => {
             setSelectedModel(null);

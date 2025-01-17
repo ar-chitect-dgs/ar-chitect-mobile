@@ -8,6 +8,7 @@ import NameInput from '../lightsPanel/NameInput';
 
 interface ModelModalProps {
   isVisible: boolean;
+  stepSize: number;
   onClose: () => void;
   id: number;
   selectedModel: Object3D;
@@ -16,6 +17,7 @@ interface ModelModalProps {
 
 const ModelModal: React.FC<ModelModalProps> = ({
   isVisible,
+  stepSize,
   onClose,
   id,
   selectedModel,
@@ -77,7 +79,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
           onSlidingComplete={() => dispatch(setUnsavedChanges(true))}
           minimumValue={-10}
           maximumValue={10}
-          step={0.1}
+          step={stepSize}
         />
       ))}
     </EditingModal>

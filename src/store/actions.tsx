@@ -27,6 +27,7 @@ export const SET_SAVE_LIGHTS = 'SET_SAVE_LIGHTS';
 
 export const SET_ORIENTATION = 'SET_ORIENTATION';
 export const SET_TRANSLATION = 'SET_TRANSLATION';
+export const SET_SCALE = 'SET_SCALE';
 
 export const SET_PROJECT = 'SET_PROJECT';
 export const SET_MODELS = 'SET_MODELS';
@@ -34,6 +35,8 @@ export const UPDATE_MODEL = 'UPDATE_MODEL';
 
 export const SET_AUTO_SAVE = 'SET_AUTO_SAVE';
 export const SET_UNSAVED_CHANGES = 'SET_UNSAVED_CHANGES';
+export const SET_STEP_SIZE = 'SET_STEP_SIZE';
+export const SET_ANGLE_STEP_SIZE = 'SET_ANGLE_STEP_SIZE';
 
 export const addAmbientLight = (light: AmbientLightProps): AnyAction => {
   return {
@@ -105,7 +108,7 @@ export const resetLightsState = (): AnyAction => ({
 
 export const setSaveLights = (save: boolean): AnyAction => ({
   type: SET_SAVE_LIGHTS,
-  payload: { id: 0, properties: save },
+  payload: save,
 });
 
 export const setTranslation = (translation: any): AnyAction => ({
@@ -116,6 +119,11 @@ export const setTranslation = (translation: any): AnyAction => ({
 export const setOrientation = (orientation: any): AnyAction => ({
   type: SET_ORIENTATION,
   payload: orientation,
+});
+
+export const setScale = (scale: any): AnyAction => ({
+  type: SET_SCALE,
+  payload: scale,
 });
 
 export const setProject = ({
@@ -147,4 +155,14 @@ export const setAutoSave = (autoSave: boolean): AnyAction => ({
 export const setUnsavedChanges = (unsavedChanges: boolean): AnyAction => ({
   type: SET_UNSAVED_CHANGES,
   payload: unsavedChanges,
+});
+
+export const setStepSize = (stepSize: number): AnyAction => ({
+  type: SET_STEP_SIZE,
+  payload: stepSize,
+});
+
+export const setAngleStepSize = (stepSize: number): AnyAction => ({
+  type: SET_ANGLE_STEP_SIZE,
+  payload: stepSize,
 });

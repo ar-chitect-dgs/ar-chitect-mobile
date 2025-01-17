@@ -9,9 +9,6 @@ const testProject = {
   projectName: 'Test Project',
   corners: [{ x: 0, y: 0, z: 0 }],
   objects: [],
-  isFirstTime: false,
-  latitude: 0,
-  longitude: 0,
   orientation: 0,
   thumb: '',
   createdAt: '2023-12-01T00:00:00.000Z',
@@ -65,6 +62,9 @@ describe('ModelPanel', () => {
       project: testProject,
       models: testModels,
     };
+    const settingsConfig = {
+      autoSave: false,
+    };
 
     const mockDispatch = jest.fn();
 
@@ -73,6 +73,7 @@ describe('ModelPanel', () => {
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         projectConfig,
+        settingsConfig,
       }),
     );
   });

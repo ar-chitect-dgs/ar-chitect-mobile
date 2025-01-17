@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import InputField from '../components/InputField';
-import CustomButton from '../components/CustomButton';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 
@@ -78,6 +77,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}
+        title="Error"
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({
@@ -85,6 +85,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
             isVisible: false,
           }));
         }}
+        closeText="OK"
       />
     </LinearGradient>
   );

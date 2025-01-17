@@ -18,6 +18,7 @@ import {
   RESET_LIGHTS,
   SET_SAVE_LIGHTS,
   SET_AUTO_SAVE,
+  SET_UNSAVED_CHANGES,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -30,13 +31,13 @@ import { type Project } from '../api/types';
 export interface Reducer {
   lightConfig: LightState;
   projectConfig: ProjectState;
+  settingsConfig: settingsState;
 }
 
 export interface LightState {
   ambientLights: AmbientLightProps[];
   directionalLights: DirectionalLightProps[];
   spotLights: SpotLightProps[];
-  saveLights: boolean;
 }
 
 export interface ProjectState {
@@ -45,7 +46,12 @@ export interface ProjectState {
   models: Record<number, Object3D>;
   orientation: number;
   translation: Vector3D;
+}
+
+export interface settingsState {
   autoSave: boolean;
+  unsavedChanges: boolean;
+  saveLights: boolean;
 }
 
 const initialLightState = {
@@ -84,7 +90,6 @@ const initialLightState = {
       isVisible: true,
     },
   ],
-  saveLights: false,
 };
 
 const initialProjectState: ProjectState = {
@@ -97,7 +102,12 @@ const initialProjectState: ProjectState = {
     y: 0,
     z: 0,
   },
+};
+
+const initialSettingsState: settingsState = {
   autoSave: false,
+  unsavedChanges: false,
+  saveLights: false,
 };
 
 const lightReducer = (
@@ -185,12 +195,6 @@ const lightReducer = (
       };
     case RESET_LIGHTS:
       return initialLightState;
-    case SET_SAVE_LIGHTS:
-      return {
-        ...state,
-        saveLights: action.payload.properties,
-      };
-
     default:
       return state;
   }
@@ -241,10 +245,30 @@ const projectReducer = (
         ...state,
         translation: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+const settingsReducer = (
+  state: settingsState = initialSettingsState,
+  action: any,
+): settingsState => {
+  switch (action.type) {
     case SET_AUTO_SAVE:
       return {
         ...state,
         autoSave: action.payload,
+      };
+    case SET_UNSAVED_CHANGES:
+      return {
+        ...state,
+        unsavedChanges: action.payload,
+      };
+    case SET_SAVE_LIGHTS:
+      return {
+        ...state,
+        saveLights: action.payload.properties,
       };
     default:
       return state;
@@ -254,4 +278,5 @@ const projectReducer = (
 export default combineReducers({
   lightConfig: lightReducer,
   projectConfig: projectReducer,
+  settingsConfig: settingsReducer,
 });

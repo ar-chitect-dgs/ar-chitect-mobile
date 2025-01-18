@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 interface DirectionalLightModalProps {
   isVisible: boolean;
   isEditing: boolean;
+  stepSize: number;
   onClose: () => void;
   selectedLight: DirectionalLightProps;
   snapPoint: string;
@@ -27,6 +28,7 @@ interface DirectionalLightModalProps {
 const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   isVisible,
   isEditing,
+  stepSize,
   onClose,
   selectedLight,
   snapPoint,
@@ -130,7 +132,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={2000}
-        step={1}
+        step={stepSize}
       />
 
       <View style={styles.inputContainer}>

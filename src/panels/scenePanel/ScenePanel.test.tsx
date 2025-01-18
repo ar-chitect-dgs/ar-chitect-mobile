@@ -13,6 +13,8 @@ const testTranslation: Vector3D = {
 
 const testOrientation: number = 0;
 
+const testScale: number = 1;
+
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
@@ -25,11 +27,16 @@ describe('ScenePanel', () => {
     const projectConfig = {
       translation: testTranslation,
       orientation: testOrientation,
+      scale: testScale,
+    };
+    const settingsConfig = {
+      stepSize: 1,
     };
 
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         projectConfig,
+        settingsConfig,
       }),
     );
   });

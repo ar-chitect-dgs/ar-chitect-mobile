@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { type ProjectState, type Reducer } from '../../store/reducers';
+import {
+  type settingsState,
+  type ProjectState,
+  type Reducer,
+} from '../../store/reducers';
 import SceneEditor from './SceneEditor';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
@@ -11,8 +15,11 @@ interface PanelProps {
 }
 
 const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
-  const { translation, orientation }: ProjectState = useSelector(
+  const { translation, orientation, scale }: ProjectState = useSelector(
     (state: Reducer) => state.projectConfig,
+  );
+  const { stepSize }: settingsState = useSelector(
+    (state: Reducer) => state.settingsConfig,
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { t } = useTranslation();
@@ -26,6 +33,8 @@ const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
       <SceneEditor
         orientation={orientation}
         translation={translation}
+        scale={scale}
+        stepSize={stepSize}
         snapPoint={snapPoint}
         isVisible={isModalVisible}
         onClose={() => {

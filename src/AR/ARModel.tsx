@@ -9,6 +9,7 @@ interface ARModelProps {
   url: string;
   position: Vector3D;
   rotation: Vector3D;
+  scale: number;
   selected: boolean;
   onDrag: (dragToPos: any) => void;
 }
@@ -17,6 +18,7 @@ const ARModel: React.FC<ARModelProps> = ({
   url,
   position,
   rotation,
+  scale,
   selected,
   onDrag,
 }) => {
@@ -37,6 +39,7 @@ const ARModel: React.FC<ARModelProps> = ({
       source={{ uri: url }}
       position={[position.x, position.y, position.z]}
       rotation={[rotation.x, rotation.y, rotation.z]}
+      scale={[scale, scale, scale]}
       type="GLB"
       opacity={selected || isDragging ? 0.5 : 1}
       onClickState={handleTouch}

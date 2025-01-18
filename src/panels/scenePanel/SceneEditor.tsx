@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { setOrientation, setTranslation } from '../../store/actions';
+import { setOrientation, setScale, setTranslation } from '../../store/actions';
 import { type Vector3D } from '../../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
 import EditingModal from '../../components/EditingModal';
@@ -9,6 +9,8 @@ import EditingModal from '../../components/EditingModal';
 interface SceneEditorProps {
   translation: Vector3D;
   orientation: number;
+  scale: number;
+  stepSize: number;
   snapPoint: string;
   isVisible: boolean;
   onClose: () => void;
@@ -17,6 +19,8 @@ interface SceneEditorProps {
 const SceneEditor: React.FC<SceneEditorProps> = ({
   translation,
   orientation,
+  scale,
+  stepSize,
   snapPoint,
   isVisible,
   onClose,
@@ -24,6 +28,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   const dispatch = useDispatch();
   const [newTranslation, setNewTranslation] = useState(translation);
   const [newOrientation, setNewOrientation] = useState(orientation);
+  const [newScale, setNewScale] = useState(scale);
 
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     const updatedTranslation = { ...translation, [axis]: value };
@@ -34,6 +39,11 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   const handleRotationChange = (value: number): void => {
     setNewOrientation(value);
     dispatch(setOrientation(value));
+  };
+
+  const handleScaleChange = (value: number): void => {
+    setNewScale(value);
+    dispatch(setScale(value));
   };
 
   const axes: Array<keyof Vector3D> = ['x', 'y', 'z'];
@@ -54,7 +64,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
             }}
             minimumValue={-10}
             maximumValue={10}
-            step={0.5}
+            step={stepSize}
           />
         ))}
         <EditSlider
@@ -65,7 +75,17 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
           }}
           minimumValue={-180}
           maximumValue={180}
-          step={10}
+          step={5}
+        />
+        <EditSlider
+          title={'Scale'}
+          value={newScale}
+          setValue={(value: number) => {
+            handleScaleChange(value);
+          }}
+          minimumValue={0}
+          maximumValue={10}
+          step={stepSize}
         />
       </View>
     </EditingModal>

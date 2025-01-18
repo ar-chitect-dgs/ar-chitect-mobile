@@ -16,6 +16,8 @@ import FilledButton from '../../components/FilledButton';
 interface SpotLightModalProps {
   isVisible: boolean;
   isEditing: boolean;
+  stepSize: number;
+  angleStepSize: number;
   onClose: () => void;
   selectedLight: SpotLightProps;
   snapPoint: string;
@@ -24,6 +26,8 @@ interface SpotLightModalProps {
 const SpotLightModal: React.FC<SpotLightModalProps> = ({
   isVisible,
   isEditing,
+  stepSize,
+  angleStepSize,
   onClose,
   selectedLight,
   snapPoint,
@@ -155,7 +159,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={2000}
-        step={1}
+        step={stepSize}
       />
 
       <EditSlider
@@ -166,7 +170,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={90}
-        step={1}
+        step={angleStepSize}
       />
 
       <EditSlider
@@ -177,7 +181,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={90}
-        step={1}
+        step={angleStepSize}
       />
 
       <EditSlider
@@ -188,7 +192,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={100}
-        step={1}
+        step={stepSize}
         sliderLength="short"
       />
 
@@ -200,7 +204,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         }}
         minimumValue={0}
         maximumValue={100}
-        step={1}
+        step={stepSize}
         sliderLength="short"
       />
 

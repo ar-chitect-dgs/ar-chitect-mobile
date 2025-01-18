@@ -41,6 +41,7 @@ const testModels = [
     url: 'model1.glb',
     position: { x: 1, y: 0, z: 0 },
     rotation: { x: 0, y: 0, z: 0 },
+    scale: 1,
     isVisible: true,
   },
 ];
@@ -82,6 +83,7 @@ describe('ARScene', () => {
       models: testModels,
       translation: testTranslation,
       orientation: testOrientation,
+      scale: 1,
     };
 
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>

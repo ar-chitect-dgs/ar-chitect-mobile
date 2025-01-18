@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { type Reducer } from '../store/reducers';
-import ListItemTile from '../components/ListItemTile';
+import { type Reducer } from '../../store/reducers';
+import ListItemTile from '../../components/ListItemTile';
 import ModelModal from './ModelModal';
-import { type Object3D } from '../AR/Interfaces';
-import { setUnsavedChanges, updateModel } from '../store/actions';
-import { saveProject } from '../api/projectsApi';
-import { useAuth } from '../hooks/useAuth';
-import ErrorPopup from '../components/ErrorPopup';
-import FilledButton from '../components/FilledButton';
+import { type Object3D } from '../../AR/Interfaces';
+import { setUnsavedChanges, updateModel } from '../../store/actions';
+import { saveProject } from '../../api/projectsApi';
+import { useAuth } from '../../hooks/useAuth';
+import ErrorPopup from '../../components/ErrorPopup';
+import FilledButton from '../../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
 interface PanelProps {
   snapPoint: string;
@@ -26,7 +27,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   );
   const { autoSave } = useSelector((state: Reducer) => state.settingsConfig);
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -76,7 +77,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     } catch (error) {
       setAlert({
         isVisible: true,
-        message: 'Error saving changes.',
+        message: t('panels.errorSaving'),
       });
     }
   };
@@ -134,11 +135,11 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         />
       )}
       <View style={styles.header}>
-        <FilledButton onPress={handleSave} title="Save" />
+        <FilledButton onPress={handleSave} title={t('panels.save')} />
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}
-        title="Error"
+        title={t('error.title')}
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({

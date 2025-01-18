@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { type Project } from '../api/types';
 import FormattedText from './FormattedText';
 import { purple1 } from '../styles/colors';
@@ -9,26 +10,31 @@ interface ProjectTileProps {
   onClick: () => void;
 }
 
-const ProjectTile = ({ project, onClick }: ProjectTileProps): JSX.Element => (
-  <TouchableOpacity style={styles.card} onPress={onClick}>
-    <Image
-      style={styles.thumbnail}
-      source={{ uri: project.thumb }}
-      resizeMode="cover"
-    />
-    <View style={styles.details}>
-      <View style={styles.header}>
-        <FormattedText style={styles.name}>{project.projectName}</FormattedText>
-        <FormattedText style={styles.createdAt}>
-          {new Date(project.createdAt).toLocaleDateString()}
+const ProjectTile = ({ project, onClick }: ProjectTileProps): JSX.Element => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity style={styles.card} onPress={onClick}>
+      <Image
+        style={styles.thumbnail}
+        source={{ uri: project.thumb }}
+        resizeMode="cover"
+      />
+      <View style={styles.details}>
+        <View style={styles.header}>
+          <FormattedText style={styles.name}>
+            {project.projectName}
+          </FormattedText>
+          <FormattedText style={styles.createdAt}>
+            {new Date(project.createdAt).toLocaleDateString()}
+          </FormattedText>
+        </View>
+        <FormattedText style={styles.modifiedAt}>
+          {`${t('projects.lastEdited')}: ${new Date(project.modifiedAt).toLocaleDateString()}`}
         </FormattedText>
       </View>
-      <FormattedText style={styles.modifiedAt}>
-        Last edited: {new Date(project.modifiedAt).toLocaleDateString()}
-      </FormattedText>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {

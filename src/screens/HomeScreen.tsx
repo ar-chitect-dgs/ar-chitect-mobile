@@ -15,6 +15,7 @@ import { headerColor, purple1 } from '../styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { type StackNavigationProp } from '@react-navigation/stack';
 import { type RootStackParamList } from '../navigation/AppRouter';
+import { useTranslation } from 'react-i18next';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -23,6 +24,7 @@ const Projects = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchallProjects = async (): Promise<void> => {
@@ -56,7 +58,7 @@ const Projects = (): JSX.Element => {
         <ActivityIndicator size="large" color={purple1} style={styles.loader} />
       ) : !projects || Object.keys(projects).length === 0 ? (
         <FormattedText style={styles.message}>
-          No projects found. You can create one in the editor!
+          {t('projects.noProjectsMessage')}
         </FormattedText>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollContainer}>

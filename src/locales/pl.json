@@ -1,0 +1,72 @@
+{
+  "Profile": "Profil",
+  "Settings": "Ustawienia",
+  "Login": "Zaloguj się",
+  "Register": "Zarejestruj się",
+  "Home": "Projekty",
+  "Hi": "Cześć",
+  "settings": {
+    "header": "Ustawienia",
+    "saveLights": "Zapisuj światła między scenami:",
+    "autoSave": "Auto-zapis:",
+    "language": "Język:"
+  },
+  "projects": {
+    "noProjectsMessage": "Brak projektów. Możesz stworzyć nowy w edytorze!",
+    "lastEdited": "Ostatnio edytowany",
+  },
+  "error": {
+    "title": "Błąd",
+    "okButton": "OK"
+  },
+  "panels": {
+    "save": "Zapisz",
+    "name": "Nazwa",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "add": "Dodaj",
+    "editScene": "Edytuj scenę",
+    "errorSaving": "Błąd zapisywania zmian."
+  },
+  "arScreen": {
+    "errorFetchingProject": "Błąd pobierania danych projektu.",
+    "errorFetchingModels": "Błąd pobierania danych modeli.",
+    "unsavedChangesTitle": "Niezapisane zmiany.",
+    "unsavedChangesMessage": "Czy na pewno chcesz opuścić bez zapisywania zmian?",
+    "cancelButton": "Anuluj",
+    "confirmExitButton": "Tak"
+  },
+  "registerScreen": {
+    "title": "Utwórz nowe konto",
+    "imagePickerText": "Wybierz zdjęcie profilowe...",
+    "displayNamePlaceholder": "Nazwa wyświetlana",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Hasło",
+    "register": "Zarejestruj się",
+    "registering": "Rejestracja...",
+    "alreadyHaveAccount": "Masz już konto? ",
+    "login": "Zaloguj się",
+    "fillFieldsMessage": "Proszę wypełnić wszystkie pola.",
+    "successMessage": "Konto zostało pomyślnie utworzone!",
+    "errorMessage": "Błąd rejestracji."
+  },
+  "loginScreen": {
+    "title": "Zaloguj się na swoje konto",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Hasło",
+    "login": "Zaloguj się",
+    "loggingIn": "Logowanie...",
+    "noAccount": "Nie masz konta? ",
+    "signup": "Zarejestruj się",
+    "fillFieldsMessage": "Proszę wypełnić wszystkie pola.",
+    "errorMessage": "Błąd logowania."
+  },
+  "profileScreen": {
+    "title": "Twój profil",
+    "loading": "Ładowanie profilu...",
+    "defaultInitial": "U",
+    "guest": "Gość",
+    "logout": "Wyloguj się",
+    "logoutError": "Błąd wylogowywania."
+  }
+}

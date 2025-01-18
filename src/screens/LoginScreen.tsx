@@ -6,8 +6,10 @@ import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import InputField from '../components/InputField';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,7 +22,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
     if (email === '' || password === '') {
       setAlert({
         isVisible: true,
-        message: 'Please fill in all fields.',
+        message: t('loginScreen.fillFieldsMessage'),
       });
       return;
     }
@@ -33,7 +35,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
     } catch (error: any) {
       setAlert({
         isVisible: true,
-        message: 'Login failed.',
+        message: t('loginScreen.errorMessage'),
       });
     } finally {
       setLoading(false);
@@ -43,10 +45,10 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>Login to your existing account</Text>
+        <Text style={styles.title}>{t('loginScreen.title')}</Text>
 
         <InputField
-          placeholder="Email"
+          placeholder={t('loginScreen.emailPlaceholder')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -54,14 +56,14 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
         />
 
         <InputField
-          placeholder="Password"
+          placeholder={t('loginScreen.passwordPlaceholder')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
         <FilledButton
-          title={loading ? 'Logging in...' : 'Login'}
+          title={loading ? t('loginScreen.loggingIn') : t('loginScreen.login')}
           onPress={handleLogin}
           disabled={loading}
           style={loading ? styles.disabledButton : undefined}
@@ -71,13 +73,13 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Register')}
           style={styles.linkContainer}
         >
-          <Text style={styles.prelinkText}>Don't have an account? </Text>
-          <Text style={styles.linkText}>Sign-up</Text>
+          <Text style={styles.prelinkText}>{t('loginScreen.noAccount')}</Text>
+          <Text style={styles.linkText}>{t('loginScreen.signup')}</Text>
         </TouchableOpacity>
       </View>
       <ErrorPopup
         isVisible={alert.isVisible}
-        title="Error"
+        title={t('error.title')}
         message={alert.message}
         onClose={() => {
           setAlert((prev) => ({
@@ -85,7 +87,7 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
             isVisible: false,
           }));
         }}
-        closeText="OK"
+        closeText={t('error.okButton')}
       />
     </LinearGradient>
   );

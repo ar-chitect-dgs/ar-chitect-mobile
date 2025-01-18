@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { useSelector } from 'react-redux';
 import ScenePanel from './ScenePanel';
 import SceneEditor from './SceneEditor';
-import { type Vector3D } from '../AR/Interfaces';
+import { type Vector3D } from '../../AR/Interfaces';
 
 const testTranslation: Vector3D = {
   x: 0,
@@ -42,7 +42,7 @@ describe('ScenePanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText('Edit scene'));
+    fireEvent.press(getByText('panels.editScene'));
     expect(SceneEditor).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

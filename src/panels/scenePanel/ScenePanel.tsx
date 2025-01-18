@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { type ProjectState, type Reducer } from '../store/reducers';
+import { type ProjectState, type Reducer } from '../../store/reducers';
 import SceneEditor from './SceneEditor';
-import FilledButton from '../components/FilledButton';
+import FilledButton from '../../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
 interface PanelProps {
   snapPoint: string;
@@ -14,13 +15,14 @@ const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
     (state: Reducer) => state.projectConfig,
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { t } = useTranslation();
 
   const handleClick = (): void => {
     setIsModalVisible(true);
   };
   return (
     <View style={styles.container}>
-      <FilledButton title="Edit scene" onPress={handleClick} />
+      <FilledButton title={t('panels.editScene')} onPress={handleClick} />
       <SceneEditor
         orientation={orientation}
         translation={translation}

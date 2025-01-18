@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUnsavedChanges, updateModel } from '../store/actions';
-import { type Vector3D, type Object3D } from '../AR/Interfaces';
+import { setUnsavedChanges, updateModel } from '../../store/actions';
+import { type Vector3D, type Object3D } from '../../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
-import EditingModal from '../components/EditingModal';
+import EditingModal from '../../components/EditingModal';
 import NameInput from '../lightsPanel/NameInput';
+import { useTranslation } from 'react-i18next';
 
 interface ModelModalProps {
   isVisible: boolean;
@@ -23,6 +24,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
 }) => {
   const [model, setModel] = useState<Object3D>(selectedModel);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     const newModel: Object3D = {
@@ -62,7 +64,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
       }}
     >
       <NameInput
-        title="Name: "
+        title={`${t('panels.name')}:`}
         value={model.modelName}
         setName={handleNameChange}
       />

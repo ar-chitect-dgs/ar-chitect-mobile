@@ -6,13 +6,13 @@ import {
   removeAmbientLight,
   removeDirectionalLight,
   removeSpotLight,
-} from '../store/actions';
-import { type Reducer } from '../store/reducers';
+} from '../../store/actions';
+import { type Reducer } from '../../store/reducers';
 import {
   type AmbientLightProps,
   type DirectionalLightProps,
   type SpotLightProps,
-} from '../AR/LightInterfaces';
+} from '../../AR/LightInterfaces';
 import AmbientLightModal from './AmbientLightModal';
 import SpotLightModal from './SpotLightModal';
 import DirectionalLightModal from './DirectionalLightModal';

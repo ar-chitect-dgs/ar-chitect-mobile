@@ -3,6 +3,7 @@ import { View, Image, StyleSheet } from 'react-native';
 import { type FirebaseAuthTypes } from '@react-native-firebase/auth';
 import FormattedText from './FormattedText';
 import profilePlaceholder from '../assets/profile.png';
+import { useTranslation } from 'react-i18next';
 
 interface DrawerHeaderProps {
   user: FirebaseAuthTypes.User | null;
@@ -10,6 +11,7 @@ interface DrawerHeaderProps {
 
 const DrawerHeader = ({ user }: DrawerHeaderProps): JSX.Element => {
   const userName = user?.displayName ?? 'Guest';
+  const { t } = useTranslation();
   const profileImage = user?.photoURL
     ? { uri: user.photoURL }
     : profilePlaceholder;
@@ -17,7 +19,9 @@ const DrawerHeader = ({ user }: DrawerHeaderProps): JSX.Element => {
   return (
     <View style={styles.profileContainer}>
       <Image source={profileImage} style={styles.profileImage} />
-      <FormattedText style={styles.greetingText}>Hi, {userName}!</FormattedText>
+      <FormattedText
+        style={styles.greetingText}
+      >{`${t('Hi')}, ${userName}!`}</FormattedText>
     </View>
   );
 };

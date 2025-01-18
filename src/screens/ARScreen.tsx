@@ -22,8 +22,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomPanel from '../AR/BottomPanel';
 import { type Reducer } from '../store/reducers';
 import ErrorPopup, { type ErrorPopupProps } from '../components/ErrorPopup';
+import { useTranslation } from 'react-i18next';
 
 const ARScreen: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute<ARScreenRouteProp>();
@@ -56,15 +58,15 @@ const ARScreen: React.FC = () => {
       } catch (error) {
         setAlert({
           isVisible: true,
-          title: 'Error',
-          message: 'Error fetching project data.',
+          title: t('error.title'),
+          message: t('arScreen.errorFetchingProject'),
           onClose: () => {
             setAlert((prev) => ({
               ...prev,
               isVisible: false,
             }));
           },
-          closeText: 'OK',
+          closeText: t('error.okButton'),
           onConfirm: undefined,
           confirmText: undefined,
         });
@@ -78,15 +80,15 @@ const ARScreen: React.FC = () => {
       } catch (error) {
         setAlert({
           isVisible: true,
-          title: 'Error',
-          message: 'Error fetching model data.',
+          title: t('error.title'),
+          message: t('arScreen.errorFetchingModels'),
           onClose: () => {
             setAlert((prev) => ({
               ...prev,
               isVisible: false,
             }));
           },
-          closeText: 'OK',
+          closeText: t('error.okButton'),
           onConfirm: undefined,
           confirmText: undefined,
         });
@@ -113,8 +115,8 @@ const ARScreen: React.FC = () => {
         e.preventDefault();
         setAlert({
           isVisible: true,
-          title: 'Unsaved changes.',
-          message: 'Are you sure you want to exit without saving changes?',
+          title: t('arScreen.unsavedChangesTitle'),
+          message: t('arScreen.unsavedChangesMessage'),
           onClose: () => {
             setAlert((prev) => ({
               ...prev,
@@ -122,7 +124,7 @@ const ARScreen: React.FC = () => {
             }));
             dispatch(setUnsavedChanges(false));
           },
-          closeText: 'Cancel',
+          closeText: t('arScreen.cancelButton'),
           onConfirm: () => {
             setAlert((prev) => ({
               ...prev,
@@ -131,7 +133,7 @@ const ARScreen: React.FC = () => {
             dispatch(setUnsavedChanges(false));
             navigation.dispatch(e.data.action);
           },
-          confirmText: 'Yes',
+          confirmText: t('arScreen.confirmExitButton'),
         });
       };
 

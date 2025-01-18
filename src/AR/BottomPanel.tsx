@@ -2,9 +2,9 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import React, { useRef, useMemo, useState } from 'react';
 import { useWindowDimensions, StyleSheet, Text } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-import LightsPanel from '../lightsPanel/LightsPanel';
-import ModelPanel from '../modelPanel/ModelPanel';
-import ScenePanel from '../scenePanel/ScenePanel';
+import LightsPanel from '../panels/lightsPanel/LightsPanel';
+import ModelPanel from '../panels/modelPanel/ModelPanel';
+import ScenePanel from '../panels/scenePanel/ScenePanel';
 import { purple2 } from '../styles/colors';
 
 const renderScene = ({

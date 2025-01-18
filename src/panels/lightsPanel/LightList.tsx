@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import ListItemTile from '../components/ListItemTile';
-import MenuButton from '../components/MenuButton';
+import ListItemTile from '../../components/ListItemTile';
+import MenuButton from '../../components/MenuButton';
+import { useTranslation } from 'react-i18next';
 
 interface LightListProps<T> {
   lights: T[];
@@ -22,11 +23,15 @@ const LightList = <
   onDelete,
   onHide,
 }: LightListProps<T>): JSX.Element => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <MenuButton title={`Add ${title.slice(0, -1)}`} onPress={onAdd} />
+        <MenuButton
+          title={`${t('panels.add')} ${title.slice(0, -1)}`}
+          onPress={onAdd}
+        />
       </View>
       {lights.map((light, index) => (
         <ListItemTile

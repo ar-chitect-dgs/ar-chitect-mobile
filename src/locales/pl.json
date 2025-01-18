@@ -9,7 +9,9 @@
     "header": "Ustawienia",
     "saveLights": "Zapisuj światła między scenami:",
     "autoSave": "Auto-zapis:",
-    "language": "Język:"
+    "language": "Język:",
+    "stepSize": "Rozmiar kroku:",
+    "angleStepSize": "Rozmiar kroku kąta:"
   },
   "projects": {
     "noProjectsMessage": "Brak projektów. Możesz stworzyć nowy w edytorze!",

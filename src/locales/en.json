@@ -9,7 +9,9 @@
     "header": "Settings",
     "saveLights": "Save lights between scenes:",
     "autoSave": "Auto-save:",
-    "language": "Language:"
+    "language": "Language:",
+    "stepSize": "Step size:",
+    "angleStepSize": "Angle step size:"
   },
   "projects": {
     "noProjectsMessage": "No projects found. You can create one in the editor!",

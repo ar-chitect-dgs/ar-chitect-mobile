@@ -2,9 +2,8 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
 import {
   setSaveLights,
   setAutoSave,
@@ -18,10 +17,12 @@ import { headerColor, opaquePurple2, purple2 } from '../styles/colors';
 const SAVE_LIGHTS_KEY = 'saveLights';
 const AUTO_SAVE_KEY = 'autoSave';
 const LANGUAGE_KEY = 'language';
+const STEP_SIZE_KEY = 'stepSize';
+const ANGLE_STEP_SIZE_KEY = 'angleStepSize';
 
 const SettingsScreen: React.FC = () => {
   const { autoSave, saveLights, stepSize, angleStepSize } = useSelector(
-    (state: Reducer) => state.settingsConfig,
+    (state: any) => state.settingsConfig,
   );
 
   const dispatch = useDispatch();
@@ -29,6 +30,30 @@ const SettingsScreen: React.FC = () => {
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(autoSave);
   const [newStepSize, setNewStepSize] = useState(stepSize);
   const [newAngleStepSize, setNewAngleStepSize] = useState(angleStepSize);
+
+  useEffect(() => {
+    const loadSettings = async (): Promise<void> => {
+      try {
+        const savedStepSize = await AsyncStorage.getItem(STEP_SIZE_KEY);
+        const savedAngleStepSize =
+          await AsyncStorage.getItem(ANGLE_STEP_SIZE_KEY);
+
+        if (savedStepSize !== null) {
+          setNewStepSize(JSON.parse(savedStepSize));
+          dispatch(setStepSize(JSON.parse(savedStepSize)));
+        }
+
+        if (savedAngleStepSize !== null) {
+          setNewAngleStepSize(JSON.parse(savedAngleStepSize));
+          dispatch(setAngleStepSize(JSON.parse(savedAngleStepSize)));
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+      }
+    };
+
+    void loadSettings();
+  }, [dispatch]);
 
   const handleSaveLightsToggle = async (value: boolean): Promise<void> => {
     try {
@@ -52,7 +77,6 @@ const SettingsScreen: React.FC = () => {
 
   const handleLanguageChange = async (value: string): Promise<void> => {
     try {
-      setLanguage(value);
       await i18n.changeLanguage(value);
       await AsyncStorage.setItem(LANGUAGE_KEY, value);
     } catch (error) {
@@ -60,29 +84,41 @@ const SettingsScreen: React.FC = () => {
     }
   };
 
-  const handleSaveStepSize = (value: number): void => {
-    setNewStepSize(value);
-    dispatch(setStepSize(value));
+  const handleSaveStepSize = async (value: number): Promise<void> => {
+    try {
+      setNewStepSize(value);
+      dispatch(setStepSize(value));
+      await AsyncStorage.setItem(STEP_SIZE_KEY, JSON.stringify(value));
+    } catch (error) {
+      console.error('Failed to save step size setting:', error);
+    }
   };
 
-  const handleSaveAngleStepSize = (value: number): void => {
-    setNewAngleStepSize(value);
-    dispatch(setAngleStepSize(value));
-  };
-
-  const handleSaveStepSize = (value: number): void => {
-    setNewStepSize(value);
-    dispatch(setStepSize(value));
-  };
-
-  const handleSaveAngleStepSize = (value: number): void => {
-    setNewAngleStepSize(value);
-    dispatch(setAngleStepSize(value));
+  const handleSaveAngleStepSize = async (value: number): Promise<void> => {
+    try {
+      setNewAngleStepSize(value);
+      dispatch(setAngleStepSize(value));
+      await AsyncStorage.setItem(ANGLE_STEP_SIZE_KEY, JSON.stringify(value));
+    } catch (error) {
+      console.error('Failed to save angle step size setting:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>{i18n.t('settings.header')}</Text>
+
+      <View style={styles.settingRow}>
+        <Text style={styles.label}>{i18n.t('settings.language')}</Text>
+        <Picker
+          selectedValue={i18n.language}
+          style={styles.picker}
+          onValueChange={handleLanguageChange}
+        >
+          <Picker.Item label="English" value="en" />
+          <Picker.Item label="Polski" value="pl" />
+        </Picker>
+      </View>
 
       <View style={styles.settingRow}>
         <Text style={styles.label}>{i18n.t('settings.saveLights')}</Text>
@@ -105,19 +141,7 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.language')}</Text>
-        <Picker
-          selectedValue={language}
-          style={styles.picker}
-          onValueChange={handleLanguageChange}
-        >
-          <Picker.Item label="English" value="en" />
-          <Picker.Item label="Polski" value="pl" />
-        </Picker>
-      </View>
-
-      <View style={styles.settingRow}>
-        <Text style={styles.label}>Step size:</Text>
+        <Text style={styles.label}>{i18n.t('settings.stepSize')}</Text>
         <Picker
           selectedValue={newStepSize}
           style={styles.picker}
@@ -130,37 +154,9 @@ const SettingsScreen: React.FC = () => {
           <Picker.Item label="5m" value={5} />
         </Picker>
       </View>
-      <View style={styles.settingRow}>
-        <Text style={styles.label}>Angle step size:</Text>
-        <Picker
-          selectedValue={newAngleStepSize}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-          onValueChange={handleSaveAngleStepSize}
-        >
-          <Picker.Item label="0.1" value={0.1} />
-          <Picker.Item label="0.5" value={0.5} />
-          <Picker.Item label="1" value={1} />
-          <Picker.Item label="5" value={5} />
-        </Picker>
-      </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>Step size:</Text>
-        <Picker
-          selectedValue={newStepSize}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-          onValueChange={handleSaveStepSize}
-        >
-          <Picker.Item label="0.1m" value={0.1} />
-          <Picker.Item label="0.5m" value={0.5} />
-          <Picker.Item label="1m" value={1} />
-          <Picker.Item label="5m" value={5} />
-        </Picker>
-      </View>
-      <View style={styles.settingRow}>
-        <Text style={styles.label}>Angle step size:</Text>
+        <Text style={styles.label}>{i18n.t('settings.angleStepSize')}</Text>
         <Picker
           selectedValue={newAngleStepSize}
           style={styles.picker}
@@ -205,20 +201,6 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: opaquePurple2,
     borderRadius: 20,
-  },
-  picker: {
-    width: 150,
-    height: 40,
-    color: '#000',
-  },
-  pickerItem: {
-    fontSize: 18,
-    color: '#000',
-  },
-  picker: {
-    width: 150,
-    height: 40,
-    color: '#000',
   },
   pickerItem: {
     fontSize: 18,

@@ -4,6 +4,7 @@ import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   resetLightsState,
+  resetSceneState,
   setModels,
   setProject,
   setUnsavedChanges,
@@ -98,6 +99,7 @@ const ARScreen: React.FC = () => {
     if (!saveLights) {
       dispatch(resetLightsState());
     }
+    dispatch(resetSceneState());
     void loadProjectData();
     void loadModels();
   }, []);

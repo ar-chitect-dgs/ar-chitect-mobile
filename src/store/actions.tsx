@@ -28,6 +28,7 @@ export const SET_SAVE_LIGHTS = 'SET_SAVE_LIGHTS';
 export const SET_ORIENTATION = 'SET_ORIENTATION';
 export const SET_TRANSLATION = 'SET_TRANSLATION';
 export const SET_SCALE = 'SET_SCALE';
+export const RESET_SCENE_STATE = 'REDET_SCENE_STATE';
 
 export const SET_PROJECT = 'SET_PROJECT';
 export const SET_MODELS = 'SET_MODELS';
@@ -165,4 +166,9 @@ export const setStepSize = (stepSize: number): AnyAction => ({
 export const setAngleStepSize = (stepSize: number): AnyAction => ({
   type: SET_ANGLE_STEP_SIZE,
   payload: stepSize,
+});
+
+export const resetSceneState = (): AnyAction => ({
+  type: RESET_SCENE_STATE,
+  payload: null,
 });

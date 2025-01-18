@@ -3,9 +3,9 @@ import { render, waitFor } from '@testing-library/react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
-import { setModels, setProject } from '../store/actions';
+import { setModels, setProject, resetSceneState } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const testProject = {
   id: 'mockProjectId',
@@ -62,6 +62,7 @@ jest.mock('../api/projectsApi', () => ({
 jest.mock('../store/actions', () => ({
   setModels: jest.fn(),
   setProject: jest.fn(),
+  resetSceneState: jest.fn(),
 }));
 
 jest.mock('@react-native-firebase/auth', () => ({

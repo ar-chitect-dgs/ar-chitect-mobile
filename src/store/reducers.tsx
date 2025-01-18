@@ -22,6 +22,7 @@ import {
   SET_SCALE,
   SET_STEP_SIZE,
   SET_ANGLE_STEP_SIZE,
+  RESET_SCENE_STATE,
 } from './actions';
 import {
   type AmbientLightProps,
@@ -259,6 +260,8 @@ const projectReducer = (
         ...state,
         scale: action.payload,
       };
+    case RESET_SCENE_STATE:
+      return initialProjectState;
     default:
       return state;
   }

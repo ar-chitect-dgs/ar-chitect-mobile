@@ -24,7 +24,9 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { models, project } = useSelector(
     (state: Reducer) => state.projectConfig,
   );
-  const { autoSave } = useSelector((state: Reducer) => state.settingsConfig);
+  const { autoSave, stepSize } = useSelector(
+    (state: Reducer) => state.settingsConfig,
+  );
   const dispatch = useDispatch();
 
   const { user } = useAuth();
@@ -124,6 +126,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       {selectedModel && (
         <ModelModal
           snapPoint={snapPoint}
+          stepSize={stepSize}
           isVisible={isModalVisible}
           onClose={() => {
             setSelectedModel(null);
@@ -133,7 +136,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           id={selectedModel.id}
         />
       )}
-      <View style={styles.header}>
+      <View style={styles.save}>
         <FilledButton onPress={handleSave} title="Save" />
       </View>
       <ErrorPopup
@@ -162,6 +165,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
+  },
+  save: {
+    marginTop: 20,
   },
   title: {
     fontSize: 18,

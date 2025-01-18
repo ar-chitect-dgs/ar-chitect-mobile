@@ -26,7 +26,7 @@ const ARScene: React.FC = () => {
   const { ambientLights, directionalLights, spotLights }: LightState =
     useSelector((state: Reducer) => state.lightConfig);
 
-  const { models, translation, orientation }: ProjectState = useSelector(
+  const { models, translation, orientation, scale }: ProjectState = useSelector(
     (state: Reducer) => state.projectConfig,
   );
 
@@ -65,6 +65,7 @@ const ARScene: React.FC = () => {
           },
           translation,
           orientation,
+          scale,
         );
         return (
           <ViroDirectionalLight
@@ -81,6 +82,7 @@ const ARScene: React.FC = () => {
           { x: light.position[0], y: light.position[1], z: light.position[2] },
           translation,
           orientation,
+          scale,
         );
         const newDirection = calculateGlobalPosition(
           {
@@ -90,6 +92,7 @@ const ARScene: React.FC = () => {
           },
           translation,
           orientation,
+          scale,
         );
         return (
           <>
@@ -118,6 +121,7 @@ const ARScene: React.FC = () => {
                     { x: dragToPos[0], y: dragToPos[1], z: dragToPos[2] },
                     translation,
                     orientation,
+                    scale,
                   );
                   dispatch(
                     updateSpotLight(light.id, {
@@ -145,8 +149,10 @@ const ARScene: React.FC = () => {
               model.position,
               translation,
               orientation,
+              scale,
             )}
             rotation={calculateRotation(model.rotation, orientation)}
+            scale={scale}
             selected={model.isSelected}
             onDrag={(dragToPos: number[]) => {
               dispatch(
@@ -156,6 +162,7 @@ const ARScene: React.FC = () => {
                     { x: dragToPos[0], y: dragToPos[1], z: dragToPos[2] },
                     translation,
                     orientation,
+                    scale,
                   ),
                 }),
               );

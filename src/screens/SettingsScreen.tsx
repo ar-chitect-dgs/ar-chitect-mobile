@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSaveLights, setAutoSave } from '../store/actions';
+import { Picker } from '@react-native-picker/picker';
+import {
+  setSaveLights,
+  setAutoSave,
+  setStepSize,
+  setAngleStepSize,
+} from '../store/actions';
 import { type Reducer } from '../store/reducers';
 
 const SettingsScreen: React.FC = () => {
-  const { autoSave, saveLights } = useSelector(
+  const { autoSave, saveLights, stepSize, angleStepSize } = useSelector(
     (state: Reducer) => state.settingsConfig,
   );
 
   const dispatch = useDispatch();
   const [saveLightsEnabled, setSaveLightsEnabled] = useState(saveLights);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(autoSave);
+  const [newStepSize, setNewStepSize] = useState(stepSize);
+  const [newAngleStepSize, setNewAngleStepSize] = useState(angleStepSize);
 
   const handleSaveLightsToggle = (value: boolean): void => {
     setSaveLightsEnabled(value);
@@ -21,6 +29,16 @@ const SettingsScreen: React.FC = () => {
   const handleAutoSaveToggle = (value: boolean): void => {
     setAutoSaveEnabled(value);
     dispatch(setAutoSave(value));
+  };
+
+  const handleSaveStepSize = (value: number): void => {
+    setNewStepSize(value);
+    dispatch(setStepSize(value));
+  };
+
+  const handleSaveAngleStepSize = (value: number): void => {
+    setNewAngleStepSize(value);
+    dispatch(setAngleStepSize(value));
   };
 
   return (
@@ -38,6 +56,35 @@ const SettingsScreen: React.FC = () => {
       <View style={styles.settingRow}>
         <Text style={styles.label}>Auto-save project (every 30s):</Text>
         <Switch value={autoSaveEnabled} onValueChange={handleAutoSaveToggle} />
+      </View>
+
+      <View style={styles.settingRow}>
+        <Text style={styles.label}>Step size:</Text>
+        <Picker
+          selectedValue={newStepSize}
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+          onValueChange={handleSaveStepSize}
+        >
+          <Picker.Item label="0.1m" value={0.1} />
+          <Picker.Item label="0.5m" value={0.5} />
+          <Picker.Item label="1m" value={1} />
+          <Picker.Item label="5m" value={5} />
+        </Picker>
+      </View>
+      <View style={styles.settingRow}>
+        <Text style={styles.label}>Angle step size:</Text>
+        <Picker
+          selectedValue={newAngleStepSize}
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+          onValueChange={handleSaveAngleStepSize}
+        >
+          <Picker.Item label="0.1" value={0.1} />
+          <Picker.Item label="0.5" value={0.5} />
+          <Picker.Item label="1" value={1} />
+          <Picker.Item label="5" value={5} />
+        </Picker>
       </View>
     </View>
   );
@@ -67,6 +114,15 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     color: '#333',
+  },
+  picker: {
+    width: 150,
+    height: 40,
+    color: '#000',
+  },
+  pickerItem: {
+    fontSize: 18,
+    color: '#000',
   },
 });
 

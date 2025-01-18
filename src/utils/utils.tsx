@@ -11,13 +11,17 @@ export const calculateRotation = (
   };
 };
 
-export const rotateAroundY = (position: Vector3D, angle: number): Vector3D => {
+export const rotateAroundY = (
+  position: Vector3D,
+  angle: number,
+  scale: number,
+): Vector3D => {
   const angleInRadians = (angle * Math.PI) / 180;
   const cosAngle = Math.cos(angleInRadians);
   const sinAngle = Math.sin(angleInRadians);
 
-  const rotatedX = position.x * cosAngle - position.z * sinAngle;
-  const rotatedZ = position.x * sinAngle + position.z * cosAngle;
+  const rotatedX = (position.x * cosAngle - position.z * sinAngle) * scale;
+  const rotatedZ = (position.x * sinAngle + position.z * cosAngle) * scale;
 
   return {
     x: rotatedX,
@@ -30,8 +34,9 @@ export const calculateGlobalPosition = (
   localPosition: Vector3D,
   translation: Vector3D,
   orientation: number,
+  scale: number,
 ): Vector3D => {
-  const rotatedPosition = rotateAroundY(localPosition, orientation);
+  const rotatedPosition = rotateAroundY(localPosition, orientation, scale);
 
   return {
     x: rotatedPosition.x + translation.x,
@@ -44,6 +49,7 @@ export const calculateLocalPosition = (
   globalPosition: Vector3D,
   translation: Vector3D,
   orientation: number,
+  scale: number,
 ): Vector3D => {
   const translatedPosition = {
     x: globalPosition.x - translation.x,
@@ -56,9 +62,10 @@ export const calculateLocalPosition = (
   const sinAngle = Math.sin(angleInRadians);
 
   const localX =
-    translatedPosition.x * cosAngle + translatedPosition.z * sinAngle;
+    (translatedPosition.x * cosAngle + translatedPosition.z * sinAngle) / scale;
   const localZ =
-    -translatedPosition.x * sinAngle + translatedPosition.z * cosAngle;
+    (-translatedPosition.x * sinAngle + translatedPosition.z * cosAngle) /
+    scale;
 
   return {
     x: localX,

@@ -71,6 +71,9 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   const { ambientLights, directionalLights, spotLights } = useSelector(
     (state: Reducer) => state.lightConfig,
   );
+  const { stepSize, angleStepSize } = useSelector(
+    (state: Reducer) => state.settingsConfig,
+  );
 
   const handleAddAmbientLight = (): void => {
     setSelectedAmbientLight(sampleAmbientLight);
@@ -106,6 +109,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <AmbientLightModal
         isVisible={isModalVisible.ambientLightModal}
         isEditing={isEditing}
+        stepSize={stepSize}
         onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,
@@ -131,6 +135,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <DirectionalLightModal
         isVisible={isModalVisible.directionalLightModal}
         isEditing={isEditing}
+        stepSize={stepSize}
         onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,
@@ -157,6 +162,8 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
       <SpotLightModal
         isVisible={isModalVisible.spotlightModal}
         isEditing={isEditing}
+        stepSize={stepSize}
+        angleStepSize={angleStepSize}
         onClose={() => {
           setIsModalVisible({
             ambientLightModal: false,

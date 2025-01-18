@@ -83,7 +83,7 @@ const initialLightState = {
   spotLights: [
     {
       id: 1,
-      name: 'Spot light light',
+      name: 'Spot light',
       color: '#FFFFFF',
       intensity: 1000,
       position: [0.0, 0.0, -2.0],

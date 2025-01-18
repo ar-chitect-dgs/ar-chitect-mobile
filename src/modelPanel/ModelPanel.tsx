@@ -136,7 +136,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           id={selectedModel.id}
         />
       )}
-      <View style={styles.header}>
+      <View style={styles.save}>
         <FilledButton onPress={handleSave} title="Save" />
       </View>
       <ErrorPopup
@@ -165,6 +165,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
+  },
+  save: {
+    marginTop: 20,
   },
   title: {
     fontSize: 18,

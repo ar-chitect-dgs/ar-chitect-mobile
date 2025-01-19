@@ -40,6 +40,15 @@ const testSpotLights = [
   },
 ];
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+    i18n: {
+      changeLanguage: jest.fn(),
+    },
+  }),
+}));
+
 jest.mock('../../components/ListItemTile', () => jest.fn());
 
 jest.mock('react-redux', () => ({
@@ -92,13 +101,13 @@ describe('LightsPanel', () => {
   it('shows Lights lists', () => {
     const { queryAllByText } = render(<LightsPanel snapPoint="10%" />);
 
-    const ambientList = queryAllByText(ambientLightList);
+    const ambientList = queryAllByText('lightsPanel.ambientLights');
     expect(ambientList.length).toBeGreaterThanOrEqual(1);
 
-    const directionalList = queryAllByText(directionalLightList);
+    const directionalList = queryAllByText('lightsPanel.directionalLights');
     expect(directionalList.length).toBeGreaterThanOrEqual(1);
 
-    const spotList = queryAllByText(spotLightList);
+    const spotList = queryAllByText('lightsPanel.spotLights');
     expect(spotList.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -112,7 +121,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText(/Add Ambient Light/i));
+    fireEvent.press(getByText('panels.add lightsPanel.ambientLight'));
     expect(AmbientLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,
@@ -132,7 +141,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText(/Add Directional Light/i));
+    fireEvent.press(getByText('panels.add lightsPanel.directionalLight'));
     expect(DirecionalLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,
@@ -152,7 +161,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText(/Add Spot Light/i));
+    fireEvent.press(getByText('panels.add lightsPanel.spotLight'));
     expect(SpotLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

@@ -17,6 +17,7 @@ import AmbientLightModal from './AmbientLightModal';
 import SpotLightModal from './SpotLightModal';
 import DirectionalLightModal from './DirectionalLightModal';
 import LightList from './LightList';
+import { useTranslation } from 'react-i18next';
 
 const sampleAmbientLight: AmbientLightProps = {
   id: -1,
@@ -67,6 +68,7 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   });
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { ambientLights, directionalLights, spotLights } = useSelector(
     (state: Reducer) => state.lightConfig,
@@ -97,7 +99,8 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
     <View style={styles.container}>
       <LightList
         lights={ambientLights}
-        title="Ambient Lights"
+        title={`${t('lightsPanel.ambientLights')}`}
+        lightName={`${t('lightsPanel.ambientLight')}`}
         onAdd={handleAddAmbientLight}
         onEdit={(light) => {
           setSelectedAmbientLight(light);
@@ -123,7 +126,8 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
 
       <LightList
         lights={directionalLights}
-        title="Directional Lights"
+        title={`${t('lightsPanel.directionalLights')}`}
+        lightName={`${t('lightsPanel.directionalLight')}`}
         onAdd={handleAddDirectionalLight}
         onEdit={(light) => {
           setSelectedDirectionalLight(light);
@@ -149,7 +153,8 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
 
       <LightList
         lights={spotLights}
-        title="Spot Lights"
+        title={`${t('lightsPanel.spotLights')}`}
+        lightName={`${t('lightsPanel.spotLight')}`}
         onAdd={handleAddSpotLight}
         onEdit={(light) => {
           setSelectedSpotLight(light);

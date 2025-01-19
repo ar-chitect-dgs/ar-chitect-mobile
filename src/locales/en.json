@@ -15,7 +15,7 @@
   },
   "projects": {
     "noProjectsMessage": "No projects found. You can create one in the editor!",
-    "lastEdited": "Last edited",
+    "lastEdited": "Last edited"
   },
   "error": {
     "title": "Error",
@@ -28,7 +28,12 @@
     "delete": "Delete",
     "add": "Add",
     "editScene": "Edit Scene",
-    "errorSaving": "Error saving changes."
+    "errorSaving": "Error saving changes.",
+    "position": "Position",
+    "translation": "Translation",
+    "rotation": "Rotation",
+    "scale": "Scale",
+    "models": "Modele"
   },
   "arScreen": {
     "errorFetchingProject": "Error fetching project data.",
@@ -70,5 +75,23 @@
     "guest": "Guest User",
     "logout": "Logout",
     "logoutError": "Logout failed."
+  },
+  "lightsPanel": {
+    "ambientLights": "Ambient Lights",
+    "directionalLights": "Directional Lights",
+    "spotLights": "Spot Lights",
+    "ambientLight": "Ambient Light",
+    "directionalLight": "Directional Light",
+    "spotLight": "Spot Light"
+  },
+  "lightModal": {
+    "intensity": "Intensity",
+    "direction": "Direction",
+    "castsShadows": "Casts shadows",
+    "position": "Position",
+    "innerAngle": "Inner angle",
+    "outerAngle": "Outer angle",
+    "attentuationStart": "Attentuation start",
+    "attentuationEnd": "Attentuation end"
   }
 }

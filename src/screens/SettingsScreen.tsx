@@ -13,7 +13,6 @@ import {
 import i18n from '../locales/i18n';
 import { headerColor, opaquePurple2, purple2 } from '../styles/colors';
 
-// Define keys for AsyncStorage
 const SAVE_LIGHTS_KEY = 'saveLights';
 const AUTO_SAVE_KEY = 'autoSave';
 const LANGUAGE_KEY = 'language';
@@ -30,6 +29,7 @@ const SettingsScreen: React.FC = () => {
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(autoSave);
   const [newStepSize, setNewStepSize] = useState(stepSize);
   const [newAngleStepSize, setNewAngleStepSize] = useState(angleStepSize);
+  const [language, setLanguage] = useState(i18n.language);
 
   useEffect(() => {
     const loadSettings = async (): Promise<void> => {
@@ -83,6 +83,7 @@ const SettingsScreen: React.FC = () => {
 
   const handleLanguageChange = async (value: string): Promise<void> => {
     try {
+      setLanguage(value);
       await i18n.changeLanguage(value);
       await AsyncStorage.setItem(LANGUAGE_KEY, value);
     } catch (error) {
@@ -117,7 +118,7 @@ const SettingsScreen: React.FC = () => {
       <View style={styles.settingRow}>
         <Text style={styles.label}>{i18n.t('settings.language')}</Text>
         <Picker
-          selectedValue={i18n.language}
+          selectedValue={language}
           style={styles.picker}
           onValueChange={handleLanguageChange}
         >

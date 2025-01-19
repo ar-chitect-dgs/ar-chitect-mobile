@@ -16,12 +16,10 @@ const languageDetector = {
   async: true,
   detect: async (callback: (lng: string) => void) => {
     const savedLanguage = await AsyncStorage.getItem(LANGUAGE_KEY);
-    console.log('Detected language:', savedLanguage); // Debug log
-    callback(savedLanguage ?? 'en'); // Fallback to English if no saved language
+    callback(savedLanguage ?? 'en');
   },
   init: () => {},
   cacheUserLanguage: async (lng: string) => {
-    console.log('Caching language:', lng); // Debug log
     await AsyncStorage.setItem(LANGUAGE_KEY, lng);
   },
 };

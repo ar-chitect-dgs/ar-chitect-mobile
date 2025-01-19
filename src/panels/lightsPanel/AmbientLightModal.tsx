@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAmbientLight, updateAmbientLight } from '../store/actions';
-import { type AmbientLightProps } from '../AR/LightInterfaces';
-import { type Reducer } from '../store/reducers';
+import { addAmbientLight, updateAmbientLight } from '../../store/actions';
+import { type AmbientLightProps } from '../../AR/LightInterfaces';
+import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
-import EditingModal from '../components/EditingModal';
+import EditingModal from '../../components/EditingModal';
 import NameInput from './NameInput';
-import FilledButton from '../components/FilledButton';
+import FilledButton from '../../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
 interface AmbientLightModalProps {
   isVisible: boolean;
@@ -27,6 +28,8 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
   selectedLight,
   snapPoint,
 }) => {
+  const { t } = useTranslation();
+
   const [ambientLight, setAmbientLight] =
     useState<AmbientLightProps>(selectedLight);
 
@@ -49,7 +52,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       <NameInput
-        title="Name: "
+        title={`${t('panels.name')}: `}
         value={ambientLight.name}
         setName={(name: string) => {
           setAmbientLight({ ...ambientLight, name });
@@ -73,7 +76,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
           step={stepSize}
         />
       </View>
-      <FilledButton title="Save" onPress={handleSave} />
+      <FilledButton title={t('panels.save')} onPress={handleSave} />
     </EditingModal>
   );
 };

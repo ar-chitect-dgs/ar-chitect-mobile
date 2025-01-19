@@ -8,8 +8,10 @@ import InputField from '../components/InputField';
 import FilledButton from '../components/FilledButton';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import ErrorPopup from '../components/ErrorPopup';
+import { useTranslation } from 'react-i18next';
 
 const RegisterScreen: React.FC = ({ navigation }: any) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [displayName, setDisplayName] = useState<string>('');
@@ -39,7 +41,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
     if (email === '' || password === '' || displayName === '') {
       setAlert({
         isVisible: true,
-        message: 'Please fill in all fields.',
+        message: t('registerScreen.fillFieldsMessage'),
       });
       return;
     }
@@ -61,14 +63,14 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         });
         setAlert({
           isVisible: true,
-          message: 'Account created successfully!',
+          message: t('registerScreen.successMessage'),
         });
         navigation.navigate('Home');
       }
     } catch (error: any) {
       setAlert({
         isVisible: true,
-        message: 'Registration error.',
+        message: t('registerScreen.errorMessage'),
       });
     } finally {
       setLoading(false);
@@ -78,7 +80,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>Create a new account</Text>
+        <Text style={styles.title}>{t('registerScreen.title')}</Text>
 
         <TouchableOpacity
           onPress={handleImagePicker}
@@ -90,18 +92,20 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
               style={styles.profileImage}
             />
           ) : (
-            <Text style={styles.imageText}>Pick a profile picture...</Text>
+            <Text style={styles.imageText}>
+              {t('registerScreen.imagePickerText')}
+            </Text>
           )}
         </TouchableOpacity>
 
         <InputField
-          placeholder="Display Name"
+          placeholder={t('registerScreen.displayNamePlaceholder')}
           value={displayName}
           onChangeText={setDisplayName}
         />
 
         <InputField
-          placeholder="Email"
+          placeholder={t('registerScreen.emailPlaceholder')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -109,14 +113,18 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
         />
 
         <InputField
-          placeholder="Password"
+          placeholder={t('registerScreen.passwordPlaceholder')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
         <FilledButton
-          title={loading ? 'Registering...' : 'Register'}
+          title={
+            loading
+              ? t('registerScreen.registering')
+              : t('registerScreen.register')
+          }
           onPress={handleRegister}
           disabled={loading}
         />
@@ -125,12 +133,14 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Login')}
           style={styles.linkContainer}
         >
-          <Text style={styles.prelinkText}>Already have an account? </Text>
-          <Text style={styles.linkText}>Log-in</Text>
+          <Text style={styles.prelinkText}>
+            {t('registerScreen.alreadyHaveAccount')}
+          </Text>
+          <Text style={styles.linkText}>{t('registerScreen.login')}</Text>
         </TouchableOpacity>
         <ErrorPopup
           isVisible={alert.isVisible}
-          title="Error"
+          title={t('error.title')}
           message={alert.message}
           onClose={() => {
             setAlert((prev) => ({
@@ -138,7 +148,7 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
               isVisible: false,
             }));
           }}
-          closeText="OK"
+          closeText={t('error.okButton')}
         />
       </View>
     </LinearGradient>

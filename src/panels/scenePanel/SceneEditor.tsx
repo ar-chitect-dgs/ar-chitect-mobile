@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { setOrientation, setScale, setTranslation } from '../store/actions';
-import { type Vector3D } from '../AR/Interfaces';
+import { setOrientation, setScale, setTranslation } from '../../store/actions';
+import { type Vector3D } from '../../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
-import EditingModal from '../components/EditingModal';
+import EditingModal from '../../components/EditingModal';
 
 interface SceneEditorProps {
   translation: Vector3D;

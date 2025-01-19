@@ -23,6 +23,7 @@ import logo from '../assets/logo.png';
 
 import { headerColor } from '../styles/colors';
 import { type Project } from '../api/types';
+import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
@@ -70,6 +71,7 @@ const CustomDrawerContent = (props: any): JSX.Element => {
 
 const AppRouter = (): JSX.Element => {
   const { isLoggedIn } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <NavigationContainer>
@@ -92,19 +94,32 @@ const AppRouter = (): JSX.Element => {
         {isLoggedIn ? (
           <>
             <Drawer.Screen
-              name="Projects"
+              name={ROUTES.PROJECTS}
               component={HomeStack}
               options={{
                 unmountOnBlur: true,
+                title: t(ROUTES.HOME),
               }}
             />
-            <Drawer.Screen name={ROUTES.PROFILE} component={ProfileScreen} />
-            <Drawer.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />
+            <Drawer.Screen name={t(ROUTES.PROFILE)} component={ProfileScreen} />
+            <Drawer.Screen
+              name={ROUTES.SETTINGS}
+              component={SettingsScreen}
+              options={{ title: t(ROUTES.SETTINGS) }}
+            />
           </>
         ) : (
           <>
-            <Drawer.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-            <Drawer.Screen name={ROUTES.REGISTER} component={RegisterScreen} />
+            <Drawer.Screen
+              name={ROUTES.LOGIN}
+              component={LoginScreen}
+              options={{ title: t(ROUTES.LOGIN) }}
+            />
+            <Drawer.Screen
+              name={ROUTES.REGISTER}
+              component={RegisterScreen}
+              options={{ title: t(ROUTES.REGISTER) }}
+            />
           </>
         )}
       </Drawer.Navigator>

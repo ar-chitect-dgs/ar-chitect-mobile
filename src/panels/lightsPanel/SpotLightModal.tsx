@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSpotLight, updateSpotLight } from '../store/actions';
-import { type SpotLightProps } from '../AR/LightInterfaces';
-import { type Reducer } from '../store/reducers';
+import { useTranslation } from 'react-i18next';
+import { addSpotLight, updateSpotLight } from '../../store/actions';
+import { type SpotLightProps } from '../../AR/LightInterfaces';
+import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
-import EditingModal from '../components/EditingModal';
+import EditingModal from '../../components/EditingModal';
 import NameInput from './NameInput';
-import { opaquePurple2, purple2 } from '../styles/colors';
-import FilledButton from '../components/FilledButton';
+import { opaquePurple2, purple2 } from '../../styles/colors';
+import FilledButton from '../../components/FilledButton';
 
 interface SpotLightModalProps {
   isVisible: boolean;
@@ -32,6 +33,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   snapPoint,
 }) => {
   const [spotLight, setSpotLight] = useState<SpotLightProps>(selectedLight);
+  const { t } = useTranslation();
 
   const [positionInputs, setPositionInputs] = useState<
     [string, string, string]
@@ -122,7 +124,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       <NameInput
-        title="Name: "
+        title={`${t('panels.name')}: `}
         value={spotLight.name}
         setName={(name: string) => {
           setSpotLight({ ...spotLight, name });

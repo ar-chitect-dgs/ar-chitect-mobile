@@ -38,11 +38,11 @@ const testUser = {
   email: 'john.doe@example.com',
 };
 
-jest.mock('../hooks/useAuth', () => ({
+jest.mock('../../hooks/useAuth', () => ({
   useAuth: jest.fn(() => testUser),
 }));
 
-jest.mock('../api/projectsApi', () => ({
+jest.mock('../../api/projectsApi', () => ({
   saveProject: jest.fn(),
 }));
 

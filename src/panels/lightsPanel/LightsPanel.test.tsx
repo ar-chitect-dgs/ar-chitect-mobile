@@ -40,14 +40,14 @@ const testSpotLights = [
   },
 ];
 
-jest.mock('../components/ListItemTile', () => jest.fn());
+jest.mock('../../components/ListItemTile', () => jest.fn());
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
   useDispatch: jest.fn(),
 }));
 
-jest.mock('../store/actions', () => ({
+jest.mock('../../store/actions', () => ({
   removeAmbientLight: jest.fn(),
   removeDirectionalLight: jest.fn(),
   removeSpotLight: jest.fn(),
@@ -112,7 +112,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText('Add Ambient Light'));
+    fireEvent.press(getByText(/Add Ambient Light/i));
     expect(AmbientLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,
@@ -132,7 +132,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText('Add Directional Light'));
+    fireEvent.press(getByText(/Add Directional Light/i));
     expect(DirecionalLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,
@@ -152,7 +152,7 @@ describe('LightsPanel', () => {
       }),
       {},
     );
-    fireEvent.press(getByText('Add Spot Light'));
+    fireEvent.press(getByText(/Add Spot Light/i));
     expect(SpotLightModal).toHaveBeenCalledWith(
       expect.objectContaining({
         isVisible: true,

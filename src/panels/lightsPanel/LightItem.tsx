@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
 interface LightItemProps {
@@ -14,11 +15,13 @@ const LightItem = ({
   onEdit,
   onDelete,
 }: LightItemProps): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.lightItem} key={id.toString()}>
       <Text>{title.slice(0, -1)}</Text>
-      <Button title="Edit" onPress={onEdit} />
-      <Button title="Delete" onPress={onDelete} />
+      <Button title={t('panels.edit')} onPress={onEdit} />
+      <Button title={t('panels.delete')} onPress={onDelete} />
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
-import { setModels, setProject, resetSceneState } from '../store/actions';
+import { setModels, setProject } from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
 import { useRoute } from '@react-navigation/native';
 

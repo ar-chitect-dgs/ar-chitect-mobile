@@ -5,8 +5,10 @@ import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
-const ProfileScreen: React.FC = ({ navigation }: any) => {
+const ProfileScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState<any>(null);
   const [alert, setAlert] = useState({
     isVisible: false,
@@ -26,7 +28,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
     } catch (error: any) {
       setAlert({
         isVisible: true,
-        message: 'Logout failed.',
+        message: t('profileScreen.logoutError'),
       });
     }
   };
@@ -34,7 +36,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
   if (!user) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>Loading profile...</Text>
+        <Text style={styles.message}>{t('profileScreen.loading')}</Text>
       </View>
     );
   }
@@ -42,7 +44,7 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>Your profile</Text>
+        <Text style={styles.title}>{t('profileScreen.title')}</Text>
 
         <View style={styles.profileContainer}>
           {user.photoURL ? (
@@ -53,18 +55,20 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
           ) : (
             <View style={styles.placeholderImage}>
               <Text style={styles.placeholderText}>
-                {user.displayName?.[0] || 'U'}
+                {user.displayName?.[0] || t('profileScreen.defaultInitial')}
               </Text>
             </View>
           )}
 
-          <Text style={styles.name}>{user.displayName || 'Guest User'}</Text>
+          <Text style={styles.name}>
+            {user.displayName || t('profileScreen.guest')}
+          </Text>
           <Text style={styles.email}>{user.email}</Text>
         </View>
 
         <ErrorPopup
           isVisible={alert.isVisible}
-          title="Error"
+          title={t('error.title')}
           message={alert.message}
           onClose={() => {
             setAlert((prev) => ({
@@ -72,9 +76,12 @@ const ProfileScreen: React.FC = ({ navigation }: any) => {
               isVisible: false,
             }));
           }}
-          closeText="OK"
+          closeText={t('error.okButton')}
         />
-        <FilledButton title="Logout" onPress={handleLogout} />
+        <FilledButton
+          title={t('profileScreen.logout')}
+          onPress={handleLogout}
+        />
       </View>
     </LinearGradient>
   );

@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDirectionalLight, updateDirectionalLight } from '../store/actions';
-import { type DirectionalLightProps } from '../AR/LightInterfaces';
-import { type Reducer } from '../store/reducers';
+import {
+  addDirectionalLight,
+  updateDirectionalLight,
+} from '../../store/actions';
+import { type DirectionalLightProps } from '../../AR/LightInterfaces';
+import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
-import EditingModal from '../components/EditingModal';
+import EditingModal from '../../components/EditingModal';
 import NameInput from './NameInput';
-import { opaquePurple2, purple2 } from '../styles/colors';
-import FilledButton from '../components/FilledButton';
+import { opaquePurple2, purple2 } from '../../styles/colors';
+import FilledButton from '../../components/FilledButton';
+import { useTranslation } from 'react-i18next';
 
 interface DirectionalLightModalProps {
   isVisible: boolean;
@@ -29,6 +33,8 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   selectedLight,
   snapPoint,
 }) => {
+  const { t } = useTranslation();
+
   const [directionalLight, setDirectionalLight] =
     useState<DirectionalLightProps>(selectedLight);
 
@@ -98,7 +104,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   return (
     <EditingModal isVisible={isVisible} snapPoint={snapPoint} onClose={onClose}>
       <NameInput
-        title="Name: "
+        title={`${t('panels.name')}: `}
         value={directionalLight.name}
         setName={(name: string) => {
           setDirectionalLight({ ...directionalLight, name });
@@ -144,7 +150,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
         />
       </View>
 
-      <FilledButton title="Save" onPress={handleSave} />
+      <FilledButton title={t('panels.save')} onPress={handleSave} />
     </EditingModal>
   );
 };

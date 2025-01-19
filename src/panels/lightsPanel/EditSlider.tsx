@@ -1,7 +1,7 @@
 import Slider from '@react-native-community/slider';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { opaquePurple2, purple2 } from '../styles/colors';
+import { opaquePurple2, purple2 } from '../../styles/colors';
 
 interface EditSliderProps {
   title: string;

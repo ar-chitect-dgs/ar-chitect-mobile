@@ -1,0 +1,74 @@
+{
+  "Profile": "Profile",
+  "Settings": "Settings",
+  "Login": "Login",
+  "Register": "Register",
+  "Home": "Projects",
+  "Hi": "Hi",
+  "settings": {
+    "header": "Settings",
+    "saveLights": "Save lights between scenes:",
+    "autoSave": "Auto-save:",
+    "language": "Language:",
+    "stepSize": "Step size:",
+    "angleStepSize": "Angle step size:"
+  },
+  "projects": {
+    "noProjectsMessage": "No projects found. You can create one in the editor!",
+    "lastEdited": "Last edited",
+  },
+  "error": {
+    "title": "Error",
+    "okButton": "OK"
+  },
+  "panels": {
+    "save": "Save",
+    "name": "Name",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "editScene": "Edit Scene",
+    "errorSaving": "Error saving changes."
+  },
+  "arScreen": {
+    "errorFetchingProject": "Error fetching project data.",
+    "errorFetchingModels": "Error fetching model data.",
+    "unsavedChangesTitle": "Unsaved changes.",
+    "unsavedChangesMessage": "Are you sure you want to exit without saving changes?",
+    "cancelButton": "Cancel",
+    "confirmExitButton": "Yes"
+  },
+  "registerScreen": {
+    "title": "Create a new account",
+    "imagePickerText": "Pick a profile picture...",
+    "displayNamePlaceholder": "Display Name",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "register": "Register",
+    "registering": "Registering...",
+    "alreadyHaveAccount": "Already have an account? ",
+    "login": "Log-in",
+    "fillFieldsMessage": "Please fill in all fields.",
+    "successMessage": "Account created successfully!",
+    "errorMessage": "Registration error."
+  },
+  "loginScreen": {
+    "title": "Login to your existing account",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "noAccount": "Don't have an account? ",
+    "signup": "Sign-up",
+    "fillFieldsMessage": "Please fill in all fields.",
+    "errorMessage": "Login failed."
+  },
+  "profileScreen": {
+    "title": "Your profile",
+    "loading": "Loading profile...",
+    "defaultInitial": "U",
+    "guest": "Guest User",
+    "logout": "Logout",
+    "logoutError": "Logout failed."
+  }
+}

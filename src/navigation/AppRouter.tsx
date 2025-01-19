@@ -1,4 +1,4 @@
-import React, { startTransition } from 'react';
+import React from 'react';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,

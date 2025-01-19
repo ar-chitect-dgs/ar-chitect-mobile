@@ -40,12 +40,18 @@ const SettingsScreen: React.FC = () => {
 
         if (savedStepSize !== null) {
           setNewStepSize(JSON.parse(savedStepSize));
-          dispatch(setStepSize(JSON.parse(savedStepSize)));
+          const parsedStepSize = JSON.parse(savedStepSize);
+          if (typeof parsedStepSize === 'number') {
+            dispatch(setStepSize(parsedStepSize));
+          }
         }
 
         if (savedAngleStepSize !== null) {
           setNewAngleStepSize(JSON.parse(savedAngleStepSize));
-          dispatch(setAngleStepSize(JSON.parse(savedAngleStepSize)));
+          const parsedAngleStepSize = JSON.parse(savedAngleStepSize);
+          if (typeof parsedAngleStepSize === 'number') {
+            dispatch(setAngleStepSize(parsedAngleStepSize));
+          }
         }
       } catch (error) {
         console.error('Failed to load settings:', error);

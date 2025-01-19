@@ -3,7 +3,12 @@ import { render, waitFor } from '@testing-library/react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ARScreen from './ARScreen';
 import { fetchObjectsWithModelUrls, fetchProjects } from '../api/projectsApi';
-import { setModels, setProject, resetSceneState } from '../store/actions';
+import {
+  setModels,
+  setProject,
+  resetSceneState,
+  resetLightsState,
+} from '../store/actions';
 import { ViroARSceneNavigator } from '@reactvision/react-viro';
 import { useRoute } from '@react-navigation/native';
 
@@ -63,6 +68,7 @@ jest.mock('../store/actions', () => ({
   setModels: jest.fn(),
   setProject: jest.fn(),
   resetSceneState: jest.fn(),
+  resetLightsState: jest.fn(),
 }));
 
 jest.mock('@react-native-firebase/auth', () => ({
@@ -113,6 +119,7 @@ describe('ARScreen', () => {
     render(<ARScreen />);
 
     await waitFor(() => {
+      expect(resetSceneState).toHaveBeenCalledWith();
       expect(setProject).toHaveBeenCalledWith(
         expect.objectContaining({ id: testProject.id, project: testProject }),
       );
@@ -124,6 +131,20 @@ describe('ARScreen', () => {
         {},
       );
     });
+  });
+
+  it('dispatches save  after data loading and displays ViroARSceneNavigator', async () => {
+    const settingsConfig = {
+      saveLights: false,
+    };
+    (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
+      callback({
+        settingsConfig,
+      }),
+    );
+
+    render(<ARScreen />);
+    expect(resetLightsState).toHaveBeenCalledWith();
   });
 
   it('handles fetchProjects error gracefully', async () => {

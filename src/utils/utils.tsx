@@ -5,9 +5,9 @@ export const calculateRotation = (
   orientation: number,
 ): Vector3D => {
   return {
-    x: modelRotation.x,
-    y: modelRotation.y - orientation,
-    z: modelRotation.z,
+    x: (modelRotation.x * 180) / Math.PI,
+    y: (modelRotation.y * 180) / Math.PI - orientation,
+    z: (modelRotation.z * 180) / Math.PI,
   };
 };
 

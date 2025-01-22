@@ -15,7 +15,7 @@
   },
   "projects": {
     "noProjectsMessage": "Brak projektów. Możesz stworzyć nowy w edytorze!",
-    "lastEdited": "Ostatnio edytowany",
+    "lastEdited": "Ostatnio edytowany"
   },
   "error": {
     "title": "Błąd",
@@ -28,7 +28,12 @@
     "delete": "Usuń",
     "add": "Dodaj",
     "editScene": "Edytuj scenę",
-    "errorSaving": "Błąd zapisywania zmian."
+    "errorSaving": "Błąd zapisywania zmian.",
+    "position": "Pozycja",
+    "translation": "Przesunięcie",
+    "rotation": "Obrót",
+    "scale": "Skala",
+    "models": "Modele"
   },
   "arScreen": {
     "errorFetchingProject": "Błąd pobierania danych projektu.",
@@ -70,5 +75,23 @@
     "guest": "Gość",
     "logout": "Wyloguj się",
     "logoutError": "Błąd wylogowywania."
+  },
+  "lightsPanel": {
+    "ambientLights": "Światła otoczenia",
+    "directionalLights": "Światła kierunkowe",
+    "spotLights": "Światła punktowe",
+    "ambientLight": "Światło otoczenia",
+    "directionalLight": "Światło kierunkowe",
+    "spotLight": "Światło punktowe"
+  },
+  "lightModal": {
+    "intensity": "Intensywność",
+    "direction": "Kierunek",
+    "castsShadows": "Rzuca cienie",
+    "position": "Pozycja",
+    "innerAngle": "Kąt wewnętrzny",
+    "outerAngle": "Kąt zewnętrzny",
+    "attentuationStart": "Początek tłumienia",
+    "attentuationEnd": "Koniec tłumienia"
   }
 }

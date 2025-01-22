@@ -5,6 +5,7 @@ import { setOrientation, setScale, setTranslation } from '../../store/actions';
 import { type Vector3D } from '../../AR/Interfaces';
 import EditSlider from '../lightsPanel/EditSlider';
 import EditingModal from '../../components/EditingModal';
+import { useTranslation } from 'react-i18next';
 
 interface SceneEditorProps {
   translation: Vector3D;
@@ -29,6 +30,8 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   const [newTranslation, setNewTranslation] = useState(translation);
   const [newOrientation, setNewOrientation] = useState(orientation);
   const [newScale, setNewScale] = useState(scale);
+
+  const { t } = useTranslation();
 
   const handlePositionChange = (axis: keyof Vector3D, value: number): void => {
     const updatedTranslation = { ...translation, [axis]: value };
@@ -57,7 +60,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
         {axes.map((axis) => (
           <EditSlider
             key={axis}
-            title={`${axis.toUpperCase()} translation`}
+            title={`${axis.toUpperCase()} ${t('panels.translation')}`}
             value={newTranslation[axis]}
             setValue={(value: number) => {
               handlePositionChange(axis, value);
@@ -68,7 +71,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
           />
         ))}
         <EditSlider
-          title={'Rotation'}
+          title={`${t('panels.rotation')}`}
           value={newOrientation}
           setValue={(value: number) => {
             handleRotationChange(value);
@@ -78,7 +81,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
           step={5}
         />
         <EditSlider
-          title={'Scale'}
+          title={`${t('panels.scale')}`}
           value={newScale}
           setValue={(value: number) => {
             handleScaleChange(value);

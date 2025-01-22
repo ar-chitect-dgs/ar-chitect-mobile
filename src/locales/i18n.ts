@@ -31,7 +31,7 @@ void i18n
     resources,
     fallbackLng: 'en',
     interpolation: {
-      escapeValue: false, // React already escapes by default
+      escapeValue: false,
     },
   });
 

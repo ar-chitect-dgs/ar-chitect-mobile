@@ -139,20 +139,20 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
 
       <VectorInput
         value={positionInputs}
-        title="Position"
+        title={`${t('lightModal.position')}`}
         setVectorInputs={setPositionInputs}
         error={positionErrors}
       />
 
       <VectorInput
         value={directionInputs}
-        title="Direction"
+        title={`${t('lightModal.direction')}`}
         setVectorInputs={setDirectionInputs}
         error={directionErrors}
       />
 
       <EditSlider
-        title="Intensity"
+        title={`${t('lightModal.intensity')}`}
         value={spotLight.intensity}
         setValue={(intensity: number) => {
           setSpotLight({ ...spotLight, intensity });
@@ -163,7 +163,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <EditSlider
-        title="Inner angle"
+        title={`${t('lightModal.innerAngle')}`}
         value={spotLight.innerAngle}
         setValue={(innerAngle: number) => {
           setSpotLight({ ...spotLight, innerAngle });
@@ -174,7 +174,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <EditSlider
-        title="Outer angle"
+        title={`${t('lightModal.outerAngle')}`}
         value={spotLight.outerAngle}
         setValue={(outerAngle: number) => {
           setSpotLight({ ...spotLight, outerAngle });
@@ -185,7 +185,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <EditSlider
-        title="Attentuation start"
+        title={`${t('lightModal.attentuationStart')}`}
         value={spotLight.attenuationStartDistance}
         setValue={(attenuationStartDistance: number) => {
           setSpotLight({ ...spotLight, attenuationStartDistance });
@@ -197,7 +197,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <EditSlider
-        title="Attentuation end"
+        title={`${t('lightModal.attentuationEnd')}`}
         value={spotLight.attenuationEndDistance}
         setValue={(attenuationEndDistance: number) => {
           setSpotLight({ ...spotLight, attenuationEndDistance });
@@ -209,7 +209,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Casts Shadow:</Text>
+        <Text style={styles.label}>{`${t('lightModal.castsShadows')}`}</Text>
         <Switch
           value={spotLight.castsShadow}
           onValueChange={(value) => {
@@ -220,7 +220,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
         />
       </View>
 
-      <FilledButton title="Save" onPress={handleSave} />
+      <FilledButton title={t('panels.save')} onPress={handleSave} />
     </EditingModal>
   );
 };

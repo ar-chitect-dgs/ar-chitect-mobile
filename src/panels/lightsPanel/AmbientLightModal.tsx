@@ -66,7 +66,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
       />
       <View style={styles.container}>
         <EditSlider
-          title="Intensity"
+          title={`${t('lightModal.intensity')}`}
           value={ambientLight.intensity}
           setValue={(intensity: number) => {
             setAmbientLight({ ...ambientLight, intensity });

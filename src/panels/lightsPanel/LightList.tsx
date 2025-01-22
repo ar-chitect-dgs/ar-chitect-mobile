@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 interface LightListProps<T> {
   lights: T[];
   title: string;
+  lightName: string;
   onAdd: () => void;
   onEdit: (light: T) => void;
   onDelete: (id: number) => void;
@@ -18,6 +19,7 @@ const LightList = <
 >({
   lights,
   title,
+  lightName,
   onAdd,
   onEdit,
   onDelete,
@@ -28,10 +30,7 @@ const LightList = <
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
-        <MenuButton
-          title={`${t('panels.add')} ${title.slice(0, -1)}`}
-          onPress={onAdd}
-        />
+        <MenuButton title={`${t('panels.add')} ${lightName}`} onPress={onAdd} />
       </View>
       {lights.map((light, index) => (
         <ListItemTile

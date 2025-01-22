@@ -73,7 +73,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
       {axes.map((axis) => (
         <EditSlider
           key={axis}
-          title={`${axis.toUpperCase()} Position`}
+          title={`${axis.toUpperCase()} ${t('panels.position')}`}
           value={model.position[axis]}
           setValue={(newValue: number) => {
             handlePositionChange(axis, newValue);

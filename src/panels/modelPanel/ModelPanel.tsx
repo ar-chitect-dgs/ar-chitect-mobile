@@ -103,7 +103,7 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Models:</Text>
+        <Text style={styles.title}>{`${t('panels.models')}`}</Text>
       </View>
       {Object.entries(models).map(([key, model]) => {
         const numericKey = Number(key);

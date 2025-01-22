@@ -119,13 +119,13 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
 
       <VectorInput
         value={directionInputs}
-        title="Direction"
+        title={`${t('lightModal.direction')}`}
         setVectorInputs={setDirectionInputs}
         error={directionErrors}
       />
 
       <EditSlider
-        title="Intensity"
+        title={`${t('lightModal.intensity')}`}
         value={directionalLight.intensity}
         setValue={(intensity: number) => {
           setDirectionalLight({ ...directionalLight, intensity });
@@ -136,7 +136,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Cast Shadow:</Text>
+        <Text style={styles.label}>{`${t('lightModal.castsShadows')}`}</Text>
         <Switch
           value={directionalLight.castsShadow}
           onValueChange={(value) => {

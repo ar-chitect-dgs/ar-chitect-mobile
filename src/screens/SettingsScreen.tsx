@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { View, Switch, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +12,7 @@ import {
 } from '../store/actions';
 import i18n from '../locales/i18n';
 import { headerColor, opaquePurple2, purple2 } from '../styles/colors';
+import FormattedText from '../components/FormattedText';
 
 const SAVE_LIGHTS_KEY = 'saveLights';
 const AUTO_SAVE_KEY = 'autoSave';
@@ -113,10 +114,14 @@ const SettingsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>{i18n.t('settings.header')}</Text>
+      <FormattedText style={styles.header}>
+        {i18n.t('settings.header')}
+      </FormattedText>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.language')}</Text>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.language')}
+        </FormattedText>
         <Picker
           selectedValue={language}
           style={styles.picker}
@@ -128,7 +133,9 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.saveLights')}</Text>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.saveLights')}
+        </FormattedText>
         <Switch
           value={saveLightsEnabled}
           onValueChange={handleSaveLightsToggle}
@@ -138,7 +145,9 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.autoSave')}</Text>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.autoSave')}
+        </FormattedText>
         <Switch
           value={autoSaveEnabled}
           onValueChange={handleAutoSaveToggle}
@@ -148,7 +157,9 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.stepSize')}</Text>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.stepSize')}
+        </FormattedText>
         <Picker
           selectedValue={newStepSize}
           style={styles.picker}
@@ -163,7 +174,9 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>{i18n.t('settings.angleStepSize')}</Text>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.angleStepSize')}
+        </FormattedText>
         <Picker
           selectedValue={newAngleStepSize}
           style={styles.picker}

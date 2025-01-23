@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ListItemTile from '../../components/ListItemTile';
 import MenuButton from '../../components/MenuButton';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../../components/FormattedText';
 
 interface LightListProps<T> {
   lights: T[];
@@ -29,7 +30,7 @@ const LightList = <
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+        <FormattedText style={styles.title}>{title}</FormattedText>
         <MenuButton title={`${t('panels.add')} ${lightName}`} onPress={onAdd} />
       </View>
       {lights.map((light, index) => (

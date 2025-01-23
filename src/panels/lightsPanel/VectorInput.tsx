@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
+import FormattedText from '../../components/FormattedText';
 
 interface VectorInputProps {
   title: string;
@@ -16,7 +17,7 @@ const VectorInput = ({
 }: VectorInputProps): JSX.Element => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{title}:</Text>
+      <FormattedText style={styles.label}>{title}:</FormattedText>
       <View style={styles.inputRow}>
         {['X', 'Y', 'Z'].map((axis, index) => (
           <View key={index} style={styles.inputWrapper}>
@@ -33,7 +34,9 @@ const VectorInput = ({
               placeholderTextColor="#999"
             />
             {error[index] && (
-              <Text style={styles.errorText}>Invalid {axis} value</Text>
+              <FormattedText style={styles.errorText}>
+                Invalid {axis} value
+              </FormattedText>
             )}
           </View>
         ))}

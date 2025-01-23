@@ -16,6 +16,7 @@ import {
 import { type AmbientLightProps } from './LightInterfaces';
 import { updateModel, updateSpotLight } from '../store/actions';
 import {
+  calculateGlobalDirection,
   calculateGlobalPosition,
   calculateLocalPosition,
   calculateRotation,
@@ -23,6 +24,7 @@ import {
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
+
   const { ambientLights, directionalLights, spotLights }: LightState =
     useSelector((state: Reducer) => state.lightConfig);
 
@@ -57,15 +59,13 @@ const ARScene: React.FC = () => {
         <ViroAmbientLight key={light.id} color={light.color} />
       ))}
       {directionalLights?.map((light) => {
-        const newDirection = calculateGlobalPosition(
+        const newDirection = calculateGlobalDirection(
           {
             x: light.direction[0],
             y: light.direction[1],
             z: light.direction[2],
           },
-          translation,
           orientation,
-          scale,
         );
         return (
           <ViroDirectionalLight
@@ -84,15 +84,13 @@ const ARScene: React.FC = () => {
           orientation,
           scale,
         );
-        const newDirection = calculateGlobalPosition(
+        const newDirection = calculateGlobalDirection(
           {
             x: light.direction[0],
             y: light.direction[1],
             z: light.direction[2],
           },
-          translation,
           orientation,
-          scale,
         );
         return (
           <>

@@ -45,6 +45,19 @@ export const calculateGlobalPosition = (
   };
 };
 
+export const calculateGlobalDirection = (
+  localDirection: Vector3D,
+  orientation: number,
+): Vector3D => {
+  const rotatedDirection = rotateAroundY(localDirection, orientation, 1);
+
+  return {
+    x: rotatedDirection.x,
+    y: rotatedDirection.y,
+    z: rotatedDirection.z,
+  };
+};
+
 export const calculateLocalPosition = (
   globalPosition: Vector3D,
   translation: Vector3D,

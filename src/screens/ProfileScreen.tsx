@@ -36,7 +36,9 @@ const ProfileScreen: React.FC = () => {
   if (!user) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>{t('profileScreen.loading')}</Text>
+        <FormattedText style={styles.message}>
+          {t('profileScreen.loading')}
+        </FormattedText>
       </View>
     );
   }
@@ -44,7 +46,9 @@ const ProfileScreen: React.FC = () => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>{t('profileScreen.title')}</Text>
+        <FormattedText style={styles.title}>
+          {t('profileScreen.title')}
+        </FormattedText>
 
         <View style={styles.profileContainer}>
           {user.photoURL ? (
@@ -54,16 +58,16 @@ const ProfileScreen: React.FC = () => {
             />
           ) : (
             <View style={styles.placeholderImage}>
-              <Text style={styles.placeholderText}>
+              <FormattedText style={styles.placeholderText}>
                 {user.displayName?.[0] || t('profileScreen.defaultInitial')}
-              </Text>
+              </FormattedText>
             </View>
           )}
 
-          <Text style={styles.name}>
+          <FormattedText style={styles.name}>
             {user.displayName || t('profileScreen.guest')}
-          </Text>
-          <Text style={styles.email}>{user.email}</Text>
+          </FormattedText>
+          <FormattedText style={styles.email}>{user.email}</FormattedText>
         </View>
 
         <ErrorPopup

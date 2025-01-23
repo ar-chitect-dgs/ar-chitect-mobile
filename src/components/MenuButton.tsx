@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   TouchableOpacity,
-  Text,
   StyleSheet,
   type GestureResponderEvent,
 } from 'react-native';
 import { purple2 } from '../styles/colors';
+import FormattedText from './FormattedText';
 
 interface MenuButtonProps {
   title: string;
@@ -15,7 +15,7 @@ interface MenuButtonProps {
 const MenuButton: React.FC<MenuButtonProps> = ({ title, onPress }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+      <FormattedText style={styles.buttonText}>{title}</FormattedText>
     </TouchableOpacity>
   );
 };

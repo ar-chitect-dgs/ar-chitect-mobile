@@ -1,7 +1,8 @@
 import Slider from '@react-native-community/slider';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { opaquePurple2, purple2 } from '../../styles/colors';
+import FormattedText from '../../components/FormattedText';
 
 interface EditSliderProps {
   title: string;
@@ -29,7 +30,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
   return (
     <>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>{title}:</Text>
+        <FormattedText style={styles.label}>{title}:</FormattedText>
         <View style={styles.sliderContainer}>
           <Slider
             style={[styles.slider, { width: sliderWidth }]}
@@ -45,7 +46,7 @@ const EditSlider: React.FC<EditSliderProps> = ({
             maximumTrackTintColor={opaquePurple2}
             thumbTintColor={purple2}
           />
-          <Text style={styles.value}>{value.toFixed(1)}</Text>
+          <FormattedText style={styles.value}>{value.toFixed(1)}</FormattedText>
         </View>
       </View>
     </>

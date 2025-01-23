@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
@@ -9,6 +9,7 @@ import FilledButton from '../components/FilledButton';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
 import ErrorPopup from '../components/ErrorPopup';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../components/FormattedText';
 
 const RegisterScreen: React.FC = ({ navigation }: any) => {
   const { t } = useTranslation();
@@ -80,7 +81,9 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>{t('registerScreen.title')}</Text>
+        <FormattedText style={styles.title}>
+          {t('registerScreen.title')}
+        </FormattedText>
 
         <TouchableOpacity
           onPress={handleImagePicker}
@@ -92,9 +95,9 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
               style={styles.profileImage}
             />
           ) : (
-            <Text style={styles.imageText}>
+            <FormattedText style={styles.imageText}>
               {t('registerScreen.imagePickerText')}
-            </Text>
+            </FormattedText>
           )}
         </TouchableOpacity>
 
@@ -133,10 +136,12 @@ const RegisterScreen: React.FC = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Login')}
           style={styles.linkContainer}
         >
-          <Text style={styles.prelinkText}>
+          <FormattedText style={styles.prelinkText}>
             {t('registerScreen.alreadyHaveAccount')}
-          </Text>
-          <Text style={styles.linkText}>{t('registerScreen.login')}</Text>
+          </FormattedText>
+          <FormattedText style={styles.linkText}>
+            {t('registerScreen.login')}
+          </FormattedText>
         </TouchableOpacity>
         <ErrorPopup
           isVisible={alert.isVisible}

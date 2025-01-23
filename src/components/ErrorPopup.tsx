@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { purple2 } from '../styles/colors';
+import FormattedText from './FormattedText';
 
 export interface ErrorPopupProps {
   isVisible: boolean;
@@ -30,8 +31,8 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({
     >
       <View style={styles.overlay}>
         <View style={[styles.alertBox, styles.errorBox]}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.message}>{message}</Text>
+          <FormattedText style={styles.title}>{title}</FormattedText>
+          <FormattedText style={styles.message}>{message}</FormattedText>
 
           <View style={styles.buttonContainer}>
             {onConfirm && confirmText && (
@@ -39,14 +40,18 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({
                 onPress={onConfirm}
                 style={[styles.confirmButton, styles.marginRight]}
               >
-                <Text style={styles.confirmButtonText}>{confirmText}</Text>
+                <FormattedText style={styles.confirmButtonText}>
+                  {confirmText}
+                </FormattedText>
               </TouchableOpacity>
             )}
             <TouchableOpacity
               onPress={onClose}
               style={[styles.button, styles.marginRight]}
             >
-              <Text style={styles.buttonText}>{closeText}</Text>
+              <FormattedText style={styles.buttonText}>
+                {closeText}
+              </FormattedText>
             </TouchableOpacity>
           </View>
         </View>

@@ -46,12 +46,6 @@ const ARModel: React.FC<ARModelProps> = ({
       onDrag={(dragToPos) => {
         onDrag(dragToPos);
       }}
-      // dragType="FixedToPlane"
-      // dragPlane={{
-      //   planePoint: [0, 0, 0],
-      //   planeNormal: [0, 1, 0],
-      //   maxDistance: 10,
-      // }}
     />
   );
 };

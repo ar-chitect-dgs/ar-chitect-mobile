@@ -24,7 +24,6 @@ import {
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
-
   const { ambientLights, directionalLights, spotLights }: LightState =
     useSelector((state: Reducer) => state.lightConfig);
 
@@ -92,6 +91,7 @@ const ARScene: React.FC = () => {
           },
           orientation,
         );
+
         return (
           <>
             <ViroSpotLight

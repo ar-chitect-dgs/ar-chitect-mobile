@@ -18,7 +18,7 @@ const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
   const { translation, orientation, scale }: ProjectState = useSelector(
     (state: Reducer) => state.projectConfig,
   );
-  const { stepSize }: settingsState = useSelector(
+  const { stepSize, angleStepSize }: settingsState = useSelector(
     (state: Reducer) => state.settingsConfig,
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -35,6 +35,7 @@ const ScenePanel: React.FC<PanelProps> = ({ snapPoint }) => {
         translation={translation}
         scale={scale}
         stepSize={stepSize}
+        angleStepSize={angleStepSize}
         snapPoint={snapPoint}
         isVisible={isModalVisible}
         onClose={() => {

@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import React, { useRef, useMemo, useState } from 'react';
-import { useWindowDimensions, StyleSheet, Text } from 'react-native';
+import { useWindowDimensions, StyleSheet } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import LightsPanel from '../panels/lightsPanel/LightsPanel';
 import ModelPanel from '../panels/modelPanel/ModelPanel';

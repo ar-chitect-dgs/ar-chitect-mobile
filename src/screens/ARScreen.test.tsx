@@ -44,8 +44,12 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 jest.mock('@reactvision/react-viro', () => ({
+  __esModule: true,
   ViroARScene: jest.fn(() => <div>Viro AR Scene</div>),
   ViroARSceneNavigator: jest.fn(() => <div>Viro AR Scene Navigator</div>),
+  ViroMaterials: {
+    createMaterials: jest.fn(),
+  },
 }));
 
 jest.mock('react-native-gesture-handler', () => ({

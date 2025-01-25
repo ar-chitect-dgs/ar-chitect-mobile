@@ -9,6 +9,7 @@
     "header": "Settings",
     "saveLights": "Save lights between scenes:",
     "autoSave": "Auto-save:",
+    "cornersVisible": "Show room corners:",
     "language": "Language:",
     "stepSize": "Step size:",
     "angleStepSize": "Angle step size:"

@@ -28,5 +28,5 @@ export interface SpotLightProps {
   attenuationStartDistance: number;
   attenuationEndDistance: number;
   castsShadow: boolean;
-  isVisible: true;
+  isVisible: boolean;
 }

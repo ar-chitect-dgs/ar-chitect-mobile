@@ -85,11 +85,14 @@ describe('ARScene', () => {
       orientation: testOrientation,
       scale: 1,
     };
-
+    const settingsConfig = {
+      cornersVisible: true,
+    };
     (useSelector as unknown as jest.Mock).mockImplementation((callback) =>
       callback({
         lightConfig,
         projectConfig,
+        settingsConfig,
       }),
     );
   });

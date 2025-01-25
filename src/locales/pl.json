@@ -9,6 +9,7 @@
     "header": "Ustawienia",
     "saveLights": "Zapisuj światła między scenami:",
     "autoSave": "Auto-zapis:",
+    "cornersVisible": "Wyświetlaj wierzchołki pokoju:",
     "language": "Język:",
     "stepSize": "Rozmiar kroku:",
     "angleStepSize": "Rozmiar kroku kąta:"

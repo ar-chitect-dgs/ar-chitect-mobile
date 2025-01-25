@@ -38,6 +38,7 @@ export const SET_AUTO_SAVE = 'SET_AUTO_SAVE';
 export const SET_UNSAVED_CHANGES = 'SET_UNSAVED_CHANGES';
 export const SET_STEP_SIZE = 'SET_STEP_SIZE';
 export const SET_ANGLE_STEP_SIZE = 'SET_ANGLE_STEP_SIZE';
+export const SET_CORNERS_VISIBLE = 'SET_CORNERS_VISIBLE';
 
 export const addAmbientLight = (light: AmbientLightProps): AnyAction => {
   return {
@@ -156,6 +157,11 @@ export const setAutoSave = (autoSave: boolean): AnyAction => ({
 export const setUnsavedChanges = (unsavedChanges: boolean): AnyAction => ({
   type: SET_UNSAVED_CHANGES,
   payload: unsavedChanges,
+});
+
+export const setCornersVisible = (visible: boolean): AnyAction => ({
+  type: SET_CORNERS_VISIBLE,
+  payload: visible,
 });
 
 export const setStepSize = (stepSize: number): AnyAction => ({

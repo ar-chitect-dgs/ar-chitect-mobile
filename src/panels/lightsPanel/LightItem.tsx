@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
+import FormattedText from '../../components/FormattedText';
 
 interface LightItemProps {
   id: number;
@@ -19,7 +20,7 @@ const LightItem = ({
 
   return (
     <View style={styles.lightItem} key={id.toString()}>
-      <Text>{title.slice(0, -1)}</Text>
+      <FormattedText>{title.slice(0, -1)}</FormattedText>
       <Button title={t('panels.edit')} onPress={onEdit} />
       <Button title={t('panels.delete')} onPress={onDelete} />
     </View>

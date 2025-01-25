@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
+import FormattedText from '../../components/FormattedText';
 
 interface NameInputProps {
   title: string;
@@ -10,7 +11,7 @@ interface NameInputProps {
 const NameInput = ({ title, value, setName }: NameInputProps): JSX.Element => {
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>{title}</Text>
+      <FormattedText style={styles.label}>{title}</FormattedText>
       <TextInput
         style={styles.textInput}
         value={value}

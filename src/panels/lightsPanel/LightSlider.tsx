@@ -1,6 +1,7 @@
 import Slider from '@react-native-community/slider';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import FormattedText from '../../components/FormattedText';
 
 interface LightSliderProps {
   title: string;
@@ -22,7 +23,7 @@ const LightSlider: React.FC<LightSliderProps> = ({
   return (
     <>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>{title} :</Text>
+        <FormattedText style={styles.label}>{title} :</FormattedText>
         <View style={styles.sliderContainer}>
           <Slider
             style={styles.slider}
@@ -34,7 +35,7 @@ const LightSlider: React.FC<LightSliderProps> = ({
               setValue(value);
             }}
           />
-          <Text style={styles.label}>{value.toFixed(0)}</Text>
+          <FormattedText style={styles.label}>{value.toFixed(0)}</FormattedText>
         </View>
       </View>
     </>

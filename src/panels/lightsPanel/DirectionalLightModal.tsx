@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import { View, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -15,6 +15,7 @@ import NameInput from './NameInput';
 import { opaquePurple2, purple2 } from '../../styles/colors';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../../components/FormattedText';
 
 interface DirectionalLightModalProps {
   isVisible: boolean;
@@ -136,7 +137,9 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>{`${t('lightModal.castsShadows')}`}</Text>
+        <FormattedText
+          style={styles.label}
+        >{`${t('lightModal.castsShadows')}`}</FormattedText>
         <Switch
           value={directionalLight.castsShadow}
           onValueChange={(value) => {

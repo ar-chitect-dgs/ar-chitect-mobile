@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  type ViewStyle,
-} from 'react-native';
+import { TouchableOpacity, StyleSheet, type ViewStyle } from 'react-native';
 import { purple2 } from '../styles/colors';
+import FormattedText from './FormattedText';
 
 interface FilledButtonProps {
   title: string;
@@ -26,7 +22,7 @@ const FilledButton: React.FC<FilledButtonProps> = ({
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={styles.buttonText}>{title}</Text>
+      <FormattedText style={styles.buttonText}>{title}</FormattedText>
     </TouchableOpacity>
   );
 };

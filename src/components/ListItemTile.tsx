@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { purple2 } from '../styles/colors';
+import FormattedText from './FormattedText';
 
 interface ListItemTileProps {
   id: number;
@@ -22,7 +23,7 @@ const ListItemTile = ({
   color,
 }: ListItemTileProps): JSX.Element => (
   <TouchableOpacity onPress={onEdit} style={styles.card}>
-    <Text style={styles.title}>{title}</Text>
+    <FormattedText style={styles.title}>{title}</FormattedText>
     {color && <View style={[styles.colorBox, { backgroundColor: color }]} />}
     <View style={styles.iconContainer}>
       <TouchableOpacity onPress={onEdit} style={styles.iconButton}>

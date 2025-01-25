@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, textColor, purple2 } from '../styles/colors';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../components/FormattedText';
 
 const ProfileScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -36,7 +37,9 @@ const ProfileScreen: React.FC = () => {
   if (!user) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>{t('profileScreen.loading')}</Text>
+        <FormattedText style={styles.message}>
+          {t('profileScreen.loading')}
+        </FormattedText>
       </View>
     );
   }
@@ -44,7 +47,9 @@ const ProfileScreen: React.FC = () => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>{t('profileScreen.title')}</Text>
+        <FormattedText style={styles.title}>
+          {t('profileScreen.title')}
+        </FormattedText>
 
         <View style={styles.profileContainer}>
           {user.photoURL ? (
@@ -54,16 +59,16 @@ const ProfileScreen: React.FC = () => {
             />
           ) : (
             <View style={styles.placeholderImage}>
-              <Text style={styles.placeholderText}>
+              <FormattedText style={styles.placeholderText}>
                 {user.displayName?.[0] || t('profileScreen.defaultInitial')}
-              </Text>
+              </FormattedText>
             </View>
           )}
 
-          <Text style={styles.name}>
+          <FormattedText style={styles.name}>
             {user.displayName || t('profileScreen.guest')}
-          </Text>
-          <Text style={styles.email}>{user.email}</Text>
+          </FormattedText>
+          <FormattedText style={styles.email}>{user.email}</FormattedText>
         </View>
 
         <ErrorPopup

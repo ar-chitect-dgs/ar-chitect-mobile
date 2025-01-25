@@ -12,6 +12,7 @@ interface SceneEditorProps {
   orientation: number;
   scale: number;
   stepSize: number;
+  angleStepSize: number;
   snapPoint: string;
   isVisible: boolean;
   onClose: () => void;
@@ -22,6 +23,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
   orientation,
   scale,
   stepSize,
+  angleStepSize,
   snapPoint,
   isVisible,
   onClose,
@@ -78,7 +80,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
           }}
           minimumValue={-180}
           maximumValue={180}
-          step={5}
+          step={angleStepSize}
         />
         <EditSlider
           title={`${t('panels.scale')}`}
@@ -87,7 +89,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
             handleScaleChange(value);
           }}
           minimumValue={0}
-          maximumValue={10}
+          maximumValue={5}
           step={stepSize}
         />
       </View>

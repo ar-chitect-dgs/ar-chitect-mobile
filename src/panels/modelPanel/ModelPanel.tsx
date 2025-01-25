@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../../store/reducers';
 import ListItemTile from '../../components/ListItemTile';
@@ -11,6 +11,7 @@ import { useAuth } from '../../hooks/useAuth';
 import ErrorPopup from '../../components/ErrorPopup';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../../components/FormattedText';
 
 interface PanelProps {
   snapPoint: string;
@@ -103,7 +104,9 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{`${t('panels.models')}`}</Text>
+        <FormattedText
+          style={styles.title}
+        >{`${t('panels.models')}`}</FormattedText>
       </View>
       {Object.entries(models).map(([key, model]) => {
         const numericKey = Number(key);

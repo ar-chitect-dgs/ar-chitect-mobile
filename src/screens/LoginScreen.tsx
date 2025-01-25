@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import { headerColor, pinkAccent, purple2, textColor } from '../styles/colors';
@@ -7,6 +7,7 @@ import InputField from '../components/InputField';
 import ErrorPopup from '../components/ErrorPopup';
 import FilledButton from '../components/FilledButton';
 import { useTranslation } from 'react-i18next';
+import FormattedText from '../components/FormattedText';
 
 const LoginScreen: React.FC = ({ navigation }: any) => {
   const { t } = useTranslation();
@@ -45,7 +46,9 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
   return (
     <LinearGradient colors={[headerColor, '#FFFFFF']} style={styles.gradient}>
       <View style={styles.container}>
-        <Text style={styles.title}>{t('loginScreen.title')}</Text>
+        <FormattedText style={styles.title}>
+          {t('loginScreen.title')}
+        </FormattedText>
 
         <InputField
           placeholder={t('loginScreen.emailPlaceholder')}
@@ -73,8 +76,12 @@ const LoginScreen: React.FC = ({ navigation }: any) => {
           onPress={() => navigation.navigate('Register')}
           style={styles.linkContainer}
         >
-          <Text style={styles.prelinkText}>{t('loginScreen.noAccount')}</Text>
-          <Text style={styles.linkText}>{t('loginScreen.signup')}</Text>
+          <FormattedText style={styles.prelinkText}>
+            {t('loginScreen.noAccount')}
+          </FormattedText>
+          <FormattedText style={styles.linkText}>
+            {t('loginScreen.signup')}
+          </FormattedText>
         </TouchableOpacity>
       </View>
       <ErrorPopup

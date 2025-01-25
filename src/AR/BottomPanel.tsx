@@ -1,11 +1,12 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import React, { useRef, useMemo, useState } from 'react';
-import { useWindowDimensions, StyleSheet, Text } from 'react-native';
+import { useWindowDimensions, StyleSheet } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import LightsPanel from '../panels/lightsPanel/LightsPanel';
 import ModelPanel from '../panels/modelPanel/ModelPanel';
 import ScenePanel from '../panels/scenePanel/ScenePanel';
 import { purple2 } from '../styles/colors';
+import FormattedText from '../components/FormattedText';
 
 const renderScene = ({
   route,
@@ -59,7 +60,11 @@ const BottomPanel = (): JSX.Element => {
       }: {
         route: { key: string; title: string };
         color: string;
-      }) => <Text style={[styles.label, { color }]}>{route.title}</Text>}
+      }) => (
+        <FormattedText style={[styles.label, { color }]}>
+          {route.title}
+        </FormattedText>
+      )}
     />
   );
 

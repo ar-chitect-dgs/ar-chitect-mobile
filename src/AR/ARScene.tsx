@@ -155,7 +155,6 @@ const ARScene: React.FC = () => {
           return (
             <Viro3DObject
               source={require(sphereUrl)}
-              //source={{ uri: sphereUrl }}
               position={[newPosition.x, newPosition.y, newPosition.z]}
               scale={[0.5, 0.5, 0.5]}
               type="GLB"

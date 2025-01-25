@@ -1,4 +1,5 @@
 import {
+  Viro3DObject,
   ViroAmbientLight,
   ViroBox,
   ViroDirectionalLight,
@@ -12,6 +13,7 @@ import {
   type LightState,
   type Reducer,
   type ProjectState,
+  type settingsState,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 import { updateModel, updateSpotLight } from '../store/actions';
@@ -22,13 +24,18 @@ import {
   calculateRotation,
 } from '../utils/utils';
 
+const sphereUrl = '../assets/sphere.glb';
+
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
   const { ambientLights, directionalLights, spotLights }: LightState =
     useSelector((state: Reducer) => state.lightConfig);
 
-  const { models, translation, orientation, scale }: ProjectState = useSelector(
-    (state: Reducer) => state.projectConfig,
+  const { project, models, translation, orientation, scale }: ProjectState =
+    useSelector((state: Reducer) => state.projectConfig);
+
+  const { cornersVisible }: settingsState = useSelector(
+    (state: Reducer) => state.settingsConfig,
   );
 
   const createMaterials = (): void => {
@@ -137,6 +144,23 @@ const ARScene: React.FC = () => {
           </>
         );
       })}
+      {cornersVisible &&
+        project?.corners.map((corner) => {
+          const newPosition = calculateGlobalPosition(
+            { x: corner.x, y: 0, z: corner.y },
+            translation,
+            orientation,
+            scale,
+          );
+          return (
+            <Viro3DObject
+              source={require(sphereUrl)}
+              position={[newPosition.x, newPosition.y, newPosition.z]}
+              scale={[0.5, 0.5, 0.5]}
+              type="GLB"
+            />
+          );
+        })}
       {Object.entries(models)
         .filter(([_, model]) => model.isVisible)
         .map(([key, model]) => (
@@ -152,12 +176,24 @@ const ARScene: React.FC = () => {
             rotation={calculateRotation(model.rotation, orientation)}
             scale={scale}
             selected={model.isSelected}
-            onDrag={(dragToPos: number[]) => {
+            onSelect={(isSelected: boolean) => {
+              dispatch(
+                updateModel(Number(key), {
+                  ...model,
+                  isSelected,
+                }),
+              );
+            }}
+            onDrag={(dragToPos: number[], height: number) => {
               dispatch(
                 updateModel(Number(key), {
                   ...model,
                   position: calculateLocalPosition(
-                    { x: dragToPos[0], y: dragToPos[1], z: dragToPos[2] },
+                    {
+                      x: dragToPos[0],
+                      y: dragToPos[1] - scale - height,
+                      z: dragToPos[2],
+                    },
                     translation,
                     orientation,
                     scale,

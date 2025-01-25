@@ -47,7 +47,7 @@ const sampleSpotLight: SpotLightProps = {
   attenuationStartDistance: 10,
   attenuationEndDistance: 20,
   castsShadow: false,
-  isVisible: true,
+  isVisible: false,
 };
 
 interface PanelProps {

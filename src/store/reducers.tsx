@@ -22,6 +22,7 @@ import {
   SET_SCALE,
   SET_STEP_SIZE,
   SET_ANGLE_STEP_SIZE,
+  SET_CORNERS_VISIBLE,
   RESET_SCENE_STATE,
 } from './actions';
 import {
@@ -57,6 +58,7 @@ export interface settingsState {
   autoSave: boolean;
   unsavedChanges: boolean;
   saveLights: boolean;
+  cornersVisible: boolean;
   stepSize: number;
   angleStepSize: number;
 }
@@ -94,7 +96,7 @@ const initialLightState = {
       attenuationStartDistance: 0,
       attenuationEndDistance: 50,
       castsShadow: true,
-      isVisible: true,
+      isVisible: false,
     },
   ],
 };
@@ -116,6 +118,7 @@ const initialSettingsState: settingsState = {
   autoSave: false,
   unsavedChanges: false,
   saveLights: false,
+  cornersVisible: true,
   stepSize: 0.1,
   angleStepSize: 5,
 };
@@ -296,6 +299,11 @@ const settingsReducer = (
       return {
         ...state,
         angleStepSize: action.payload,
+      };
+    case SET_CORNERS_VISIBLE:
+      return {
+        ...state,
+        cornersVisible: action.payload,
       };
     default:
       return state;

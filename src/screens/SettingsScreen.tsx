@@ -9,6 +9,7 @@ import {
   setAutoSave,
   setStepSize,
   setAngleStepSize,
+  setCornersVisible,
 } from '../store/actions';
 import i18n from '../locales/i18n';
 import { headerColor, opaquePurple2, purple2 } from '../styles/colors';
@@ -17,17 +18,18 @@ import FormattedText from '../components/FormattedText';
 const SAVE_LIGHTS_KEY = 'saveLights';
 const AUTO_SAVE_KEY = 'autoSave';
 const LANGUAGE_KEY = 'language';
+const CORNERS_VISIBLE_KEY = 'cornersVisible';
 const STEP_SIZE_KEY = 'stepSize';
 const ANGLE_STEP_SIZE_KEY = 'angleStepSize';
 
 const SettingsScreen: React.FC = () => {
-  const { autoSave, saveLights, stepSize, angleStepSize } = useSelector(
-    (state: any) => state.settingsConfig,
-  );
+  const { autoSave, saveLights, cornersVisible, stepSize, angleStepSize } =
+    useSelector((state: any) => state.settingsConfig);
 
   const dispatch = useDispatch();
   const [saveLightsEnabled, setSaveLightsEnabled] = useState(saveLights);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(autoSave);
+  const [corners, setCorners] = useState(cornersVisible);
   const [newStepSize, setNewStepSize] = useState(stepSize);
   const [newAngleStepSize, setNewAngleStepSize] = useState(angleStepSize);
   const [language, setLanguage] = useState(i18n.language);
@@ -79,6 +81,16 @@ const SettingsScreen: React.FC = () => {
       await AsyncStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(value));
     } catch (error) {
       console.error('Failed to save autoSave setting:', error);
+    }
+  };
+
+  const handleCornersVisibleToggle = async (value: boolean): Promise<void> => {
+    try {
+      setCorners(value);
+      dispatch(setCornersVisible(value));
+      await AsyncStorage.setItem(CORNERS_VISIBLE_KEY, JSON.stringify(value));
+    } catch (error) {
+      console.error('Failed to save cornersVisible setting:', error);
     }
   };
 
@@ -152,6 +164,18 @@ const SettingsScreen: React.FC = () => {
           value={autoSaveEnabled}
           onValueChange={handleAutoSaveToggle}
           thumbColor={autoSaveEnabled ? opaquePurple2 : '#f4f3f4'}
+          trackColor={{ false: '#989898', true: purple2 }}
+        />
+      </View>
+
+      <View style={styles.settingRow}>
+        <FormattedText style={styles.label}>
+          {i18n.t('settings.cornersVisible')}
+        </FormattedText>
+        <Switch
+          value={corners}
+          onValueChange={handleCornersVisibleToggle}
+          thumbColor={corners ? opaquePurple2 : '#f4f3f4'}
           trackColor={{ false: '#989898', true: purple2 }}
         />
       </View>

@@ -24,8 +24,7 @@ import {
   calculateRotation,
 } from '../utils/utils';
 
-const sphereUrl =
-  'https://firebasestorage.googleapis.com/v0/b/ar-chitect-a0b25.appspot.com/o/models%2Fsphere.glb?alt=media&token=fcf089d2-01ce-4703-808f-e68d36977d1f';
+const sphereUrl = '../assets/sphere.glb';
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
@@ -155,7 +154,8 @@ const ARScene: React.FC = () => {
           );
           return (
             <Viro3DObject
-              source={{ uri: sphereUrl }}
+              source={require(sphereUrl)}
+              //source={{ uri: sphereUrl }}
               position={[newPosition.x, newPosition.y, newPosition.z]}
               scale={[0.5, 0.5, 0.5]}
               type="GLB"

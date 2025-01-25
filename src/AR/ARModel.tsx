@@ -5,8 +5,7 @@ import { type ViroClickState } from '@reactvision/react-viro/dist/components/Typ
 import { useDispatch } from 'react-redux';
 import { setUnsavedChanges } from '../store/actions';
 
-const arrowUlr =
-  'https://firebasestorage.googleapis.com/v0/b/ar-chitect-a0b25.appspot.com/o/models%2Farrow.glb?alt=media&token=492d09d9-56cd-49f5-a49d-5bbcf872dec9';
+const arrowUlr = '../assets/arrow.glb';
 
 interface ARModelProps {
   url: string;
@@ -81,7 +80,7 @@ const ARModel: React.FC<ARModelProps> = ({
       {selected && (
         <ViroNode position={[position.x, position.y, position.z]}>
           <Viro3DObject
-            source={{ uri: arrowUlr }}
+            source={require(arrowUlr)}
             position={[0, height + scale, 0]}
             onDrag={(dragToPos) => {
               handleArrowDrag(dragToPos);

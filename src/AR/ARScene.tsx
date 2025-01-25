@@ -13,7 +13,7 @@ import {
   type LightState,
   type Reducer,
   type ProjectState,
-  settingsState,
+  type settingsState,
 } from '../store/reducers';
 import { type AmbientLightProps } from './LightInterfaces';
 import { updateModel, updateSpotLight } from '../store/actions';

@@ -33,9 +33,9 @@ const LightList = <
         <FormattedText style={styles.title}>{title}</FormattedText>
         <MenuButton title={`${t('panels.add')} ${lightName}`} onPress={onAdd} />
       </View>
-      {lights.map((light, index) => (
+      {lights.map((light) => (
         <ListItemTile
-          key={index}
+          key={light.id}
           id={light.id}
           title={light.name}
           onEdit={() => {

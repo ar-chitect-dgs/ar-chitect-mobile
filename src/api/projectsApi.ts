@@ -4,7 +4,7 @@ import storage from '@react-native-firebase/storage';
 import { type ModelData, type Object3D } from '../AR/Interfaces';
 
 const MODELS_DIRECTORY = '/models/';
-const MODELS_FIRESTORE_DIRECTORY = 'models2';
+const MODELS_FIRESTORE_DIRECTORY = 'models';
 
 export const fetchProjects = async (
   userId: string,

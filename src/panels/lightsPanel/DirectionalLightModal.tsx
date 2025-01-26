@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   addDirectionalLight,
   updateDirectionalLight,
 } from '../../store/actions';
 import { type DirectionalLightProps } from '../../AR/LightInterfaces';
-import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../../components/EditingModal';
@@ -16,6 +15,7 @@ import { opaquePurple2, purple2 } from '../../styles/colors';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
 import FormattedText from '../../components/FormattedText';
+import { generateRandomId, mapVectorToStringArray } from '../../utils/utils';
 
 interface DirectionalLightModalProps {
   isVisible: boolean;
@@ -39,15 +39,17 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   const [directionalLight, setDirectionalLight] =
     useState<DirectionalLightProps>(selectedLight);
 
+  useEffect(() => {
+    setDirectionalLight(selectedLight);
+    setDirectionInputs(() => {
+      return mapVectorToStringArray(selectedLight.direction);
+    });
+  }, [selectedLight]);
+
   const [directionInputs, setDirectionInputs] = useState<
     [string, string, string]
   >(() => {
-    const direction = directionalLight.direction.map(String);
-    return [direction[0] || '0', direction[1] || '0', direction[2] || '0'] as [
-      string,
-      string,
-      string,
-    ];
+    return mapVectorToStringArray(directionalLight.direction);
   });
 
   const [directionErrors, setDirectionErrors] = useState<boolean[]>([
@@ -57,15 +59,6 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
   ]);
 
   const dispatch = useDispatch();
-  const { directionalLights } = useSelector(
-    (state: Reducer) => state.lightConfig,
-  );
-  const maxId =
-    directionalLights.length > 0
-      ? Math.max(
-          ...directionalLights.map((directionalLight) => directionalLight.id),
-        )
-      : 0;
 
   const parseVector = (
     inputs: [string, string, string],
@@ -96,7 +89,7 @@ const DirecionalLightModal: React.FC<DirectionalLightModalProps> = ({
         : addDirectionalLight({
             ...directionalLight,
             direction: parsedDirection,
-            id: maxId + 1,
+            id: generateRandomId(),
           }),
     );
     onClose();

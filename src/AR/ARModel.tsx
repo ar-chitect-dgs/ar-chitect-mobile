@@ -44,8 +44,6 @@ const ARModel: React.FC<ARModelProps> = ({
     }
   };
 
-  console.log(scale);
-
   const handleArrowDrag = (dragToPos: [number, number, number]): void => {
     onDrag(dragToPos, height);
   };

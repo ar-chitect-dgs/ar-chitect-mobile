@@ -5,8 +5,8 @@ import { type ViroClickState } from '@reactvision/react-viro/dist/components/Typ
 import { useDispatch } from 'react-redux';
 import { setUnsavedChanges } from '../store/actions';
 
-const arrowUlr = '../assets/arrow.glb';
-
+const arrowUrl =
+  'https://firebasestorage.googleapis.com/v0/b/ar-chitect-a0b25.appspot.com/o/models%2Farrow.glb?alt=media&token=492d09d9-56cd-49f5-a49d-5bbcf872dec9';
 interface ARModelProps {
   url: string;
   position: Vector3D;
@@ -44,6 +44,8 @@ const ARModel: React.FC<ARModelProps> = ({
     }
   };
 
+  console.log(scale);
+
   const handleArrowDrag = (dragToPos: [number, number, number]): void => {
     onDrag(dragToPos, height);
   };
@@ -63,8 +65,16 @@ const ARModel: React.FC<ARModelProps> = ({
     }
   };
 
+  React.useEffect(() => {
+    if (modelRef.current) {
+      modelRef.current.setNativeProps({
+        scale: [scale, scale, scale],
+      });
+    }
+  }, [scale]);
+
   return (
-    <ViroNode>
+    <ViroNode scale={[1, 1, 1]}>
       <Viro3DObject
         ref={modelRef}
         source={{ uri: url }}
@@ -80,7 +90,7 @@ const ARModel: React.FC<ARModelProps> = ({
       {selected && (
         <ViroNode position={[position.x, position.y, position.z]}>
           <Viro3DObject
-            source={require(arrowUlr)}
+            source={{ uri: arrowUrl }}
             position={[0, height + scale, 0]}
             onDrag={(dragToPos) => {
               handleArrowDrag(dragToPos);

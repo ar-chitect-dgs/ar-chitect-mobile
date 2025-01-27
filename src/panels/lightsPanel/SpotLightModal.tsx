@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Switch } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { addSpotLight, updateSpotLight } from '../../store/actions';
 import { type SpotLightProps } from '../../AR/LightInterfaces';
-import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
 import VectorInput from './VectorInput';
 import EditingModal from '../../components/EditingModal';
@@ -13,6 +12,7 @@ import NameInput from './NameInput';
 import { opaquePurple2, purple2 } from '../../styles/colors';
 import FilledButton from '../../components/FilledButton';
 import FormattedText from '../../components/FormattedText';
+import { generateRandomId, mapVectorToStringArray } from '../../utils/utils';
 
 interface SpotLightModalProps {
   isVisible: boolean;
@@ -36,26 +36,26 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   const [spotLight, setSpotLight] = useState<SpotLightProps>(selectedLight);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    setSpotLight(selectedLight);
+    setDirectionInputs(() => {
+      return mapVectorToStringArray(selectedLight.direction);
+    });
+    setPositionInputs(() => {
+      return mapVectorToStringArray(selectedLight.position);
+    });
+  }, [selectedLight]);
+
   const [positionInputs, setPositionInputs] = useState<
     [string, string, string]
   >(() => {
-    const position = spotLight.position.map(String);
-    return [position[0] || '0', position[1] || '0', position[2] || '0'] as [
-      string,
-      string,
-      string,
-    ];
+    return mapVectorToStringArray(spotLight.position);
   });
 
   const [directionInputs, setDirectionInputs] = useState<
     [string, string, string]
   >(() => {
-    const direction = spotLight.direction.map(String);
-    return [direction[0] || '0', direction[1] || '0', direction[2] || '0'] as [
-      string,
-      string,
-      string,
-    ];
+    return mapVectorToStringArray(spotLight.direction);
   });
 
   const [positionErrors, setPositionErrors] = useState<boolean[]>([
@@ -70,11 +70,6 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
   ]);
 
   const dispatch = useDispatch();
-  const { spotLights } = useSelector((state: Reducer) => state.lightConfig);
-  const maxId =
-    spotLights.length > 0
-      ? Math.max(...spotLights.map((spotLight) => spotLight.id))
-      : 0;
 
   const parseVector = (
     inputs: [string, string, string],
@@ -116,7 +111,7 @@ const SpotLightModal: React.FC<SpotLightModalProps> = ({
             ...spotLight,
             position: parsedPosition,
             direction: parsedDirection,
-            id: maxId + 1,
+            id: generateRandomId(),
           }),
     );
     onClose();

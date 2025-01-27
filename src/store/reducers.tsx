@@ -66,7 +66,7 @@ export interface settingsState {
 const initialLightState = {
   ambientLights: [
     {
-      id: 1,
+      id: 0,
       name: 'Ambient light',
       color: '#FFFFFF',
       intensity: 1000,
@@ -84,7 +84,7 @@ const initialLightState = {
   ],
   spotLights: [
     {
-      id: 1,
+      id: 2,
       name: 'Spot light',
       color: '#FFFFFF',
       intensity: 1000,
@@ -138,7 +138,7 @@ const lightReducer = (
         ...state,
         ambientLights: state.ambientLights.map((light: AmbientLightProps) =>
           light.id === action.payload.id
-            ? { ...light, ...action.payload.properties }
+            ? { ...light, ...action.payload.properties, id: action.payload.id }
             : light,
         ),
       };
@@ -164,7 +164,11 @@ const lightReducer = (
         directionalLights: state.directionalLights.map(
           (light: DirectionalLightProps) =>
             light.id === action.payload.id
-              ? { ...light, ...action.payload.properties }
+              ? {
+                  ...light,
+                  ...action.payload.properties,
+                  id: action.payload.id,
+                }
               : light,
         ),
       };
@@ -186,7 +190,7 @@ const lightReducer = (
         ...state,
         spotLights: state.spotLights.map((light: SpotLightProps) =>
           light.id === action.payload.id
-            ? { ...light, ...action.payload.properties }
+            ? { ...light, ...action.payload.properties, id: action.payload.id }
             : light,
         ),
       };

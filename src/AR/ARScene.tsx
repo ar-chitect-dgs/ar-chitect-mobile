@@ -24,7 +24,8 @@ import {
   calculateRotation,
 } from '../utils/utils';
 
-const sphereUrl = '../assets/sphere.glb';
+const sphereUrl =
+  'https://firebasestorage.googleapis.com/v0/b/ar-chitect-a0b25.appspot.com/o/models%2Fsphere.glb?alt=media&token=fcf089d2-01ce-4703-808f-e68d36977d1f';
 
 const ARScene: React.FC = () => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const ARScene: React.FC = () => {
   return (
     <>
       {ambientLights.map((light: AmbientLightProps) => (
-        <ViroAmbientLight key={light.id} color={light.color} />
+        <ViroAmbientLight key={`${light.id}-ambient`} color={light.color} />
       ))}
       {directionalLights?.map((light) => {
         const newDirection = calculateGlobalDirection(
@@ -75,7 +76,7 @@ const ARScene: React.FC = () => {
         );
         return (
           <ViroDirectionalLight
-            key={light.id}
+            key={`${light.id}-directional`}
             color={light.color}
             direction={[newDirection.x, newDirection.y, newDirection.z]}
             intensity={light.intensity}
@@ -100,9 +101,9 @@ const ARScene: React.FC = () => {
         );
 
         return (
-          <>
+          <React.Fragment key={light.id}>
             <ViroSpotLight
-              key={light.id}
+              key={`${light.id}-spotlight`}
               color={light.color}
               position={[newPosition.x, newPosition.y, newPosition.z]}
               direction={[newDirection.x, newDirection.y, newDirection.z]}
@@ -115,7 +116,7 @@ const ARScene: React.FC = () => {
             />
             {light.isVisible && (
               <ViroBox
-                key={light.id + spotLights.length}
+                key={`${light.id}-box`}
                 position={[newPosition.x, newPosition.y, newPosition.z]}
                 height={0.2}
                 length={0.2}
@@ -141,7 +142,7 @@ const ARScene: React.FC = () => {
                 }}
               />
             )}
-          </>
+          </React.Fragment>
         );
       })}
       {cornersVisible &&
@@ -154,7 +155,8 @@ const ARScene: React.FC = () => {
           );
           return (
             <Viro3DObject
-              source={require(sphereUrl)}
+              key={`${corner.x}-${corner.y}-corner`}
+              source={{ uri: sphereUrl }}
               position={[newPosition.x, newPosition.y, newPosition.z]}
               scale={[0.5, 0.5, 0.5]}
               type="GLB"
@@ -165,7 +167,7 @@ const ARScene: React.FC = () => {
         .filter(([_, model]) => model.isVisible)
         .map(([key, model]) => (
           <ARModel
-            key={key}
+            key={`${key}-${model.id}-model`}
             url={model.url}
             position={calculateGlobalPosition(
               model.position,

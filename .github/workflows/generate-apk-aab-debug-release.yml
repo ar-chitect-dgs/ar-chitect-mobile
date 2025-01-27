@@ -1,7 +1,6 @@
 name: Generated APK AAB (Upload - Create Artifact To Github Action)
 
 env:
-  # The name of the main module repository
   main_project_module: app
 
 on:
@@ -62,20 +61,8 @@ jobs:
             --bundle-output android/app/src/main/assets/index.android.bundle \
             --assets-dest android/app/src/main/res/
 
-      # - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
-      #   run: cd android && ./gradlew assembleDebug
-
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
         run: cd android && ./gradlew assembleRelease
-
-      # - name: Build app bundle release (AAB) - ${{ env.main_project_module }} module
-      #   run: run ./gradlew ${{ env.main_project_module }}:bundleRelease
-
-      # - name: Upload APK Debug - ${{ env.repository_name }}
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ env.date_today }} - ${{ env.repository_name }} - APK(s) debug generated
-      #     path: android/app/build/outputs/apk/debug/
 
       - name: Upload APK Release - ${{ env.repository_name }}
         uses: actions/upload-artifact@v4
@@ -83,8 +70,3 @@ jobs:
           name: ${{ env.date_today }} - ${{ env.repository_name }} - APK(s) release generated
           path: android/app/build/outputs/apk/release/
 
-      # - name: Upload AAB (App Bundle) Release - ${{ env.repository_name }}
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ env.date_today }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
-      #     path: android/app/build/outputs/bundle/release/

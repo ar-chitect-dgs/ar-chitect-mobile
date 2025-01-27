@@ -62,9 +62,6 @@ jobs:
             --bundle-output android/app/src/main/assets/index.android.bundle \
             --assets-dest android/app/src/main/res/
 
-      - name: Build gradle project
-        run: ./android/gradlew build
-
       - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
         run: ./android/gradlew assembleDebug
 

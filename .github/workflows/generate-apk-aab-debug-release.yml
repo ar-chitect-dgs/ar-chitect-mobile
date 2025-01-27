@@ -60,8 +60,8 @@ jobs:
       #   run: ./android/gradlew test
 
       # Run Build Project
-      # - name: Build gradle project
-      #   run: ./android/gradlew build
+      - name: Build gradle project
+        run: ./android/gradlew build
 
       # Create APK Debug
       - name: Build apk debug project (APK) - ${{ env.main_project_module }} module

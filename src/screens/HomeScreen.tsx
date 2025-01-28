@@ -31,7 +31,6 @@ const Projects = (): JSX.Element => {
       if (user) {
         try {
           const data = await fetchProjects(user.uid);
-          console.log(data);
           setProjects(data);
         } catch (error) {
           console.error('Error fetching projects:', error);
@@ -41,14 +40,21 @@ const Projects = (): JSX.Element => {
       }
     };
 
-    fetchallProjects().catch((error) => {
+    void fetchallProjects().catch((error) => {
       console.error('Error fetching projects:', error);
       setLoading(false);
     });
-  }, [user]);
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      void fetchallProjects().catch((error) => {
+        console.error('Error fetching projects:', error);
+        setLoading(false);
+      });
+    });
+    return unsubscribe;
+  }, [user, t, navigation]);
 
   const handleProjectClick = (project: Project): void => {
-    console.log(`Navigating to project with ID: ${project.id}`);
     navigation.navigate('AR', { project });
   };
 

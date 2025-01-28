@@ -67,8 +67,8 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
             setValue={(value: number) => {
               handlePositionChange(axis, value);
             }}
-            minimumValue={-10}
-            maximumValue={10}
+            minimumValue={-20}
+            maximumValue={20}
             step={stepSize}
           />
         ))}
@@ -89,7 +89,7 @@ const SceneEditor: React.FC<SceneEditorProps> = ({
             handleScaleChange(value);
           }}
           minimumValue={0}
-          maximumValue={5}
+          maximumValue={10}
           step={stepSize}
         />
       </View>

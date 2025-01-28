@@ -22,14 +22,14 @@ import { useTranslation } from 'react-i18next';
 const sampleAmbientLight: AmbientLightProps = {
   id: -1,
   name: 'Ambient light',
-  color: '#FFFFFF',
+  color: '#ffffff',
   intensity: 1000,
   isVisible: true,
 };
 const sampleDirectionalLight: DirectionalLightProps = {
   id: -1,
   name: 'Directional light',
-  color: '#FFFFFF',
+  color: '#ffffff',
   intensity: 1000,
   direction: [-2, 0, -3],
   castsShadow: false,
@@ -38,7 +38,7 @@ const sampleDirectionalLight: DirectionalLightProps = {
 const sampleSpotLight: SpotLightProps = {
   id: -1,
   name: 'Spot light',
-  color: '#FFFFFF',
+  color: '#ffffff',
   intensity: 1000,
   position: [0, 0, 0],
   direction: [-2, 0, -3],

@@ -1,5 +1,3 @@
-// redux/actions.js
-
 import { type AnyAction } from 'redux';
 import {
   type AmbientLightProps,

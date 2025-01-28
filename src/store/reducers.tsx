@@ -68,7 +68,7 @@ const initialLightState = {
     {
       id: 1,
       name: 'Ambient light',
-      color: '#FFFFFF',
+      color: '#ffffff',
       intensity: 1000,
     },
   ],
@@ -76,7 +76,7 @@ const initialLightState = {
     {
       id: 1,
       name: 'Directional light',
-      color: '#FFFFFF',
+      color: '#ffffff',
       intensity: 1000,
       direction: [0.0, 0.0, -1.0],
       castsShadows: true,
@@ -86,7 +86,7 @@ const initialLightState = {
     {
       id: 1,
       name: 'Spot light',
-      color: '#FFFFFF',
+      color: '#ffffff',
       intensity: 1000,
       position: [0.0, 0.0, -2.0],
       direction: [0.0, 0.0, -1.0],

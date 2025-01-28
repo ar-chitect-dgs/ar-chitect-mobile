@@ -61,6 +61,7 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
       <ColorPicker
         color={ambientLight.color}
         onColorChange={(color) => {
+          console.log(color);
           setAmbientLight({ ...ambientLight, color });
         }}
       />

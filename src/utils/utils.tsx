@@ -86,3 +86,17 @@ export const calculateLocalPosition = (
     z: localZ,
   };
 };
+
+export const generateRandomId = (): number =>
+  Math.floor(Math.random() * 100000);
+
+export const mapVectorToStringArray = (
+  vector: [number, number, number],
+): [string, string, string] => {
+  const array = vector.map(String);
+  return [array[0] || '0', array[1] || '0', array[2] || '0'] as [
+    string,
+    string,
+    string,
+  ];
+};

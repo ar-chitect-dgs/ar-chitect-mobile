@@ -55,17 +55,15 @@ interface PanelProps {
 }
 
 const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
-  const [selectedAmbientLight, setSelectedAmbientLight] =
-    useState<AmbientLightProps>(sampleAmbientLight);
-  const [selectedSpotLight, setSelectedSpotLight] =
-    useState<SpotLightProps>(sampleSpotLight);
-  const [selectedDirectionalLight, setSelectedDirectionalLight] =
-    useState<DirectionalLightProps>(sampleDirectionalLight);
   const [isModalVisible, setIsModalVisible] = useState({
+    selectedAmbientLight: sampleAmbientLight,
     ambientLightModal: false,
+    selectedDirectionalLight: sampleDirectionalLight,
     directionalLightModal: false,
+    selectedSpotLight: sampleSpotLight,
     spotlightModal: false,
   });
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const { t } = useTranslation();
@@ -78,20 +76,29 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
   );
 
   const handleAddAmbientLight = (): void => {
-    setSelectedAmbientLight(sampleAmbientLight);
-    setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
+    setIsModalVisible({
+      ...isModalVisible,
+      ambientLightModal: true,
+      selectedAmbientLight: sampleAmbientLight,
+    });
     setIsEditing(false);
   };
 
   const handleAddDirectionalLight = (): void => {
-    setSelectedDirectionalLight(sampleDirectionalLight);
-    setIsModalVisible({ ...isModalVisible, directionalLightModal: true });
+    setIsModalVisible({
+      ...isModalVisible,
+      directionalLightModal: true,
+      selectedDirectionalLight: sampleDirectionalLight,
+    });
     setIsEditing(false);
   };
 
   const handleAddSpotLight = (): void => {
-    setSelectedSpotLight(sampleSpotLight);
-    setIsModalVisible({ ...isModalVisible, spotlightModal: true });
+    setIsModalVisible({
+      ...isModalVisible,
+      spotlightModal: true,
+      selectedSpotLight: sampleSpotLight,
+    });
     setIsEditing(false);
   };
 
@@ -103,9 +110,12 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         lightName={`${t('lightsPanel.ambientLight')}`}
         onAdd={handleAddAmbientLight}
         onEdit={(light) => {
-          setSelectedAmbientLight(light);
-          setIsModalVisible({ ...isModalVisible, ambientLightModal: true });
           setIsEditing(true);
+          setIsModalVisible({
+            ...isModalVisible,
+            ambientLightModal: true,
+            selectedAmbientLight: light,
+          });
         }}
         onDelete={(id) => dispatch(removeAmbientLight(id))}
       />
@@ -115,12 +125,13 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         stepSize={stepSize}
         onClose={() => {
           setIsModalVisible({
+            ...isModalVisible,
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
           });
         }}
-        selectedLight={selectedAmbientLight}
+        selectedLight={isModalVisible.selectedAmbientLight}
         snapPoint={snapPoint}
       />
 
@@ -130,9 +141,12 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         lightName={`${t('lightsPanel.directionalLight')}`}
         onAdd={handleAddDirectionalLight}
         onEdit={(light) => {
-          setSelectedDirectionalLight(light);
-          setIsModalVisible({ ...isModalVisible, directionalLightModal: true });
           setIsEditing(true);
+          setIsModalVisible({
+            ...isModalVisible,
+            directionalLightModal: true,
+            selectedDirectionalLight: light,
+          });
         }}
         onDelete={(id) => dispatch(removeDirectionalLight(id))}
       />
@@ -142,12 +156,13 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         stepSize={stepSize}
         onClose={() => {
           setIsModalVisible({
+            ...isModalVisible,
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
           });
         }}
-        selectedLight={selectedDirectionalLight}
+        selectedLight={isModalVisible.selectedDirectionalLight}
         snapPoint={snapPoint}
       />
 
@@ -157,9 +172,12 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         lightName={`${t('lightsPanel.spotLight')}`}
         onAdd={handleAddSpotLight}
         onEdit={(light) => {
-          setSelectedSpotLight(light);
-          setIsModalVisible({ ...isModalVisible, spotlightModal: true });
           setIsEditing(true);
+          setIsModalVisible({
+            ...isModalVisible,
+            spotlightModal: true,
+            selectedSpotLight: light,
+          });
         }}
         onDelete={(id) => dispatch(removeSpotLight(id))}
         onHide={(id) => dispatch(hideSpotLight(id))}
@@ -171,12 +189,13 @@ const LightsPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
         angleStepSize={angleStepSize}
         onClose={() => {
           setIsModalVisible({
+            ...isModalVisible,
             ambientLightModal: false,
             directionalLightModal: false,
             spotlightModal: false,
           });
         }}
-        selectedLight={selectedSpotLight}
+        selectedLight={isModalVisible.selectedSpotLight}
         snapPoint={snapPoint}
       />
     </View>

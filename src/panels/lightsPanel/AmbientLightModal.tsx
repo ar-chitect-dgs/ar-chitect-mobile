@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addAmbientLight, updateAmbientLight } from '../../store/actions';
 import { type AmbientLightProps } from '../../AR/LightInterfaces';
-import { type Reducer } from '../../store/reducers';
 import EditSlider from './EditSlider';
 import EditingModal from '../../components/EditingModal';
 import NameInput from './NameInput';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
+import { generateRandomId } from '../../utils/utils';
 
 interface AmbientLightModalProps {
   isVisible: boolean;
@@ -34,17 +34,16 @@ const AmbientLightModal: React.FC<AmbientLightModalProps> = ({
     useState<AmbientLightProps>(selectedLight);
 
   const dispatch = useDispatch();
-  const { ambientLights } = useSelector((state: Reducer) => state.lightConfig);
-  const maxId =
-    ambientLights.length > 0
-      ? Math.max(...ambientLights.map((ambientLight) => ambientLight.id))
-      : 0;
+
+  useEffect(() => {
+    setAmbientLight(selectedLight);
+  }, [selectedLight]);
 
   const handleSave = (): void => {
     if (isEditing) {
       dispatch(updateAmbientLight(selectedLight.id, ambientLight));
     } else {
-      dispatch(addAmbientLight({ ...ambientLight, id: maxId + 1 }));
+      dispatch(addAmbientLight({ ...ambientLight, id: generateRandomId() }));
     }
     onClose();
   };

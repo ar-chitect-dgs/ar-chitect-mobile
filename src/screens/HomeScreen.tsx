@@ -40,13 +40,13 @@ const Projects = (): JSX.Element => {
       }
     };
 
-    void fetchallProjects().catch((error) => {
+    fetchallProjects().catch((error) => {
       console.error('Error fetching projects:', error);
       setLoading(false);
     });
 
     const unsubscribe = navigation.addListener('focus', () => {
-      void fetchallProjects().catch((error) => {
+      fetchallProjects().catch((error) => {
         console.error('Error fetching projects:', error);
         setLoading(false);
       });

@@ -1,4 +1,3 @@
-// navigation/routes.ts
 export const ROUTES = {
   HOME: 'Home',
   PROJECTS: 'Projects',

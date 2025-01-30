@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../../store/reducers';
 import ListItemTile from '../../components/ListItemTile';
 import ModelModal from './ModelModal';
 import { type Object3D } from '../../AR/Interfaces';
-import {
-  setProject,
-  setUnsavedChanges,
-  updateModel,
-} from '../../store/actions';
+import { setUnsavedChanges, updateModel } from '../../store/actions';
 import { saveProject } from '../../api/projectsApi';
 import { useAuth } from '../../hooks/useAuth';
 import ErrorPopup from '../../components/ErrorPopup';
@@ -112,38 +108,40 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           style={styles.title}
         >{`${t('panels.models')}`}</FormattedText>
       </View>
-      {Object.entries(models).map(([key, model]) => {
-        const numericKey = Number(key);
-        return (
-          <ListItemTile
-            key={numericKey}
-            id={numericKey}
-            title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
-            onHide={() => {
-              handleToggleHideModel(numericKey, model);
+      <ScrollView>
+        {Object.entries(models).map(([key, model]) => {
+          const numericKey = Number(key);
+          return (
+            <ListItemTile
+              key={numericKey}
+              id={numericKey}
+              title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
+              onHide={() => {
+                handleToggleHideModel(numericKey, model);
+              }}
+              onEdit={() => {
+                const selected = { ...model, isSelected: true };
+                handleSelectModel(numericKey, selected, true);
+                handleModelClick(numericKey, selected);
+              }}
+              hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
+            />
+          );
+        })}
+        {selectedModel && (
+          <ModelModal
+            snapPoint={snapPoint}
+            stepSize={stepSize}
+            isVisible={isModalVisible}
+            onClose={() => {
+              setSelectedModel(null);
+              setIsModalVisible(false);
             }}
-            onEdit={() => {
-              const selected = { ...model, isSelected: true };
-              handleSelectModel(numericKey, selected, true);
-              handleModelClick(numericKey, selected);
-            }}
-            hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
+            selectedModel={selectedModel.model}
+            id={selectedModel.id}
           />
-        );
-      })}
-      {selectedModel && (
-        <ModelModal
-          snapPoint={snapPoint}
-          stepSize={stepSize}
-          isVisible={isModalVisible}
-          onClose={() => {
-            setSelectedModel(null);
-            setIsModalVisible(false);
-          }}
-          selectedModel={selectedModel.model}
-          id={selectedModel.id}
-        />
-      )}
+        )}
+      </ScrollView>
       <View style={styles.save}>
         <FilledButton onPress={handleSave} title={t('panels.save')} />
       </View>

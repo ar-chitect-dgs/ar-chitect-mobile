@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { type Reducer } from '../../store/reducers';
 import ListItemTile from '../../components/ListItemTile';
@@ -12,6 +12,7 @@ import ErrorPopup from '../../components/ErrorPopup';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
 import FormattedText from '../../components/FormattedText';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface PanelProps {
   snapPoint: string;

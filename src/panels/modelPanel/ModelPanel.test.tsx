@@ -3,6 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import ModelPanel from './ModelPanel';
 import ModelModal from './ModelModal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const testProject = {
   id: 'mockProjectId',
@@ -37,6 +38,10 @@ const testUser = {
   name: 'John Doe',
   email: 'john.doe@example.com',
 };
+
+jest.mock('react-native-gesture-handler', () => ({
+  ScrollView: jest.fn(({ children }) => <>{children}</>),
+}));
 
 jest.mock('../../hooks/useAuth', () => ({
   useAuth: jest.fn(() => testUser),

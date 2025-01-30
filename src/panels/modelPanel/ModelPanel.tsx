@@ -16,6 +16,7 @@ import ErrorPopup from '../../components/ErrorPopup';
 import FilledButton from '../../components/FilledButton';
 import { useTranslation } from 'react-i18next';
 import FormattedText from '../../components/FormattedText';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface PanelProps {
   snapPoint: string;
@@ -112,38 +113,40 @@ const ModelPanel: React.FC<PanelProps> = ({ snapPoint }: PanelProps) => {
           style={styles.title}
         >{`${t('panels.models')}`}</FormattedText>
       </View>
-      {Object.entries(models).map(([key, model]) => {
-        const numericKey = Number(key);
-        return (
-          <ListItemTile
-            key={numericKey}
-            id={numericKey}
-            title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
-            onHide={() => {
-              handleToggleHideModel(numericKey, model);
+      <ScrollView>
+        {Object.entries(models).map(([key, model]) => {
+          const numericKey = Number(key);
+          return (
+            <ListItemTile
+              key={numericKey}
+              id={numericKey}
+              title={`${model.modelName} (x: ${model.position.x.toFixed(1)}, y: ${model.position.y.toFixed(1)}, z: ${model.position.z.toFixed(1)})`}
+              onHide={() => {
+                handleToggleHideModel(numericKey, model);
+              }}
+              onEdit={() => {
+                const selected = { ...model, isSelected: true };
+                handleSelectModel(numericKey, selected, true);
+                handleModelClick(numericKey, selected);
+              }}
+              hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
+            />
+          );
+        })}
+        {selectedModel && (
+          <ModelModal
+            snapPoint={snapPoint}
+            stepSize={stepSize}
+            isVisible={isModalVisible}
+            onClose={() => {
+              setSelectedModel(null);
+              setIsModalVisible(false);
             }}
-            onEdit={() => {
-              const selected = { ...model, isSelected: true };
-              handleSelectModel(numericKey, selected, true);
-              handleModelClick(numericKey, selected);
-            }}
-            hideIconName={model.isVisible ? 'eye' : 'eye-slash'}
+            selectedModel={selectedModel.model}
+            id={selectedModel.id}
           />
-        );
-      })}
-      {selectedModel && (
-        <ModelModal
-          snapPoint={snapPoint}
-          stepSize={stepSize}
-          isVisible={isModalVisible}
-          onClose={() => {
-            setSelectedModel(null);
-            setIsModalVisible(false);
-          }}
-          selectedModel={selectedModel.model}
-          id={selectedModel.id}
-        />
-      )}
+        )}
+      </ScrollView>
       <View style={styles.save}>
         <FilledButton onPress={handleSave} title={t('panels.save')} />
       </View>

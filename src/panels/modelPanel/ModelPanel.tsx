@@ -5,7 +5,11 @@ import { type Reducer } from '../../store/reducers';
 import ListItemTile from '../../components/ListItemTile';
 import ModelModal from './ModelModal';
 import { type Object3D } from '../../AR/Interfaces';
-import { setUnsavedChanges, updateModel } from '../../store/actions';
+import {
+  setProject,
+  setUnsavedChanges,
+  updateModel,
+} from '../../store/actions';
 import { saveProject } from '../../api/projectsApi';
 import { useAuth } from '../../hooks/useAuth';
 import ErrorPopup from '../../components/ErrorPopup';
